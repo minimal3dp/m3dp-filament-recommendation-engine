@@ -183,9 +183,13 @@
                                 <span class="cursor-help">Printability ⓘ</span>
                                 <span id="val-printability" class="font-bold">1</span>
                             </label>
-                            <input type="range" id="filter-printability" data-key="Printability_Score" min="1" max="10"
-                                value="1" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-                                title="Filter for materials with this printability rating or higher">
+                            <div class="flex gap-2 items-center">
+                                <input type="range" id="filter-printability" data-key="Printability_Score" min="1" max="10"
+                                    value="1" class="flex-grow h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                                    title="Filter for materials with this printability rating or higher">
+                                <input type="number" id="input-printability" min="1" max="10" value="1"
+                                    class="w-16 px-2 py-1 text-sm bg-gray-700 border border-gray-600 rounded text-gray-100 text-center focus:ring-blue-500 focus:border-blue-500">
+                            </div>
                         </div>
 
                         <div>
@@ -195,9 +199,13 @@
                                 <span class="cursor-help">Strength (XY MPa) ⓘ</span>
                                 <span id="val-strength" class="font-bold">0</span>
                             </label>
-                            <input type="range" id="filter-strength" data-key="Strength_XY_MPa" min="0" max="150"
-                                value="0" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-                                title="Filter for materials with this strength or higher. Typical values: PLA ~65 MPa, PETG ~50 MPa, Nylon ~75 MPa">
+                            <div class="flex gap-2 items-center">
+                                <input type="range" id="filter-strength" data-key="Strength_XY_MPa" min="0" max="150"
+                                    value="0" class="flex-grow h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                                    title="Filter for materials with this strength or higher. Typical values: PLA ~65 MPa, PETG ~50 MPa, Nylon ~75 MPa">
+                                <input type="number" id="input-strength" min="0" max="150" value="0"
+                                    class="w-16 px-2 py-1 text-sm bg-gray-700 border border-gray-600 rounded text-gray-100 text-center focus:ring-blue-500 focus:border-blue-500">
+                            </div>
                         </div>
 
                         <div>
@@ -207,9 +215,23 @@
                                 <span class="cursor-help">Heat Resistance (HDT °C) ⓘ</span>
                                 <span id="val-heat" class="font-bold">0</span>
                             </label>
-                            <input type="range" id="filter-heat" data-key="Heat_Resistance_HDT_C" min="0" max="250"
-                                value="0" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-                                title="Filter for materials that can withstand this temperature or higher. Examples: PLA ~56°C, PETG ~70°C, ABS ~87°C, PC ~113°C">
+                            <div class="flex gap-2 items-center">
+                                <input type="range" id="filter-heat" data-key="Heat_Resistance_HDT_C" min="0" max="250"
+                                    value="0" class="flex-grow h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                                    title="Filter for materials that can withstand this temperature or higher. Examples: PLA ~56°C, PETG ~70°C, ABS ~87°C, PC ~113°C">
+                                <input type="number" id="input-heat" min="0" max="250" value="0"
+                                    class="w-16 px-2 py-1 text-sm bg-gray-700 border border-gray-600 rounded text-gray-100 text-center focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div class="mt-1 flex flex-wrap gap-1">
+                                <button onclick="snapToValue('heat', 0)" class="px-2 py-0.5 text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 rounded">0°</button>
+                                <button onclick="snapToValue('heat', 50)" class="px-2 py-0.5 text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 rounded">50°</button>
+                                <button onclick="snapToValue('heat', 60)" class="px-2 py-0.5 text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 rounded">60°</button>
+                                <button onclick="snapToValue('heat', 70)" class="px-2 py-0.5 text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 rounded">70°</button>
+                                <button onclick="snapToValue('heat', 80)" class="px-2 py-0.5 text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 rounded">80°</button>
+                                <button onclick="snapToValue('heat', 100)" class="px-2 py-0.5 text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 rounded">100°</button>
+                                <button onclick="snapToValue('heat', 150)" class="px-2 py-0.5 text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 rounded">150°</button>
+                                <button onclick="snapToValue('heat', 200)" class="px-2 py-0.5 text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 rounded">200°</button>
+                            </div>
                         </div>
 
                         <div>
@@ -219,9 +241,13 @@
                                 <span class="cursor-help">Max Cost Score ⓘ</span>
                                 <span id="val-cost" class="font-bold">10</span>
                             </label>
-                            <input type="range" id="filter-cost" data-key="Cost_Score" min="1" max="10" value="10"
-                                class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-                                title="Filter for materials at or below this cost level. 10 = budget-friendly, 1 = premium materials">
+                            <div class="flex gap-2 items-center">
+                                <input type="range" id="filter-cost" data-key="Cost_Score" min="1" max="10" value="10"
+                                    class="flex-grow h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                                    title="Filter for materials at or below this cost level. 10 = budget-friendly, 1 = premium materials">
+                                <input type="number" id="input-cost" min="1" max="10" value="10"
+                                    class="w-16 px-2 py-1 text-sm bg-gray-700 border border-gray-600 rounded text-gray-100 text-center focus:ring-blue-500 focus:border-blue-500">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -998,9 +1024,29 @@ ULTEM 9085,High-Temp,85,25.5,2150,3.6,165,2,10,true,true,false,true,false,5,fals
             allMaterials.sort((a, b) => b.Printability_Score - a.Printability_Score);
 
             // Add event listeners to all filter inputs
-            const inputs = document.querySelectorAll('#filter-checkboxes input, #filter-sliders input');
+            const inputs = document.querySelectorAll('#filter-checkboxes input, #filter-sliders input[type="range"]');
             inputs.forEach(input => {
                 input.addEventListener('input', filterAndRender);
+            });
+
+            // Add two-way binding for slider inputs
+            const sliderPairs = [
+                { slider: 'filter-printability', input: 'input-printability', name: 'printability' },
+                { slider: 'filter-strength', input: 'input-strength', name: 'strength' },
+                { slider: 'filter-heat', input: 'input-heat', name: 'heat' },
+                { slider: 'filter-cost', input: 'input-cost', name: 'cost' }
+            ];
+
+            sliderPairs.forEach(pair => {
+                const slider = document.getElementById(pair.slider);
+                const input = document.getElementById(pair.input);
+                
+                // When slider moves, update input field
+                slider.addEventListener('input', () => syncInputToSlider(pair.name));
+                
+                // When input changes, update slider
+                input.addEventListener('input', () => syncSliderToInput(pair.name));
+                input.addEventListener('blur', () => syncSliderToInput(pair.name));
             });
 
             // Add event listener to nozzle select
@@ -1032,6 +1078,12 @@ ULTEM 9085,High-Temp,85,25.5,2150,3.6,165,2,10,true,true,false,true,false,5,fals
             document.getElementById('filter-heat').value = 0;
             document.getElementById('filter-cost').value = 10;
 
+            // Reset all input fields to match sliders
+            document.getElementById('input-printability').value = 1;
+            document.getElementById('input-strength').value = 0;
+            document.getElementById('input-heat').value = 0;
+            document.getElementById('input-cost').value = 10;
+
             // Reset nozzle filter
             document.getElementById('nozzle-select').value = 'all';
 
@@ -1040,6 +1092,43 @@ ULTEM 9085,High-Temp,85,25.5,2150,3.6,165,2,10,true,true,false,true,false,5,fals
 
             // Re-render
             filterAndRender();
+        }
+
+        /**
+         * Snap a slider to a specific common value
+         */
+        function snapToValue(filterName, value) {
+            const slider = document.getElementById(`filter-${filterName}`);
+            const input = document.getElementById(`input-${filterName}`);
+            slider.value = value;
+            input.value = value;
+            filterAndRender();
+        }
+
+        /**
+         * Sync slider with input field (two-way binding)
+         */
+        function syncSliderToInput(filterName) {
+            const slider = document.getElementById(`filter-${filterName}`);
+            const input = document.getElementById(`input-${filterName}`);
+            
+            // Ensure value is within bounds
+            let value = parseInt(input.value);
+            if (isNaN(value)) value = parseInt(slider.min);
+            value = Math.max(parseInt(slider.min), Math.min(parseInt(slider.max), value));
+            
+            slider.value = value;
+            input.value = value;
+            filterAndRender();
+        }
+
+        /**
+         * Sync input field with slider (two-way binding)
+         */
+        function syncInputToSlider(filterName) {
+            const slider = document.getElementById(`filter-${filterName}`);
+            const input = document.getElementById(`input-${filterName}`);
+            input.value = slider.value;
         }
 
         /**
@@ -1082,7 +1171,13 @@ ULTEM 9085,High-Temp,85,25.5,2150,3.6,165,2,10,true,true,false,true,false,5,fals
             if (preset.sliders) {
                 for (const [id, value] of Object.entries(preset.sliders)) {
                     const slider = document.getElementById(id);
-                    if (slider) slider.value = value;
+                    if (slider) {
+                        slider.value = value;
+                        // Also update corresponding input field
+                        const filterName = id.replace('filter-', '');
+                        const input = document.getElementById(`input-${filterName}`);
+                        if (input) input.value = value;
+                    }
                 }
             }
 
