@@ -1148,10 +1148,15 @@ ULTEM 9085,High-Temp,85,25.5,2150,3.6,165,2,10,true,true,false,true,false,5,fals
                     sliders: { 'filter-printability': 5 }
                 },
                 'engineering': {
-                    checkboxes: { 'filter-moisture': true },
+                    // High strength and heat resistance
+                    // Removed moisture filter as Nylon is hygroscopic but still engineering grade
                     sliders: { 'filter-strength': 50, 'filter-heat': 80 }
                 },
                 'flexible': {
+                    // Filter to show flexible materials (TPU variants)
+                    // TPU: Low_Friction=true, Requires_Enclosure=false, low strength
+                    // This combination excludes Nylon (which requires enclosure)
+                    checkboxes: { 'filter-friction': true, 'filter-enclosure': true },
                     sliders: { 'filter-strength': 0 }
                 }
             };
