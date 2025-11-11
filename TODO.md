@@ -1,8 +1,7 @@
 # Project TODO & Roadmap
 
-This document tracks the development roadmap for the **FDM Filament Recommendation Engine**, progressing from the current v1.0 application toward a comprehensive expert-level recommendation system.
+This document tracks the development roadmap for the **FDM Filament Recommendation Engine**, progressing from the current v1.3.0 application toward a comprehensive expert-level recommendation system.
 
----
 
 ## 📋 Table of Contents
 
@@ -59,23 +58,23 @@ This document tracks the development roadmap for the **FDM Filament Recommendati
 
 ### 1.2 Improve Filter UI ✅ COMPLETED
 
-- [x] **Reset Functionality** *(Completed v1.2)*
+- [x] **Reset Functionality** *(Completed v1.3)*
   - [x] Add "Reset All Filters" button in filter panel
   - [x] Reset to default state (all checkboxes unchecked, sliders at minimum/maximum)
   - [ ] Add confirmation dialog or undo capability *(Deferred - not required)*
   
-- [x] **Slider Enhancements** *(Completed v1.2)*
+- [x] **Slider Enhancements** *(Completed v1.3)*
   - [x] ~~Show numeric values next to sliders as they move~~ *(Completed in V1)*
   - [x] Add input fields alongside sliders for direct numeric entry
   - [x] Add "snap to common values" option (e.g., HDT: 60°, 80°, 100°, etc.)
   
-- [x] **Text Search** *(Completed v1.2)*
+- [x] **Text Search** *(Completed v1.3)*
   - [x] Add search bar at top of results section
   - [x] Filter by material name (fuzzy matching)
   - [x] Filter by cluster/category
   - [x] Show search result count *(via existing results count display)*
   
-- [x] **Filter Presets** *(Completed v1.2)*
+- [x] **Filter Presets** *(Completed v1.3)*
   - [x] Add preset buttons for common use cases:
     - [x] "Beginner Friendly" (High printability, low cost)
     - [x] "Outdoor Parts" (UV resistant, weather resistant)
@@ -83,9 +82,8 @@ This document tracks the development roadmap for the **FDM Filament Recommendati
     - [x] "Flexible Parts" (TPU variants)
     - [ ] "Food Safe" (PETG, PLA with warnings) *(Deferred - requires food safety data)*
 
-### 1.3 Improve Sorting & Display
+### 1.3 Improve Sorting & Display *(Moved to v1.4)*
 
-- [ ] **Sort Dropdown**
   - [ ] Add dropdown menu above results: "Sort by..."
   - [ ] Options:
     - Printability (High to Low) - *default*
@@ -99,14 +97,12 @@ This document tracks the development roadmap for the **FDM Filament Recommendati
   - [ ] Add compact/detailed card view toggle
   - [ ] Add table view option (for comparing multiple materials side-by-side)
   
-- [ ] **Comparison Mode**
   - [ ] Allow users to select 2-4 materials for direct comparison
   - [ ] Display comparison in side-by-side or table format
   - [ ] Highlight differences and trade-offs
 
-### 1.4 Handle Annealable Materials
+### 1.4 Handle Annealable Materials *(Moved to v1.4)*
 
-- [ ] **Annealing Toggle**
   - [ ] Add filter checkbox: "Show Annealed Properties (where applicable)"
   - [ ] When enabled, display annealed values for materials with `Annealable_for_HDT = true`
   
@@ -114,13 +110,11 @@ This document tracks the development roadmap for the **FDM Filament Recommendati
   - [ ] Add badge or icon to annealable materials
   - [ ] Show both as-printed and annealed values in comparison view
   
-- [ ] **Annealing Guide**
   - [ ] In material modal, add annealing instructions (time, temperature, process)
   - [ ] Include warnings about dimensional changes and warping risks
 
-### 1.5 Data Quality & Validation
+### 1.5 Data Quality & Validation *(Moved to v1.4)*
 
-- [ ] **Data Validation Script**
   - [ ] Create script to validate CSV data integrity
   - [ ] Check for missing values, outliers, and inconsistencies
   - [ ] Flag materials requiring data updates
