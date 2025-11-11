@@ -20,27 +20,34 @@ This document tracks the development roadmap for the **FDM Filament Recommendati
 
 ### 1.1 Integrate `materials.json`
 
-- [ ] **Material Detail Modal**
-  - [ ] Add click handlers to material cards
-  - [ ] Create modal component with overlay/backdrop
-  - [ ] Display comprehensive material information in modal
+- [x] **Material Detail Modal** *(Completed in v1.1)*
+  - [x] Add click handlers to material cards
+  - [x] Create modal component with overlay/backdrop
+  - [x] Display comprehensive material information in modal
   
-- [ ] **Detailed Print Settings Section**
-  - [ ] Nozzle temperature range with recommendations
-  - [ ] Bed temperature and surface recommendations
-  - [ ] Print speed suggestions (perimeter, infill, first layer)
-  - [ ] Retraction settings
-  - [ ] Cooling fan recommendations
+- [x] **Detailed Print Settings Section** *(Completed in v1.1)*
+  - [x] Nozzle temperature range with recommendations
+  - [x] Bed temperature and surface recommendations
+  - [x] Print speed suggestions (perimeter, infill, first layer)
+  - [x] Cooling fan recommendations
   
-- [ ] **Advanced Engineering Data Section**
-  - [ ] Complete mechanical properties table
+- [x] **Advanced Engineering Data Section** *(Partially completed in v1.1)*
+  - [x] Complete mechanical properties table
   - [ ] Thermal expansion coefficients
-  - [ ] FEA-ready material models
+  - [x] FEA-ready material models
   - [ ] Long-term creep and fatigue data
-  - [ ] Chemical resistance detailed chart
+  - [x] Chemical resistance detailed chart
   
 - [ ] **Print Profile Export**
   - [ ] Generate downloadable profiles for popular slicers (Cura, PrusaSlicer, Simplify3D)
+
+### 1.1.1 Nozzle Compatibility Filter *(NEW - Completed in v1.1)*
+
+- [x] **Nozzle Type Selection**
+  - [x] Add dropdown for nozzle type (Brass, Hardened Steel, Ruby, Stainless Steel)
+  - [x] Filter materials based on nozzle compatibility
+  - [x] Display nozzle information and recommendations
+  - [x] Warn users about abrasive materials requiring hardened nozzles
 
 ### 1.2 Improve Filter UI
 
@@ -367,6 +374,26 @@ This document tracks the development roadmap for the **FDM Filament Recommendati
 ## Phase 4: Advanced Features
 
 **Goal**: Add sophisticated features that provide unique value beyond basic filtering.
+
+### 4.0 Printer Selection Filter *(Future Feature)*
+
+- [ ] **Printer Database Integration**
+  - [ ] Create printer database with temperature capabilities (based on FDM 3D Printer Report 2024-2025.pdf)
+  - [ ] Include hotend max temp, bed max temp, enclosure availability
+  - [ ] Add printer model selection dropdown
+  
+- [ ] **Temperature Compatibility Filtering**
+  - [ ] Filter materials based on printer's temperature capabilities
+  - [ ] Warn if material requires higher temps than printer supports
+  - [ ] Show upgrade recommendations (e.g., "This printer needs an all-metal hotend for this material")
+  
+- [ ] **Enclosure Requirements**
+  - [ ] Filter based on whether printer has enclosure
+  - [ ] Suggest DIY enclosure options for printers without one
+  
+- [ ] **Build Volume Considerations**
+  - [ ] Track printer build volumes
+  - [ ] Warn about warping risk for large parts on printers without enclosures
 
 ### 4.1 Material Substitution Suggestions
 
