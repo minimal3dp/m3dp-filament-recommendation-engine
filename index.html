@@ -80,7 +80,7 @@
         <header class="mb-8">
             <div class="flex items-center justify-between mb-2">
                 <h1 class="text-4xl font-bold text-white">FDM Filament Finder</h1>
-                <span class="text-sm font-medium text-gray-400 bg-gray-800 px-3 py-1 rounded-full">v1.1.0</span>
+                <span class="text-sm font-medium text-gray-400 bg-gray-800 px-3 py-1 rounded-full">v1.2.0</span>
             </div>
             <p class="text-lg text-gray-300">Select your desired properties to find the perfect material for your
                 project.</p>
@@ -379,34 +379,55 @@ ULTEM 9085,High-Temp,85,25.5,2150,3.6,165,2,10,true,true,false,true,false,5,fals
         // Additional material data from materials.json
         const materialsDetailData = {
             "PLA (Standard)": {
-                "common": {"nozzle_temperature": 210, "bed_temperature": 60, "print_speed": 60, "fan_speed": 100},
+                "common": {"nozzle_temperature": 210, "bed_temperature": 60, "print_speed": 60, "fan_speed": 100, "retraction_distance_mm": 5.0, "retraction_speed_mm_s": 45, "first_layer_speed_pct": 50},
                 "fea": {"Material_Youngs_Modulus_GPa": 3.5, "Material_Tensile_Yield_Strenght_MPa": 50, "Material_Poissons_Ratio": 0.36},
+                "thermal": {"thermal_expansion_coefficient": 68, "thermal_conductivity_W_mK": 0.13, "specific_heat_capacity_J_gK": 1.8},
+                "creep_resistance": "Low - Not recommended for constant load applications",
+                "fatigue": {"cycles_to_failure_at_50pct_UTS": 10000, "fatigue_strength_MPa": 32, "notes": "Prone to creep under sustained load"},
                 "properties": {"tensile_strength_MPa": 65.0, "tensile_modulus_MPa": 2850.0, "elongation_at_break_pct": 7.0, "HDT_C": 56.0, "impact_strength_kJ_m2": 6.5}
             },
             "ABS": {
-                "common": {"nozzle_temperature": 235, "bed_temperature": 95, "print_speed": 60, "fan_speed": 0},
-                "fea": {"Material_Youngs_Modulus_GPa": 2.2, "Material_Tensile_Yield_Strenght_MPa": 35, "Material_Poissons_Ratio": 0.35},
-                "properties": {"tensile_strength_MPa": 43.0, "tensile_modulus_MPa": 2100.0, "elongation_at_break_pct": 17.5, "HDT_C": 93.5, "impact_strength_kJ_m2": 24.5}
+                "common": {"nozzle_temperature": 245, "bed_temperature": 100, "print_speed": 60, "fan_speed": 30, "retraction_distance_mm": 5.0, "retraction_speed_mm_s": 45, "first_layer_speed_pct": 50},
+                "fea": {"Material_Youngs_Modulus_GPa": 2.3, "Material_Tensile_Yield_Strenght_MPa": 40, "Material_Poissons_Ratio": 0.35},
+                "thermal": {"thermal_expansion_coefficient": 90, "thermal_conductivity_W_mK": 0.17, "specific_heat_capacity_J_gK": 1.5},
+                "creep_resistance": "Moderate - Good for general-purpose applications",
+                "fatigue": {"cycles_to_failure_at_50pct_UTS": 100000, "fatigue_strength_MPa": 21, "notes": "Better creep resistance than PLA, moderate fatigue performance"},
+                "properties": {"tensile_strength_MPa": 43.0, "tensile_modulus_MPa": 2300.0, "elongation_at_break_pct": 3.0, "HDT_C": 98.0, "impact_strength_kJ_m2": 20.0}
             },
             "PETG (Standard)": {
-                "common": {"nozzle_temperature": 240, "bed_temperature": 75, "print_speed": 50, "fan_speed": 50},
-                "fea": {"Material_Youngs_Modulus_GPa": 2.1, "Material_Tensile_Yield_Strenght_MPa": 45, "Material_Poissons_Ratio": 0.37},
-                "properties": {"tensile_strength_MPa": 49.0, "tensile_modulus_MPa": 1912.5, "elongation_at_break_pct": 77.5, "HDT_C": 74.5, "impact_strength_kJ_m2": 10.5}
+                "common": {"nozzle_temperature": 245, "bed_temperature": 80, "print_speed": 50, "fan_speed": 50, "retraction_distance_mm": 4.5, "retraction_speed_mm_s": 40, "first_layer_speed_pct": 50},
+                "fea": {"Material_Youngs_Modulus_GPa": 2.1, "Material_Tensile_Yield_Strenght_MPa": 50, "Material_Poissons_Ratio": 0.38},
+                "thermal": {"thermal_expansion_coefficient": 60, "thermal_conductivity_W_mK": 0.29, "specific_heat_capacity_J_gK": 1.0},
+                "creep_resistance": "Good - Suitable for moderate load applications",
+                "fatigue": {"cycles_to_failure_at_50pct_UTS": 500000, "fatigue_strength_MPa": 26, "notes": "Excellent creep resistance, good for functional parts"},
+                "properties": {"tensile_strength_MPa": 53.0, "tensile_modulus_MPa": 2080.0, "elongation_at_break_pct": 6.0, "HDT_C": 70.0, "impact_strength_kJ_m2": 7.2}
             },
             "Nylon PA6": {
-                "common": {"nozzle_temperature": 250, "bed_temperature": 80, "print_speed": 40, "fan_speed": 20},
-                "fea": {"Material_Youngs_Modulus_GPa": 1.7, "Material_Tensile_Yield_Strenght_MPa": 60, "Material_Poissons_Ratio": 0.4}
+                "common": {"nozzle_temperature": 255, "bed_temperature": 85, "print_speed": 40, "fan_speed": 20, "retraction_distance_mm": 6.0, "retraction_speed_mm_s": 40, "first_layer_speed_pct": 50},
+                "fea": {"Material_Youngs_Modulus_GPa": 1.6, "Material_Tensile_Yield_Strenght_MPa": 46, "Material_Poissons_Ratio": 0.39},
+                "thermal": {"thermal_expansion_coefficient": 80, "thermal_conductivity_W_mK": 0.25, "specific_heat_capacity_J_gK": 1.7},
+                "creep_resistance": "Excellent - Ideal for constant load applications",
+                "fatigue": {"cycles_to_failure_at_50pct_UTS": 1000000, "fatigue_strength_MPa": 37, "notes": "Outstanding creep and fatigue resistance, hygroscopic"},
+                "properties": {"tensile_strength_MPa": 75.0, "tensile_modulus_MPa": 1600.0, "elongation_at_break_pct": 50.0, "HDT_C": 85.0, "impact_strength_kJ_m2": 10.0}
             },
             "PC (Polycarbonate)": {
                 "common": {"nozzle_temperature": 280, "bed_temperature": 110, "print_speed": 30, "fan_speed": 0},
                 "fea": {"Material_Youngs_Modulus_GPa": 2.4, "Material_Tensile_Yield_Strenght_MPa": 65, "Material_Poissons_Ratio": 0.38}
             },
             "TPU (Flexible)": {
-                "common": {"nozzle_temperature": 225, "bed_temperature": 50, "print_speed": 20, "fan_speed": 100},
-                "fea": {"Material_Youngs_Modulus_GPa": 0.1, "Material_Tensile_Yield_Strenght_MPa": 30, "Material_Poissons_Ratio": 0.49}
+                "common": {"nozzle_temperature": 225, "bed_temperature": 60, "print_speed": 25, "fan_speed": 80, "retraction_distance_mm": 2.0, "retraction_speed_mm_s": 25, "first_layer_speed_pct": 50},
+                "fea": {"Material_Youngs_Modulus_GPa": 0.026, "Material_Tensile_Yield_Strenght_MPa": 6.9, "Material_Poissons_Ratio": 0.5},
+                "thermal": {"thermal_expansion_coefficient": 150, "thermal_conductivity_W_mK": 0.16, "specific_heat_capacity_J_gK": 1.8},
+                "creep_resistance": "Excellent - Elastomeric behavior, recovers from deformation",
+                "fatigue": {"cycles_to_failure_at_50pct_UTS": 5000000, "fatigue_strength_MPa": 13, "notes": "Exceptional fatigue resistance due to elastomeric nature"},
+                "properties": {"tensile_strength_MPa": 26.0, "tensile_modulus_MPa": 26.0, "elongation_at_break_pct": 450.0, "HDT_C": 55.0, "impact_strength_kJ_m2": 60.0}
             },
             "ASA": {
-                "common": {"nozzle_temperature": 250, "bed_temperature": 100, "print_speed": 55, "fan_speed": 30},
+                "common": {"nozzle_temperature": 250, "bed_temperature": 100, "print_speed": 55, "fan_speed": 30, "retraction_distance_mm": 5.0, "retraction_speed_mm_s": 45, "first_layer_speed_pct": 50},
+                "fea": {"Material_Youngs_Modulus_GPa": 2.15, "Material_Tensile_Yield_Strenght_MPa": 42, "Material_Poissons_Ratio": 0.35},
+                "thermal": {"thermal_expansion_coefficient": 85, "thermal_conductivity_W_mK": 0.18, "specific_heat_capacity_J_gK": 1.5},
+                "creep_resistance": "Good - UV and weather resistant, better than ABS",
+                "fatigue": {"cycles_to_failure_at_50pct_UTS": 150000, "fatigue_strength_MPa": 24, "notes": "Excellent outdoor durability, good creep resistance"},
                 "properties": {"tensile_strength_MPa": 49.5, "tensile_modulus_MPa": 2150.0, "elongation_at_break_pct": 17.5, "HDT_C": 95.0, "impact_strength_kJ_m2": 41.0}
             },
             "ULTEM 9085": {
@@ -416,6 +437,11 @@ ULTEM 9085,High-Temp,85,25.5,2150,3.6,165,2,10,true,true,false,true,false,5,fals
                 "properties": {"tensile_strength_MPa": 105.0, "tensile_modulus_MPa": 3205.0, "elongation_at_break_pct": 9.5, "HDT_C": 247.0, "Tg_C": 162.0}
             },
             "PEEK": {
+                "common": {"nozzle_temperature": 400, "bed_temperature": 140, "print_speed": 30, "fan_speed": 0, "retraction_distance_mm": 3.0, "retraction_speed_mm_s": 30, "first_layer_speed_pct": 50},
+                "fea": {"Material_Youngs_Modulus_GPa": 3.72, "Material_Tensile_Yield_Strenght_MPa": 92, "Material_Poissons_Ratio": 0.38},
+                "thermal": {"thermal_expansion_coefficient": 47, "thermal_conductivity_W_mK": 0.25, "specific_heat_capacity_J_gK": 1.3},
+                "creep_resistance": "Excellent - Superior high-temperature performance",
+                "fatigue": {"cycles_to_failure_at_50pct_UTS": 2000000, "fatigue_strength_MPa": 50, "notes": "Exceptional creep resistance, biocompatible, aerospace-grade"},
                 "properties": {"tensile_strength_MPa": 101.0, "tensile_modulus_MPa": 3720.0, "elongation_at_break_pct": 27.0, "HDT_C": 216.5, "Tg_C": 143.0}
             }
         };
@@ -663,6 +689,57 @@ ULTEM 9085,High-Temp,85,25.5,2150,3.6,165,2,10,true,true,false,true,false,5,fals
                 `;
             }
 
+            // Thermal Properties (if available)
+            if (additionalData.thermal) {
+                modalContent += `
+                    <div class="bg-gray-700 rounded-lg p-5">
+                        <h3 class="text-xl font-bold text-white mb-4 flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                            Thermal Properties
+                        </h3>
+                        <div class="grid grid-cols-2 gap-4 text-sm text-gray-300">
+                            <div title="Coefficient of thermal expansion - how much the material expands per degree Celsius"><strong>Thermal Expansion:</strong> ${additionalData.thermal.thermal_expansion_coefficient} × 10⁻⁶ /°C</div>
+                            <div><strong>Thermal Conductivity:</strong> ${additionalData.thermal.thermal_conductivity_W_mK} W/(m·K)</div>
+                            <div class="col-span-2"><strong>Specific Heat Capacity:</strong> ${additionalData.thermal.specific_heat_capacity_J_gK} J/(g·K)</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Long-term Performance (if available)
+            if (additionalData.creep_resistance || additionalData.fatigue) {
+                modalContent += `
+                    <div class="bg-gray-700 rounded-lg p-5">
+                        <h3 class="text-xl font-bold text-white mb-4 flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Long-term Performance
+                        </h3>
+                        <div class="space-y-3 text-sm text-gray-300">
+                            ${additionalData.creep_resistance ? `
+                                <div class="p-3 bg-gray-800 rounded">
+                                    <strong class="text-white">Creep Resistance:</strong>
+                                    <div class="mt-1">${additionalData.creep_resistance}</div>
+                                </div>
+                            ` : ''}
+                            ${additionalData.fatigue ? `
+                                <div class="p-3 bg-gray-800 rounded">
+                                    <strong class="text-white">Fatigue Performance:</strong>
+                                    <div class="mt-2 grid grid-cols-2 gap-2">
+                                        <div><strong>Cycles to Failure:</strong> ${additionalData.fatigue.cycles_to_failure_at_50pct_UTS.toLocaleString()}</div>
+                                        <div><strong>Fatigue Strength:</strong> ${additionalData.fatigue.fatigue_strength_MPa} MPa</div>
+                                    </div>
+                                    ${additionalData.fatigue.notes ? `<div class="mt-2 text-gray-400 italic">${additionalData.fatigue.notes}</div>` : ''}
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+
             // Material Characteristics
             modalContent += `
                 <div class="bg-gray-700 rounded-lg p-5">
@@ -722,6 +799,45 @@ ULTEM 9085,High-Temp,85,25.5,2150,3.6,165,2,10,true,true,false,true,false,5,fals
                     </div>
                 </div>
             `;
+
+            // Export Print Profiles Section (if common settings available)
+            if (additionalData.common && additionalData.common.nozzle_temperature) {
+                modalContent += `
+                    <div class="bg-gray-700 rounded-lg p-5">
+                        <h3 class="text-xl font-bold text-white mb-4 flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                            </svg>
+                            Export Print Profile
+                        </h3>
+                        <p class="text-sm text-gray-400 mb-4">Download optimized print profiles for your slicer software</p>
+                        <div class="grid grid-cols-3 gap-3">
+                            <button onclick="exportCuraProfile('${material.Material}', ${JSON.stringify(additionalData).replace(/"/g, '&quot;')})" 
+                                    class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+                                </svg>
+                                Cura
+                            </button>
+                            <button onclick="exportPrusaProfile('${material.Material}', ${JSON.stringify(additionalData).replace(/"/g, '&quot;')})" 
+                                    class="bg-orange-600 hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+                                </svg>
+                                PrusaSlicer
+                            </button>
+                            <button onclick="exportSimplify3DProfile('${material.Material}', ${JSON.stringify(additionalData).replace(/"/g, '&quot;')})" 
+                                    class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+                                </svg>
+                                Simplify3D
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-3">Note: Exported profiles are starting points. Always test and adjust for your specific printer.</p>
+                    </div>
+                `;
+            }
 
             modalBody.innerHTML = modalContent;
             modal.classList.remove('hidden');
@@ -834,6 +950,146 @@ ULTEM 9085,High-Temp,85,25.5,2150,3.6,165,2,10,true,true,false,true,false,5,fals
 
             // Initial render with all materials
             filterAndRender();
+        }
+
+        // --- EXPORT FUNCTIONS ---
+
+        /**
+         * Utility function to download a file
+         */
+        function downloadFile(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        /**
+         * Export Cura profile (.ini format)
+         */
+        function exportCuraProfile(materialName, data) {
+            const common = data.common;
+            const material = materialName.replace(/[^a-zA-Z0-9]/g, '_');
+            
+            const profile = `[general]
+version = 4
+name = ${materialName}
+definition = fdmprinter
+
+[metadata]
+type = quality_changes
+quality_type = normal
+setting_version = 20
+
+[values]
+material_print_temperature = ${common.nozzle_temperature}
+material_bed_temperature = ${common.bed_temperature}
+speed_print = ${common.print_speed}
+cool_fan_speed = ${common.fan_speed}
+${common.retraction_distance_mm ? `retraction_amount = ${common.retraction_distance_mm}` : ''}
+${common.retraction_speed_mm_s ? `retraction_speed = ${common.retraction_speed_mm_s}` : ''}
+${common.first_layer_speed_pct ? `speed_layer_0 = ${common.print_speed * common.first_layer_speed_pct / 100}` : ''}
+layer_height = 0.2
+wall_thickness = 1.2
+infill_sparse_density = 20
+`;
+
+            downloadFile(profile, `${material}_cura_profile.ini`, 'text/plain');
+        }
+
+        /**
+         * Export PrusaSlicer profile (.ini format)
+         */
+        function exportPrusaProfile(materialName, data) {
+            const common = data.common;
+            const material = materialName.replace(/[^a-zA-Z0-9]/g, '_');
+            
+            const profile = `# generated by M3DP Filament Recommendation Engine
+# ${new Date().toISOString()}
+
+[print:${materialName}]
+compatible_printers = 
+compatible_printers_condition = 
+inherits = 
+temperature = ${common.nozzle_temperature}
+bed_temperature = ${common.bed_temperature}
+bridge_fan_speed = ${common.fan_speed}
+fan_always_on = ${common.fan_speed > 0 ? '1' : '0'}
+max_fan_speed = ${common.fan_speed}
+min_fan_speed = ${Math.max(0, common.fan_speed - 20)}
+${common.retraction_distance_mm ? `retract_length = ${common.retraction_distance_mm}` : ''}
+${common.retraction_speed_mm_s ? `retract_speed = ${common.retraction_speed_mm_s}` : ''}
+perimeter_speed = ${common.print_speed}
+external_perimeter_speed = ${Math.round(common.print_speed * 0.8)}
+infill_speed = ${common.print_speed}
+${common.first_layer_speed_pct ? `first_layer_speed = ${common.print_speed * common.first_layer_speed_pct / 100}` : ''}
+layer_height = 0.2
+fill_density = 20%
+`;
+
+            downloadFile(profile, `${material}_prusa_profile.ini`, 'text/plain');
+        }
+
+        /**
+         * Export Simplify3D profile (.fff XML format)
+         */
+        function exportSimplify3DProfile(materialName, data) {
+            const common = data.common;
+            const material = materialName.replace(/[^a-zA-Z0-9]/g, '_');
+            
+            const profile = `<?xml version="1.0"?>
+<profile name="${materialName}" version="1.0.0">
+  <baseProfile>Default</baseProfile>
+  <printMaterial>${materialName}</printMaterial>
+  <printQuality>Medium</printQuality>
+  
+  <extruder name="Primary Extruder">
+    <toolheadNumber>0</toolheadNumber>
+    <diameter>0.4</diameter>
+    <autoWidth>1</autoWidth>
+    <width>0.48</width>
+    
+    <extrusionMultiplier>1</extrusionMultiplier>
+    <extrusionWidth>0</extrusionWidth>
+    <useRetract>1</useRetract>
+    <retractionDistance>${common.retraction_distance_mm || 5}</retractionDistance>
+    <retractionSpeed>${(common.retraction_speed_mm_s || 45) * 60}</retractionSpeed>
+    <retractionZLift>0</retractionZLift>
+  </extruder>
+  
+  <primaryLayerHeight>0.2</primaryLayerHeight>
+  <firstLayerHeightPercentage>${common.first_layer_speed_pct || 100}</firstLayerHeightPercentage>
+  
+  <defaultSpeed>${common.print_speed * 60}</defaultSpeed>
+  <outlineUnderspeed>0.8</outlineUnderspeed>
+  <firstLayerUnderspeed>0.5</firstLayerUnderspeed>
+  
+  <temperature name="Extruder 1">${common.nozzle_temperature}</temperature>
+  <temperatureSetpointCount>1</temperatureSetpointCount>
+  
+  <temperatureName>Heated Bed</temperatureName>
+  <temperatureNumber>0</temperatureNumber>
+  <temperatureSetpoint layer="1" temperature="${common.bed_temperature}"/>
+  
+  <fanSpeed>
+    <setpoint layer="1" speed="${common.fan_speed}"/>
+  </fanSpeed>
+  
+  <infillPercentage>20</infillPercentage>
+  <infillExtruder>0</infillExtruder>
+  <infillType>Rectilinear</infillType>
+  
+  <topSolidLayers>4</topSolidLayers>
+  <bottomSolidLayers>3</bottomSolidLayers>
+  <outlinePerimeters>2</outlinePerimeters>
+</profile>`;
+
+            downloadFile(profile, `${material}_simplify3d_profile.fff`, 'application/xml');
         }
 
         // 5. Start the application

@@ -44,17 +44,18 @@ This document tracks the development roadmap for the **FDM Filament Recommendati
   - [x] Display nozzle information and recommendations
   - [x] Warn users about abrasive materials requiring hardened nozzles
 
-### 1.1.2 Enhanced Material Data *(Planned for v1.2)*
+### 1.1.2 Enhanced Material Data *(Completed in v1.2)*
 
-- [ ] **Additional Engineering Data**
-  - [ ] Thermal expansion coefficients
-  - [ ] Long-term creep and fatigue data
-  - [ ] More comprehensive material properties from TDS sources
+- [x] **Additional Engineering Data**
+  - [x] Thermal expansion coefficients
+  - [x] Long-term creep and fatigue data
+  - [x] Additional thermal properties (conductivity, specific heat capacity)
+  - [x] Creep resistance ratings for material selection
   
-- [ ] **Print Profile Export**
-  - [ ] Generate downloadable profiles for popular slicers (Cura, PrusaSlicer, Simplify3D)
-  - [ ] Export in multiple slicer-specific formats
-  - [ ] Include material-specific settings and recommendations
+- [x] **Print Profile Export**
+  - [x] Generate downloadable profiles for popular slicers (Cura, PrusaSlicer, Simplify3D)
+  - [x] Export in multiple slicer-specific formats (.ini for Cura/Prusa, .fff for Simplify3D)
+  - [x] Include material-specific settings (temperatures, speeds, retraction, etc.)
 
 ### 1.2 Improve Filter UI
 
