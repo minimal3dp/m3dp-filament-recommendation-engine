@@ -8,7 +8,21 @@ This application provides an intelligent, filterable database of FDM filament ma
 
 ## Features
 
-### Current Features (v1.0)
+### Current Features (v1.1) 🆕
+
+- **Interactive Material Details**: Click any material card to view comprehensive information
+  - Detailed print settings (nozzle temp, bed temp, speeds, fan)
+  - Complete mechanical properties with visual indicators
+  - FEA-ready properties for engineering simulations
+  - Material characteristics with color-coded status
+  - Performance visualizations with progress bars
+  
+- **Nozzle Compatibility Filter** 🆕: Select your nozzle type to filter compatible materials
+  - Brass (Standard) - for non-abrasive materials
+  - Hardened Steel - for all materials including carbon fiber
+  - Ruby Tipped - premium option for abrasive filaments
+  - Stainless Steel - food-safe option
+  - Smart filtering prevents incompatible material selection
 
 - **Real-time Filtering**: Interactive UI with instant results as filters are adjusted
 - **Multi-criteria Search**: Filter by multiple properties simultaneously including:
@@ -22,10 +36,12 @@ This application provides an intelligent, filterable database of FDM filament ma
   - Fume emissions
   - Friction properties
   - Abrasiveness
+  
 - **Material Clustering**: Materials organized into categories (Standard, Engineering, Composite, Functional, High-Performance, Flexible)
 - **Visual Material Cards**: Easy-to-read cards displaying key properties and attributes
 - **Responsive Design**: Works on desktop, tablet, and mobile devices
 - **Dark Mode UI**: Modern, eye-friendly interface built with Tailwind CSS
+- **Enhanced Tooltips**: Helpful information on all sliders to guide users
 
 ### Material Database
 
@@ -147,8 +163,10 @@ This tool is built on extensive research into FDM materials, including:
 - Engineering handbooks and material science references
 - Real-world printing experience and community feedback
 - Comparative testing data across material types
+- **FDM 3D Printer Report 2024-2025** - Comprehensive printer capabilities database (future integration)
+- **Nozzle Guide** - Nozzle compatibility and wear characteristics
 
-See `research/` directory for detailed research notes.
+See `research/` directory for detailed research notes and source documents.
 
 ## Contributing
 
@@ -169,6 +187,11 @@ Built for the 3D printing community to make material selection more accessible a
 
 ---
 
-**Version**: 1.0  
-**Last Updated**: November 2025  
+## Version History
+
+See [CHANGELOG.md](CHANGELOG.md) for detailed version history and release notes.
+
+**Current Version**: 1.1.0  
+**Last Updated**: November 10, 2025  
+**Branch**: version1.1  
 **Author**: M3DP Development Team
