@@ -19,6 +19,7 @@ This application provides an intelligent, filterable database of FDM filament ma
 - **Print Profile Export** 🆕: One-click slicer profile generation
   - **Cura**: Export optimized .ini profiles
   - **PrusaSlicer**: Export .ini profiles with PrusaSlicer-specific settings
+  - **OrcaSlicer**: Export native JSON profiles (v1.9.0+)
   - **Simplify3D**: Export .fff XML profiles
   - Includes material-specific temperatures, speeds, retraction, and fan settings
   - Serves as a tested starting point for your prints

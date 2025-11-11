@@ -7,7 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.2.0] - 2025-01-XX
+## [Unreleased]
+
+### Added
+
+#### OrcaSlicer Profile Export
+- **OrcaSlicer Support**: Added fourth slicer export option alongside Cura, PrusaSlicer, and Simplify3D
+- **JSON Format**: Generates native OrcaSlicer JSON profile format
+- **Comprehensive Settings**: Includes temperatures, speeds, retraction, layer heights, and shell configurations
+- **Compatible with OrcaSlicer 1.9.0+**
+
+### Changed
+- **Export Button Layout**: Updated from 3-column grid to responsive 4-column layout (2 columns on mobile, 4 on desktop)
+- **Purple Color Scheme**: OrcaSlicer button uses purple (`bg-purple-600`) for brand distinction
+
+---
+
+## [1.2.0] - 2025-11-10
 
 ### Added
 
