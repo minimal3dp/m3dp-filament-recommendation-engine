@@ -57,31 +57,31 @@ This document tracks the development roadmap for the **FDM Filament Recommendati
   - [x] Export in multiple slicer-specific formats (.ini for Cura/Prusa, .fff for Simplify3D)
   - [x] Include material-specific settings (temperatures, speeds, retraction, etc.)
 
-### 1.2 Improve Filter UI
+### 1.2 Improve Filter UI ✅ COMPLETED
 
-- [ ] **Reset Functionality**
-  - [ ] Add "Reset All Filters" button in filter panel
-  - [ ] Reset to default state (all checkboxes unchecked, sliders at minimum/maximum)
-  - [ ] Add confirmation dialog or undo capability
+- [x] **Reset Functionality** *(Completed v1.2)*
+  - [x] Add "Reset All Filters" button in filter panel
+  - [x] Reset to default state (all checkboxes unchecked, sliders at minimum/maximum)
+  - [ ] Add confirmation dialog or undo capability *(Deferred - not required)*
   
-- [ ] **Slider Enhancements**
+- [x] **Slider Enhancements** *(Completed v1.2)*
   - [x] ~~Show numeric values next to sliders as they move~~ *(Completed in V1)*
-  - [ ] Add input fields alongside sliders for direct numeric entry
-  - [ ] Add "snap to common values" option (e.g., HDT: 60°, 80°, 100°, etc.)
+  - [x] Add input fields alongside sliders for direct numeric entry
+  - [x] Add "snap to common values" option (e.g., HDT: 60°, 80°, 100°, etc.)
   
-- [ ] **Text Search**
-  - [ ] Add search bar at top of results section
-  - [ ] Filter by material name (fuzzy matching)
-  - [ ] Filter by cluster/category
-  - [ ] Show search result count
+- [x] **Text Search** *(Completed v1.2)*
+  - [x] Add search bar at top of results section
+  - [x] Filter by material name (fuzzy matching)
+  - [x] Filter by cluster/category
+  - [x] Show search result count *(via existing results count display)*
   
-- [ ] **Filter Presets**
-  - [ ] Add preset buttons for common use cases:
-    - "Beginner Friendly" (High printability, low cost)
-    - "Outdoor Parts" (UV resistant, weather resistant)
-    - "Engineering Parts" (High strength, heat resistance)
-    - "Flexible Parts" (TPU variants)
-    - "Food Safe" (PETG, PLA with warnings)
+- [x] **Filter Presets** *(Completed v1.2)*
+  - [x] Add preset buttons for common use cases:
+    - [x] "Beginner Friendly" (High printability, low cost)
+    - [x] "Outdoor Parts" (UV resistant, weather resistant)
+    - [x] "Engineering Parts" (High strength, heat resistance)
+    - [x] "Flexible Parts" (TPU variants)
+    - [ ] "Food Safe" (PETG, PLA with warnings) *(Deferred - requires food safety data)*
 
 ### 1.3 Improve Sorting & Display
 
