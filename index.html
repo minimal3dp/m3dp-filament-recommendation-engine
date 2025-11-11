@@ -1153,16 +1153,19 @@ ULTEM 9085,High-Temp,85,25.5,2150,3.6,165,2,10,true,true,false,true,false,5,fals
                     sliders: { 'filter-strength': 50, 'filter-heat': 80 }
                 },
                 'flexible': {
-                    // Filter to show flexible materials (TPU variants)
-                    // TPU: Low_Friction=true, Requires_Enclosure=false, low strength
-                    // This combination excludes Nylon (which requires enclosure)
-                    checkboxes: { 'filter-friction': true, 'filter-enclosure': true },
-                    sliders: { 'filter-strength': 0 }
+                    // Search for materials with "Flexible" in the name (TPU variants)
+                    search: 'Flexible'
                 }
             };
 
             const preset = presets[presetName];
             if (!preset) return;
+
+            // Apply search query if specified
+            if (preset.search) {
+                const searchInput = document.getElementById('material-search');
+                searchInput.value = preset.search;
+            }
 
             // Apply checkbox settings
             if (preset.checkboxes) {
