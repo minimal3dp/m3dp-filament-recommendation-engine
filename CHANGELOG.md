@@ -7,6 +7,91 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.2.0] - 2025-01-XX
+
+### Added
+
+#### Enhanced Material Data (TODO Item 1.1.2)
+
+##### Thermal Properties
+- **Thermal Expansion Coefficients**: Added coefficient of thermal expansion (×10⁻⁶ /°C) for dimensional accuracy calculations
+  - PLA: 68, PETG: 60, ABS: 90, Nylon: 80, TPU: 150, ASA: 85, PEEK: 47
+- **Thermal Conductivity**: Added thermal conductivity values (W/(m·K)) for heat transfer analysis
+- **Specific Heat Capacity**: Added specific heat capacity values (J/(g·K)) for thermal management
+- **New Thermal Properties Section** in material modal with comprehensive thermal data display
+
+##### Long-term Performance Data
+- **Creep Resistance Ratings**: Qualitative ratings with application guidance
+  - PLA: "Low - Not recommended for constant load applications"
+  - PETG: "Good - Suitable for moderate load applications"
+  - Nylon: "Excellent - Ideal for constant load applications"
+  - TPU: "Excellent - Elastomeric behavior, recovers from deformation"
+  - ASA: "Good - UV and weather resistant, better than ABS"
+  - PEEK: "Excellent - Superior high-temperature performance"
+  
+- **Fatigue Performance Data**:
+  - Cycles to failure at 50% UTS (Ultimate Tensile Strength)
+  - Fatigue strength values (MPa)
+  - Expert notes on real-world performance characteristics
+  - Examples: PLA (10,000 cycles), PETG (500,000 cycles), Nylon (1M cycles), TPU (5M cycles), PEEK (2M cycles)
+  
+- **Long-term Performance Section** in material modal with visual indicators
+
+##### Additional Print Settings
+- **Enhanced Common Settings**:
+  - Retraction distance (mm)
+  - Retraction speed (mm/s)
+  - First layer speed percentage
+  - More accurate temperature and speed recommendations
+
+#### Print Profile Export Feature (TODO Item 1.1.2)
+
+##### Multi-Slicer Support
+- **Cura Profile Export**: 
+  - Generates .ini format compatible with Ultimaker Cura
+  - Includes material temperatures, speeds, retraction, fan control
+  - Layer height, wall thickness, and infill settings
+  
+- **PrusaSlicer Profile Export**:
+  - Generates .ini format compatible with PrusaSlicer/SuperSlicer
+  - Material-specific settings with temperature ranges
+  - Fan control and speed optimization
+  - Compatible with Prusa-specific syntax
+  
+- **Simplify3D Profile Export**:
+  - Generates .fff XML format for Simplify3D
+  - Comprehensive extruder configuration
+  - Temperature setpoints and fan curves
+  - Professional-grade profile structure
+
+##### Export Functionality
+- **One-Click Downloads**: Export buttons in material detail modal
+- **Automatic File Naming**: Profiles named after material (e.g., `PLA_Standard_cura_profile.ini`)
+- **Safety Disclaimer**: Warns users that profiles are starting points requiring testing
+- **Visual Icons**: SVG icons for each slicer for easy identification
+
+### Changed
+
+- **materials.json**: Expanded from basic properties to comprehensive engineering database
+- **Material Modal**: Reorganized sections with thermal and long-term performance data
+- **Data Coverage**: Updated 7 materials (PLA, PETG, ABS, Nylon, TPU, ASA, PEEK) with complete thermal and fatigue data
+
+### Technical Details
+
+- **New JavaScript Functions**:
+  - `exportCuraProfile(materialName, data)`: Cura .ini generator
+  - `exportPrusaProfile(materialName, data)`: PrusaSlicer .ini generator
+  - `exportSimplify3DProfile(materialName, data)`: Simplify3D .fff XML generator
+  - `downloadFile(content, filename, mimeType)`: Universal file download utility
+  
+- **Data Schema Updates**:
+  - Added `thermal` object: `thermal_expansion_coefficient`, `thermal_conductivity_W_mK`, `specific_heat_capacity_J_gK`
+  - Added `creep_resistance` string: Qualitative rating with application guidance
+  - Enhanced `fatigue` object: `cycles_to_failure_at_50pct_UTS`, `fatigue_strength_MPa`, `notes`
+  - Enhanced `common` object: `retraction_distance_mm`, `retraction_speed_mm_s`, `first_layer_speed_pct`
+
+---
+
 ## [1.1.0] - 2025-11-10
 
 ### Added

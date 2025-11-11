@@ -8,16 +8,31 @@ This application provides an intelligent, filterable database of FDM filament ma
 
 ## Features
 
-### Current Features (v1.1) 🆕
+### Current Features (v1.2) 🆕
+
+- **Enhanced Engineering Data** 🆕: Advanced material properties for professional applications
+  - **Thermal Properties**: Thermal expansion coefficients, thermal conductivity, specific heat capacity
+  - **Long-term Performance**: Creep resistance ratings and fatigue life data
+  - **Cycles to Failure**: Comprehensive fatigue strength data for functional parts
+  - **Material Behavior Notes**: Expert guidance on real-world performance
+
+- **Print Profile Export** 🆕: One-click slicer profile generation
+  - **Cura**: Export optimized .ini profiles
+  - **PrusaSlicer**: Export .ini profiles with PrusaSlicer-specific settings
+  - **Simplify3D**: Export .fff XML profiles
+  - Includes material-specific temperatures, speeds, retraction, and fan settings
+  - Serves as a tested starting point for your prints
 
 - **Interactive Material Details**: Click any material card to view comprehensive information
-  - Detailed print settings (nozzle temp, bed temp, speeds, fan)
+  - Detailed print settings (nozzle temp, bed temp, speeds, fan, retraction)
   - Complete mechanical properties with visual indicators
   - FEA-ready properties for engineering simulations
+  - Thermal properties for dimensional accuracy calculations
+  - Long-term performance data for functional parts
   - Material characteristics with color-coded status
   - Performance visualizations with progress bars
   
-- **Nozzle Compatibility Filter** 🆕: Select your nozzle type to filter compatible materials
+- **Nozzle Compatibility Filter**: Select your nozzle type to filter compatible materials
   - Brass (Standard) - for non-abrasive materials
   - Hardened Steel - for all materials including carbon fiber
   - Ruby Tipped - premium option for abrasive filaments
