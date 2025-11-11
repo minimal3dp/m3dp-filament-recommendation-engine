@@ -41,6 +41,34 @@
             border-radius: 50%;
             cursor: pointer;
         }
+
+        /* Modal styling */
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-content::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #4b5563;
+            border-radius: 4px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
     </style>
 </head>
 
@@ -50,7 +78,10 @@
 
         <!-- Header -->
         <header class="mb-8">
-            <h1 class="text-4xl font-bold text-white mb-2">FDM Filament Finder</h1>
+            <div class="flex items-center justify-between mb-2">
+                <h1 class="text-4xl font-bold text-white">FDM Filament Finder</h1>
+                <span class="text-sm font-medium text-gray-400 bg-gray-800 px-3 py-1 rounded-full">v1.1.0</span>
+            </div>
             <p class="text-lg text-gray-300">Select your desired properties to find the perfect material for your
                 project.</p>
         </header>
@@ -98,6 +129,20 @@
                                 class="form-checkbox h-5 w-5 text-blue-500 rounded bg-gray-700 border-gray-600 focus:ring-blue-600">
                             <span class="text-gray-200">Not Abrasive</span>
                         </label>
+                    </div>
+
+                    <!-- Nozzle Type Selection -->
+                    <div id="filter-nozzle" class="space-y-4 mb-6 pt-4 border-t border-gray-600">
+                        <h3 class="text-lg font-medium text-gray-100">Nozzle Type</h3>
+                        <p class="text-xs text-gray-400 mb-3">Select your nozzle type to filter compatible materials</p>
+                        <select id="nozzle-select" class="w-full bg-gray-700 border border-gray-600 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
+                            <option value="all">All Nozzles</option>
+                            <option value="brass">Brass (Standard)</option>
+                            <option value="hardened-steel">Hardened Steel</option>
+                            <option value="ruby">Ruby Tipped</option>
+                            <option value="stainless-steel">Stainless Steel</option>
+                        </select>
+                        <div id="nozzle-info" class="text-xs text-gray-400 mt-2 p-2 bg-gray-700 rounded hidden"></div>
                     </div>
 
                     <!-- Range Sliders -->
@@ -170,6 +215,135 @@
                 </div>
             </main>
         </div>
+
+        <!-- Footer / Reference Section -->
+        <footer class="mt-16 pt-8 border-t border-gray-700">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <!-- About Section -->
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-3">About This Tool</h3>
+                    <p class="text-sm text-gray-400 mb-3">
+                        An intelligent material selection assistant for FDM 3D printing, helping you choose the right filament based on your project requirements.
+                    </p>
+                    <p class="text-xs text-gray-500">
+                        Built with comprehensive data from technical data sheets, engineering handbooks, and real-world testing.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-3">Documentation</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li>
+                            <a href="README.md" class="hover:text-blue-400 transition-colors flex items-center">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                README - User Guide
+                            </a>
+                        </li>
+                        <li>
+                            <a href="CHANGELOG.md" class="hover:text-blue-400 transition-colors flex items-center">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                </svg>
+                                Changelog - Version History
+                            </a>
+                        </li>
+                        <li>
+                            <a href="TODO.md" class="hover:text-blue-400 transition-colors flex items-center">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                                </svg>
+                                Roadmap - Future Features
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/minimal3dp/m3dp-filament-recommendation-engine" target="_blank" class="hover:text-blue-400 transition-colors flex items-center">
+                                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                </svg>
+                                GitHub Repository
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Data Sources & Credits -->
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-3">Data Sources</h3>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li class="flex items-start">
+                            <span class="mr-2 mt-0.5">📊</span>
+                            <span><strong>Material Database:</strong> 28 FDM materials with 26+ properties each</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="mr-2 mt-0.5">📄</span>
+                            <span><strong>Technical Data Sheets:</strong> Manufacturer specifications and test data</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="mr-2 mt-0.5">🔬</span>
+                            <span><strong>Engineering References:</strong> Material science handbooks and standards</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="mr-2 mt-0.5">🛠️</span>
+                            <span><strong>Nozzle Guide:</strong> Compatibility testing and wear characteristics</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="mr-2 mt-0.5">🖨️</span>
+                            <span><strong>Printer Report 2024-2025:</strong> Hardware capabilities database</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="pt-6 border-t border-gray-800 text-center text-sm text-gray-500">
+                <p class="mb-2">
+                    <strong class="text-gray-400">FDM Filament Recommendation Engine</strong> 
+                    <span class="mx-2">•</span> 
+                    Version 1.1.0
+                    <span class="mx-2">•</span>
+                    November 2025
+                </p>
+                <p class="text-xs mb-2">
+                    Built for the 3D printing community to make material selection more accessible and data-driven.
+                    <span class="mx-2">•</span>
+                    <a href="https://github.com/minimal3dp/m3dp-filament-recommendation-engine/blob/main/LICENSE" target="_blank" class="hover:text-gray-400 transition-colors">MIT License</a>
+                </p>
+                <p class="text-xs">
+                    <a href="https://minimal3dp.com" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:text-blue-400 transition-colors font-medium">
+                        minimal3dp.com
+                    </a>
+                    <span class="mx-2 text-gray-600">•</span>
+                    <span class="text-gray-600">A Minimal3DP Project</span>
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Material Detail Modal -->
+    <div id="material-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <div class="modal-backdrop absolute inset-0" onclick="closeMaterialModal()"></div>
+        <div class="modal-content relative bg-gray-800 rounded-2xl shadow-2xl max-w-4xl w-full z-10">
+            <div class="sticky top-0 bg-gray-800 border-b border-gray-700 p-6 rounded-t-2xl">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h2 id="modal-title" class="text-3xl font-bold text-white mb-2"></h2>
+                        <span id="modal-cluster" class="text-sm font-semibold px-3 py-1 rounded-full"></span>
+                    </div>
+                    <button onclick="closeMaterialModal()" class="text-gray-400 hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="modal-body" class="p-6 space-y-6">
+                <!-- Content will be dynamically populated -->
+            </div>
+        </div>
     </div>
 
     <script>
@@ -201,6 +375,79 @@ PEKK,High-Temp,105,31.5,3205,9.5,247,1,10,true,true,false,true,false,5,true,fals
 ULTEM 1010,High-Temp,110,33,3300,3.6,215,1,10,true,true,false,true,false,5,false,false,500,1.27,360,390,120,140,false,,,
 ULTEM 9085,High-Temp,85,25.5,2150,3.6,165,2,10,true,true,false,true,false,5,false,false,450,1.27,350,380,120,140,false,,,
 `;
+
+        // Additional material data from materials.json
+        const materialsDetailData = {
+            "PLA (Standard)": {
+                "common": {"nozzle_temperature": 210, "bed_temperature": 60, "print_speed": 60, "fan_speed": 100},
+                "fea": {"Material_Youngs_Modulus_GPa": 3.5, "Material_Tensile_Yield_Strenght_MPa": 50, "Material_Poissons_Ratio": 0.36},
+                "properties": {"tensile_strength_MPa": 65.0, "tensile_modulus_MPa": 2850.0, "elongation_at_break_pct": 7.0, "HDT_C": 56.0, "impact_strength_kJ_m2": 6.5}
+            },
+            "ABS": {
+                "common": {"nozzle_temperature": 235, "bed_temperature": 95, "print_speed": 60, "fan_speed": 0},
+                "fea": {"Material_Youngs_Modulus_GPa": 2.2, "Material_Tensile_Yield_Strenght_MPa": 35, "Material_Poissons_Ratio": 0.35},
+                "properties": {"tensile_strength_MPa": 43.0, "tensile_modulus_MPa": 2100.0, "elongation_at_break_pct": 17.5, "HDT_C": 93.5, "impact_strength_kJ_m2": 24.5}
+            },
+            "PETG (Standard)": {
+                "common": {"nozzle_temperature": 240, "bed_temperature": 75, "print_speed": 50, "fan_speed": 50},
+                "fea": {"Material_Youngs_Modulus_GPa": 2.1, "Material_Tensile_Yield_Strenght_MPa": 45, "Material_Poissons_Ratio": 0.37},
+                "properties": {"tensile_strength_MPa": 49.0, "tensile_modulus_MPa": 1912.5, "elongation_at_break_pct": 77.5, "HDT_C": 74.5, "impact_strength_kJ_m2": 10.5}
+            },
+            "Nylon PA6": {
+                "common": {"nozzle_temperature": 250, "bed_temperature": 80, "print_speed": 40, "fan_speed": 20},
+                "fea": {"Material_Youngs_Modulus_GPa": 1.7, "Material_Tensile_Yield_Strenght_MPa": 60, "Material_Poissons_Ratio": 0.4}
+            },
+            "PC (Polycarbonate)": {
+                "common": {"nozzle_temperature": 280, "bed_temperature": 110, "print_speed": 30, "fan_speed": 0},
+                "fea": {"Material_Youngs_Modulus_GPa": 2.4, "Material_Tensile_Yield_Strenght_MPa": 65, "Material_Poissons_Ratio": 0.38}
+            },
+            "TPU (Flexible)": {
+                "common": {"nozzle_temperature": 225, "bed_temperature": 50, "print_speed": 20, "fan_speed": 100},
+                "fea": {"Material_Youngs_Modulus_GPa": 0.1, "Material_Tensile_Yield_Strenght_MPa": 30, "Material_Poissons_Ratio": 0.49}
+            },
+            "ASA": {
+                "common": {"nozzle_temperature": 250, "bed_temperature": 100, "print_speed": 55, "fan_speed": 30},
+                "properties": {"tensile_strength_MPa": 49.5, "tensile_modulus_MPa": 2150.0, "elongation_at_break_pct": 17.5, "HDT_C": 95.0, "impact_strength_kJ_m2": 41.0}
+            },
+            "ULTEM 9085": {
+                "properties": {"tensile_strength_MPa": 66.0, "tensile_modulus_MPa": 2465.0, "elongation_at_break_pct": 3.65, "HDT_C": 165.0, "Tg_C": 177.0}
+            },
+            "PEKK": {
+                "properties": {"tensile_strength_MPa": 105.0, "tensile_modulus_MPa": 3205.0, "elongation_at_break_pct": 9.5, "HDT_C": 247.0, "Tg_C": 162.0}
+            },
+            "PEEK": {
+                "properties": {"tensile_strength_MPa": 101.0, "tensile_modulus_MPa": 3720.0, "elongation_at_break_pct": 27.0, "HDT_C": 216.5, "Tg_C": 143.0}
+            }
+        };
+
+        // Nozzle compatibility data
+        const nozzleInfo = {
+            "brass": {
+                name: "Brass (Standard)",
+                description: "Standard nozzle suitable for non-abrasive materials like PLA, PETG, ABS, TPU. Not recommended for materials containing fibers or particles.",
+                compatible: (material) => !material.Requires_Hardened_Nozzle
+            },
+            "hardened-steel": {
+                name: "Hardened Steel",
+                description: "Durable nozzle suitable for all materials including abrasive filaments with carbon fiber, glass fiber, wood, or metal particles.",
+                compatible: (material) => true
+            },
+            "ruby": {
+                name: "Ruby Tipped",
+                description: "Premium nozzle with exceptional wear resistance. Ideal for long-term printing with abrasive materials.",
+                compatible: (material) => true
+            },
+            "stainless-steel": {
+                name: "Stainless Steel",
+                description: "Food-safe nozzle option. Suitable for non-abrasive materials. Required when printing food-contact items.",
+                compatible: (material) => !material.Requires_Hardened_Nozzle
+            },
+            "all": {
+                name: "All Nozzles",
+                description: "Showing all materials regardless of nozzle compatibility",
+                compatible: (material) => true
+            }
+        };
 
         // --- GLOBAL STATE ---
         let allMaterials = [];
@@ -305,10 +552,199 @@ ULTEM 9085,High-Temp,85,25.5,2150,3.6,165,2,10,true,true,false,true,false,5,fals
                         ${!material.Requires_Enclosure ? '<span class="inline-block bg-green-800 text-green-100 px-2 py-0.5 rounded">No Enclosure</span>' : ''}
                         ${material.Requires_Hardened_Nozzle ? '<span class="inline-block bg-red-800 text-red-100 px-2 py-0.5 rounded">Abrasive</span>' : ''}
                     </div>
+                    <button class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                        View Details
+                    </button>
                 `;
+                
+                // Add click handler for the card
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', () => openMaterialModal(material));
+                
                 resultsContainer.appendChild(card);
             });
         }
+
+        // --- MODAL FUNCTIONS ---
+
+        /**
+         * Opens the material detail modal with comprehensive information
+         */
+        function openMaterialModal(material) {
+            const modal = document.getElementById('material-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalCluster = document.getElementById('modal-cluster');
+            const modalBody = document.getElementById('modal-body');
+
+            // Set title and cluster
+            modalTitle.textContent = material.Material;
+            modalCluster.textContent = material.Cluster;
+            
+            // Set cluster color
+            let clusterColor = 'bg-gray-600';
+            if (material.Cluster === 'Engineering') clusterColor = 'bg-blue-600';
+            if (material.Cluster === 'Standard') clusterColor = 'bg-green-600';
+            if (material.Cluster === 'Composite') clusterColor = 'bg-indigo-600';
+            if (material.Cluster === 'Functional') clusterColor = 'bg-yellow-600';
+            if (material.Cluster === 'High-Temp') clusterColor = 'bg-red-600';
+            if (material.Cluster === 'Flexible') clusterColor = 'bg-pink-600';
+            modalCluster.className = `text-sm font-semibold px-3 py-1 rounded-full ${clusterColor} text-white`;
+
+            // Get additional data if available
+            const additionalData = materialsDetailData[material.Material] || {};
+
+            // Build modal content
+            let modalContent = '';
+
+            // Print Settings Section
+            if (additionalData.common) {
+                modalContent += `
+                    <div class="bg-gray-700 rounded-lg p-5">
+                        <h3 class="text-xl font-bold text-white mb-4 flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            Recommended Print Settings
+                        </h3>
+                        <div class="grid grid-cols-2 gap-4 text-sm text-gray-300">
+                            <div><strong>Nozzle Temp:</strong> ${additionalData.common.nozzle_temperature || material.Nozzle_Temp_C_Min + '-' + material.Nozzle_Temp_C_Max}°C</div>
+                            <div><strong>Bed Temp:</strong> ${additionalData.common.bed_temperature || material.Bed_Temp_C_Min + '-' + material.Bed_Temp_C_Max}°C</div>
+                            <div><strong>Print Speed:</strong> ${additionalData.common.print_speed || 'Varies'} mm/s</div>
+                            <div><strong>Fan Speed:</strong> ${additionalData.common.fan_speed !== null && additionalData.common.fan_speed !== undefined ? additionalData.common.fan_speed + '%' : 'Varies'}</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Fallback to CSV data
+                modalContent += `
+                    <div class="bg-gray-700 rounded-lg p-5">
+                        <h3 class="text-xl font-bold text-white mb-4">Temperature Ranges</h3>
+                        <div class="grid grid-cols-2 gap-4 text-sm text-gray-300">
+                            <div><strong>Nozzle Temp:</strong> ${material.Nozzle_Temp_C_Min}-${material.Nozzle_Temp_C_Max}°C</div>
+                            <div><strong>Bed Temp:</strong> ${material.Bed_Temp_C_Min}-${material.Bed_Temp_C_Max}°C</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Mechanical Properties Section
+            modalContent += `
+                <div class="bg-gray-700 rounded-lg p-5">
+                    <h3 class="text-xl font-bold text-white mb-4">Mechanical Properties</h3>
+                    <div class="grid grid-cols-2 gap-4 text-sm text-gray-300">
+                        <div><strong>Strength (XY):</strong> ${material.Strength_XY_MPa} MPa</div>
+                        <div><strong>Strength (Z):</strong> ${material.Strength_Z_MPa} MPa</div>
+                        <div><strong>Stiffness (Modulus):</strong> ${material.Stiffness_Modulus_MPa} MPa</div>
+                        <div><strong>Toughness (Impact):</strong> ${material.Toughness_Impact_kJ_m2} kJ/m²</div>
+                        <div><strong>Heat Resistance (HDT):</strong> ${material.Heat_Resistance_HDT_C}°C</div>
+                        <div><strong>Density:</strong> ${material.Density_g_cm3} g/cm³</div>
+                        ${material.Annealable_for_HDT ? `
+                            <div class="col-span-2 mt-2 p-3 bg-yellow-900/30 border border-yellow-700 rounded">
+                                <strong class="text-yellow-300">Annealable:</strong>
+                                <div class="mt-1">After annealing: Strength ${material.Strength_XY_MPa_Annealed} MPa, HDT ${material.Heat_Resistance_HDT_Annealed_C}°C</div>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+
+            // FEA Properties (if available)
+            if (additionalData.fea) {
+                modalContent += `
+                    <div class="bg-gray-700 rounded-lg p-5">
+                        <h3 class="text-xl font-bold text-white mb-4">FEA Properties</h3>
+                        <div class="grid grid-cols-2 gap-4 text-sm text-gray-300">
+                            <div><strong>Young's Modulus:</strong> ${additionalData.fea.Material_Youngs_Modulus_GPa} GPa</div>
+                            <div><strong>Tensile Yield Strength:</strong> ${additionalData.fea.Material_Tensile_Yield_Strenght_MPa} MPa</div>
+                            <div><strong>Poisson's Ratio:</strong> ${additionalData.fea.Material_Poissons_Ratio}</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Material Characteristics
+            modalContent += `
+                <div class="bg-gray-700 rounded-lg p-5">
+                    <h3 class="text-xl font-bold text-white mb-4">Material Characteristics</h3>
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                        <div class="flex items-center ${material.UV_Resistant ? 'text-green-400' : 'text-red-400'}">
+                            <span class="mr-2">${material.UV_Resistant ? '✓' : '✗'}</span> UV Resistant
+                        </div>
+                        <div class="flex items-center ${!material.Hygroscopic ? 'text-green-400' : 'text-yellow-400'}">
+                            <span class="mr-2">${!material.Hygroscopic ? '✓' : '⚠'}</span> ${material.Hygroscopic ? 'Hygroscopic (needs drying)' : 'Low Moisture Absorption'}
+                        </div>
+                        <div class="flex items-center ${!material.Prone_to_Creep ? 'text-green-400' : 'text-yellow-400'}">
+                            <span class="mr-2">${!material.Prone_to_Creep ? '✓' : '⚠'}</span> ${material.Prone_to_Creep ? 'Prone to Creep' : 'Creep Resistant'}
+                        </div>
+                        <div class="flex items-center ${!material.Requires_Enclosure ? 'text-green-400' : 'text-yellow-400'}">
+                            <span class="mr-2">${!material.Requires_Enclosure ? '✓' : '⚠'}</span> ${material.Requires_Enclosure ? 'Requires Enclosure' : 'No Enclosure Needed'}
+                        </div>
+                        <div class="flex items-center ${!material.Releases_Fumes ? 'text-green-400' : 'text-red-400'}">
+                            <span class="mr-2">${!material.Releases_Fumes ? '✓' : '⚠'}</span> ${material.Releases_Fumes ? 'Releases Fumes' : 'Low/No Fumes'}
+                        </div>
+                        <div class="flex items-center ${!material.Requires_Hardened_Nozzle ? 'text-green-400' : 'text-yellow-400'}">
+                            <span class="mr-2">${!material.Requires_Hardened_Nozzle ? '✓' : '⚠'}</span> ${material.Requires_Hardened_Nozzle ? 'Requires Hardened Nozzle' : 'Standard Nozzle OK'}
+                        </div>
+                        <div class="flex items-center text-gray-300">
+                            <span class="mr-2">📊</span> Chemical Resistance: ${material.Chemical_Resistance_Score}/5
+                        </div>
+                        <div class="flex items-center text-gray-300">
+                            <span class="mr-2">💰</span> Price: ~$${material.Price_USD_per_kg}/kg
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Performance Scores
+            modalContent += `
+                <div class="bg-gray-700 rounded-lg p-5">
+                    <h3 class="text-xl font-bold text-white mb-4">Performance Scores</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Printability</span>
+                                <span class="font-bold">${material.Printability_Score}/10</span>
+                            </div>
+                            <div class="w-full bg-gray-600 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: ${material.Printability_Score * 10}%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Cost Score (Higher = Cheaper)</span>
+                                <span class="font-bold">${material.Cost_Score}/10</span>
+                            </div>
+                            <div class="w-full bg-gray-600 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: ${material.Cost_Score * 10}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            modalBody.innerHTML = modalContent;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        /**
+         * Closes the material detail modal
+         */
+        function closeMaterialModal() {
+            const modal = document.getElementById('material-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeMaterialModal();
+            }
+        });
 
         // --- FILTERING LOGIC ---
 
@@ -335,6 +771,19 @@ ULTEM 9085,High-Temp,85,25.5,2150,3.6,165,2,10,true,true,false,true,false,5,fals
                 document.getElementById(`val-${slider.id.split('-')[1]}`).textContent = slider.value;
             });
 
+            // Get nozzle filter
+            const nozzleSelect = document.getElementById('nozzle-select');
+            const selectedNozzle = nozzleSelect.value;
+            const nozzleInfoEl = document.getElementById('nozzle-info');
+            
+            // Show nozzle info
+            if (selectedNozzle !== 'all') {
+                nozzleInfoEl.textContent = nozzleInfo[selectedNozzle].description;
+                nozzleInfoEl.classList.remove('hidden');
+            } else {
+                nozzleInfoEl.classList.add('hidden');
+            }
+
             // 2. Apply filters
             let filteredMaterials = allMaterials.filter(material => {
                 // Checkbox logic (all must match)
@@ -350,6 +799,9 @@ ULTEM 9085,High-Temp,85,25.5,2150,3.6,165,2,10,true,true,false,true,false,5,fals
                 if (material.Strength_XY_MPa < currentFilters.sliders.Strength_XY_MPa) return false;
                 if (material.Heat_Resistance_HDT_C < currentFilters.sliders.Heat_Resistance_HDT_C) return false;
                 if (material.Cost_Score > currentFilters.sliders.Cost_Score) return false; // Cost is max, not min
+
+                // Nozzle compatibility filter
+                if (!nozzleInfo[selectedNozzle].compatible(material)) return false;
 
                 return true;
             });
@@ -375,6 +827,10 @@ ULTEM 9085,High-Temp,85,25.5,2150,3.6,165,2,10,true,true,false,true,false,5,fals
             inputs.forEach(input => {
                 input.addEventListener('input', filterAndRender);
             });
+
+            // Add event listener to nozzle select
+            const nozzleSelect = document.getElementById('nozzle-select');
+            nozzleSelect.addEventListener('change', filterAndRender);
 
             // Initial render with all materials
             filterAndRender();
