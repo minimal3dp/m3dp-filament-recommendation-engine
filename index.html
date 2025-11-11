@@ -811,7 +811,7 @@ ULTEM 9085,High-Temp,85,25.5,2150,3.6,165,2,10,true,true,false,true,false,5,fals
                             Export Print Profile
                         </h3>
                         <p class="text-sm text-gray-400 mb-4">Download optimized print profiles for your slicer software</p>
-                        <div class="grid grid-cols-3 gap-3">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                             <button onclick="exportCuraProfile('${material.Material}', ${JSON.stringify(additionalData).replace(/"/g, '&quot;')})" 
                                     class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -825,6 +825,13 @@ ULTEM 9085,High-Temp,85,25.5,2150,3.6,165,2,10,true,true,false,true,false,5,fals
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
                                 </svg>
                                 PrusaSlicer
+                            </button>
+                            <button onclick="exportOrcaProfile('${material.Material}', ${JSON.stringify(additionalData).replace(/"/g, '&quot;')})" 
+                                    class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+                                </svg>
+                                OrcaSlicer
                             </button>
                             <button onclick="exportSimplify3DProfile('${material.Material}', ${JSON.stringify(additionalData).replace(/"/g, '&quot;')})" 
                                     class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center">
@@ -1033,6 +1040,44 @@ fill_density = 20%
 `;
 
             downloadFile(profile, `${material}_prusa_profile.ini`, 'text/plain');
+        }
+
+        /**
+         * Export OrcaSlicer profile (.json format)
+         */
+        function exportOrcaProfile(materialName, data) {
+            const common = data.common;
+            const material = materialName.replace(/[^a-zA-Z0-9]/g, '_');
+            
+            const profileData = {
+                "name": materialName,
+                "from": "User",
+                "version": "1.9.0.0",
+                "filament_type": [materialName.split(' ')[0]],
+                "instantiation": "true",
+                "inherits": "",
+                "temperature": [common.nozzle_temperature.toString()],
+                "bed_temperature": [common.bed_temperature.toString()],
+                "fan_min_speed": [Math.max(0, common.fan_speed - 20).toString()],
+                "fan_max_speed": [common.fan_speed.toString()],
+                "fan_always_on": [common.fan_speed > 0 ? "1" : "0"],
+                "retract_length": [common.retraction_distance_mm ? common.retraction_distance_mm.toString() : "5"],
+                "retract_speed": [common.retraction_speed_mm_s ? common.retraction_speed_mm_s.toString() : "45"],
+                "deretract_speed": [common.retraction_speed_mm_s ? (common.retraction_speed_mm_s * 0.8).toString() : "40"],
+                "outer_wall_speed": [common.print_speed.toString()],
+                "inner_wall_speed": [(common.print_speed * 1.2).toString()],
+                "sparse_infill_speed": [common.print_speed.toString()],
+                "initial_layer_speed": [common.first_layer_speed_pct ? (common.print_speed * common.first_layer_speed_pct / 100).toString() : (common.print_speed * 0.5).toString()],
+                "initial_layer_print_height": ["0.2"],
+                "layer_height": ["0.2"],
+                "sparse_infill_density": ["20%"],
+                "wall_loops": ["2"],
+                "top_shell_layers": ["4"],
+                "bottom_shell_layers": ["3"]
+            };
+            
+            const profile = JSON.stringify(profileData, null, 2);
+            downloadFile(profile, `${material}_orca_profile.json`, 'application/json');
         }
 
         /**
