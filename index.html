@@ -92,7 +92,34 @@
             <!-- Filters Column -->
             <aside class="w-full lg:w-1/3 xl:w-1/4">
                 <div class="sticky top-8 bg-gray-800 p-6 rounded-2xl shadow-lg">
-                    <h2 class="text-2xl font-semibold text-white mb-6 border-b border-gray-600 pb-3">Filters</h2>
+                    <div class="flex justify-between items-center mb-6 border-b border-gray-600 pb-3">
+                        <h2 class="text-2xl font-semibold text-white">Filters</h2>
+                        <button id="reset-filters-btn" onclick="resetAllFilters()" class="text-sm px-3 py-1 bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white rounded-lg transition-colors flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                            </svg>
+                            Reset
+                        </button>
+                    </div>
+
+                    <!-- Filter Presets -->
+                    <div class="space-y-3 mb-6 pb-6 border-b border-gray-600">
+                        <h3 class="text-lg font-medium text-gray-100">Quick Presets</h3>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="applyPreset('beginner')" class="text-xs px-3 py-2 bg-green-700 hover:bg-green-600 text-white rounded-lg transition-colors">
+                                🌱 Beginner
+                            </button>
+                            <button onclick="applyPreset('outdoor')" class="text-xs px-3 py-2 bg-yellow-700 hover:bg-yellow-600 text-white rounded-lg transition-colors">
+                                ☀️ Outdoor
+                            </button>
+                            <button onclick="applyPreset('engineering')" class="text-xs px-3 py-2 bg-blue-700 hover:bg-blue-600 text-white rounded-lg transition-colors">
+                                🔧 Engineering
+                            </button>
+                            <button onclick="applyPreset('flexible')" class="text-xs px-3 py-2 bg-pink-700 hover:bg-pink-600 text-white rounded-lg transition-colors">
+                                🔄 Flexible
+                            </button>
+                        </div>
+                    </div>
 
                     <!-- Boolean Checkboxes -->
                     <div id="filter-checkboxes" class="space-y-4 mb-6">
@@ -156,9 +183,13 @@
                                 <span class="cursor-help">Printability ⓘ</span>
                                 <span id="val-printability" class="font-bold">1</span>
                             </label>
-                            <input type="range" id="filter-printability" data-key="Printability_Score" min="1" max="10"
-                                value="1" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-                                title="Filter for materials with this printability rating or higher">
+                            <div class="flex gap-2 items-center">
+                                <input type="range" id="filter-printability" data-key="Printability_Score" min="1" max="10"
+                                    value="1" class="flex-grow h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                                    title="Filter for materials with this printability rating or higher">
+                                <input type="number" id="input-printability" min="1" max="10" value="1"
+                                    class="w-16 px-2 py-1 text-sm bg-gray-700 border border-gray-600 rounded text-gray-100 text-center focus:ring-blue-500 focus:border-blue-500">
+                            </div>
                         </div>
 
                         <div>
@@ -168,9 +199,13 @@
                                 <span class="cursor-help">Strength (XY MPa) ⓘ</span>
                                 <span id="val-strength" class="font-bold">0</span>
                             </label>
-                            <input type="range" id="filter-strength" data-key="Strength_XY_MPa" min="0" max="150"
-                                value="0" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-                                title="Filter for materials with this strength or higher. Typical values: PLA ~65 MPa, PETG ~50 MPa, Nylon ~75 MPa">
+                            <div class="flex gap-2 items-center">
+                                <input type="range" id="filter-strength" data-key="Strength_XY_MPa" min="0" max="150"
+                                    value="0" class="flex-grow h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                                    title="Filter for materials with this strength or higher. Typical values: PLA ~65 MPa, PETG ~50 MPa, Nylon ~75 MPa">
+                                <input type="number" id="input-strength" min="0" max="150" value="0"
+                                    class="w-16 px-2 py-1 text-sm bg-gray-700 border border-gray-600 rounded text-gray-100 text-center focus:ring-blue-500 focus:border-blue-500">
+                            </div>
                         </div>
 
                         <div>
@@ -180,9 +215,23 @@
                                 <span class="cursor-help">Heat Resistance (HDT °C) ⓘ</span>
                                 <span id="val-heat" class="font-bold">0</span>
                             </label>
-                            <input type="range" id="filter-heat" data-key="Heat_Resistance_HDT_C" min="0" max="250"
-                                value="0" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-                                title="Filter for materials that can withstand this temperature or higher. Examples: PLA ~56°C, PETG ~70°C, ABS ~87°C, PC ~113°C">
+                            <div class="flex gap-2 items-center">
+                                <input type="range" id="filter-heat" data-key="Heat_Resistance_HDT_C" min="0" max="250"
+                                    value="0" class="flex-grow h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                                    title="Filter for materials that can withstand this temperature or higher. Examples: PLA ~56°C, PETG ~70°C, ABS ~87°C, PC ~113°C">
+                                <input type="number" id="input-heat" min="0" max="250" value="0"
+                                    class="w-16 px-2 py-1 text-sm bg-gray-700 border border-gray-600 rounded text-gray-100 text-center focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div class="mt-1 flex flex-wrap gap-1">
+                                <button onclick="snapToValue('heat', 0)" class="px-2 py-0.5 text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 rounded">0°</button>
+                                <button onclick="snapToValue('heat', 50)" class="px-2 py-0.5 text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 rounded">50°</button>
+                                <button onclick="snapToValue('heat', 60)" class="px-2 py-0.5 text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 rounded">60°</button>
+                                <button onclick="snapToValue('heat', 70)" class="px-2 py-0.5 text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 rounded">70°</button>
+                                <button onclick="snapToValue('heat', 80)" class="px-2 py-0.5 text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 rounded">80°</button>
+                                <button onclick="snapToValue('heat', 100)" class="px-2 py-0.5 text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 rounded">100°</button>
+                                <button onclick="snapToValue('heat', 150)" class="px-2 py-0.5 text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 rounded">150°</button>
+                                <button onclick="snapToValue('heat', 200)" class="px-2 py-0.5 text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 rounded">200°</button>
+                            </div>
                         </div>
 
                         <div>
@@ -192,9 +241,13 @@
                                 <span class="cursor-help">Max Cost Score ⓘ</span>
                                 <span id="val-cost" class="font-bold">10</span>
                             </label>
-                            <input type="range" id="filter-cost" data-key="Cost_Score" min="1" max="10" value="10"
-                                class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-                                title="Filter for materials at or below this cost level. 10 = budget-friendly, 1 = premium materials">
+                            <div class="flex gap-2 items-center">
+                                <input type="range" id="filter-cost" data-key="Cost_Score" min="1" max="10" value="10"
+                                    class="flex-grow h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                                    title="Filter for materials at or below this cost level. 10 = budget-friendly, 1 = premium materials">
+                                <input type="number" id="input-cost" min="1" max="10" value="10"
+                                    class="w-16 px-2 py-1 text-sm bg-gray-700 border border-gray-600 rounded text-gray-100 text-center focus:ring-blue-500 focus:border-blue-500">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -202,9 +255,22 @@
 
             <!-- Results Column -->
             <main class="w-full lg:w-2/3 xl:w-3/4">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-2xl font-semibold text-white">Recommended Materials</h2>
-                    <span id="results-count" class="text-lg text-gray-400 font-medium"></span>
+                <div class="mb-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-semibold text-white">Recommended Materials</h2>
+                        <span id="results-count" class="text-lg text-gray-400 font-medium"></span>
+                    </div>
+                    
+                    <!-- Search Bar -->
+                    <div class="relative mb-4">
+                        <input type="text" id="material-search" placeholder="Search materials by name or category..." 
+                               class="w-full bg-gray-800 border border-gray-700 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 pl-10 p-3">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
                 <div id="results-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                     <!-- Results will be injected here by JavaScript -->
@@ -907,8 +973,20 @@ ULTEM 9085,High-Temp,85,25.5,2150,3.6,165,2,10,true,true,false,true,false,5,fals
                 nozzleInfoEl.classList.add('hidden');
             }
 
+            // Get search query
+            const searchInput = document.getElementById('material-search');
+            const searchQuery = searchInput.value.toLowerCase().trim();
+
             // 2. Apply filters
             let filteredMaterials = allMaterials.filter(material => {
+                // Search filter (fuzzy match on material name and cluster)
+                if (searchQuery) {
+                    const materialName = material.Material.toLowerCase();
+                    const cluster = material.Cluster.toLowerCase();
+                    if (!materialName.includes(searchQuery) && !cluster.includes(searchQuery)) {
+                        return false;
+                    }
+                }
                 // Checkbox logic (all must match)
                 for (const key in currentFilters.checkboxes) {
                     if (material[key] !== currentFilters.checkboxes[key]) {
@@ -946,16 +1024,172 @@ ULTEM 9085,High-Temp,85,25.5,2150,3.6,165,2,10,true,true,false,true,false,5,fals
             allMaterials.sort((a, b) => b.Printability_Score - a.Printability_Score);
 
             // Add event listeners to all filter inputs
-            const inputs = document.querySelectorAll('#filter-checkboxes input, #filter-sliders input');
+            const inputs = document.querySelectorAll('#filter-checkboxes input, #filter-sliders input[type="range"]');
             inputs.forEach(input => {
                 input.addEventListener('input', filterAndRender);
+            });
+
+            // Add two-way binding for slider inputs
+            const sliderPairs = [
+                { slider: 'filter-printability', input: 'input-printability', name: 'printability' },
+                { slider: 'filter-strength', input: 'input-strength', name: 'strength' },
+                { slider: 'filter-heat', input: 'input-heat', name: 'heat' },
+                { slider: 'filter-cost', input: 'input-cost', name: 'cost' }
+            ];
+
+            sliderPairs.forEach(pair => {
+                const slider = document.getElementById(pair.slider);
+                const input = document.getElementById(pair.input);
+                
+                // When slider moves, update input field
+                slider.addEventListener('input', () => syncInputToSlider(pair.name));
+                
+                // When input changes, update slider
+                input.addEventListener('input', () => syncSliderToInput(pair.name));
+                input.addEventListener('blur', () => syncSliderToInput(pair.name));
             });
 
             // Add event listener to nozzle select
             const nozzleSelect = document.getElementById('nozzle-select');
             nozzleSelect.addEventListener('change', filterAndRender);
 
+            // Add event listener to search input
+            const searchInput = document.getElementById('material-search');
+            searchInput.addEventListener('input', filterAndRender);
+
             // Initial render with all materials
+            filterAndRender();
+        }
+
+        // --- FILTER UI FUNCTIONS ---
+
+        /**
+         * Reset all filters to default state
+         */
+        function resetAllFilters() {
+            // Uncheck all checkboxes
+            document.querySelectorAll('#filter-checkboxes input[type="checkbox"]').forEach(cb => {
+                cb.checked = false;
+            });
+
+            // Reset all sliders to default values
+            document.getElementById('filter-printability').value = 1;
+            document.getElementById('filter-strength').value = 0;
+            document.getElementById('filter-heat').value = 0;
+            document.getElementById('filter-cost').value = 10;
+
+            // Reset all input fields to match sliders
+            document.getElementById('input-printability').value = 1;
+            document.getElementById('input-strength').value = 0;
+            document.getElementById('input-heat').value = 0;
+            document.getElementById('input-cost').value = 10;
+
+            // Reset nozzle filter
+            document.getElementById('nozzle-select').value = 'all';
+
+            // Clear search
+            document.getElementById('material-search').value = '';
+
+            // Re-render
+            filterAndRender();
+        }
+
+        /**
+         * Snap a slider to a specific common value
+         */
+        function snapToValue(filterName, value) {
+            const slider = document.getElementById(`filter-${filterName}`);
+            const input = document.getElementById(`input-${filterName}`);
+            slider.value = value;
+            input.value = value;
+            filterAndRender();
+        }
+
+        /**
+         * Sync slider with input field (two-way binding)
+         */
+        function syncSliderToInput(filterName) {
+            const slider = document.getElementById(`filter-${filterName}`);
+            const input = document.getElementById(`input-${filterName}`);
+            
+            // Ensure value is within bounds
+            let value = parseInt(input.value);
+            if (isNaN(value)) value = parseInt(slider.min);
+            value = Math.max(parseInt(slider.min), Math.min(parseInt(slider.max), value));
+            
+            slider.value = value;
+            input.value = value;
+            filterAndRender();
+        }
+
+        /**
+         * Sync input field with slider (two-way binding)
+         */
+        function syncInputToSlider(filterName) {
+            const slider = document.getElementById(`filter-${filterName}`);
+            const input = document.getElementById(`input-${filterName}`);
+            input.value = slider.value;
+        }
+
+        /**
+         * Apply preset filter configurations
+         */
+        function applyPreset(presetName) {
+            // First reset all filters
+            resetAllFilters();
+
+            const presets = {
+                'beginner': {
+                    checkboxes: { 'filter-enclosure': true, 'filter-fumes': true },
+                    sliders: { 'filter-printability': 7, 'filter-cost': 6 }
+                },
+                'outdoor': {
+                    checkboxes: { 'filter-uv': true },
+                    sliders: { 'filter-printability': 5 }
+                },
+                'engineering': {
+                    // High strength and heat resistance
+                    // Removed moisture filter as Nylon is hygroscopic but still engineering grade
+                    sliders: { 'filter-strength': 50, 'filter-heat': 80 }
+                },
+                'flexible': {
+                    // Search for materials with "Flexible" in the name (TPU variants)
+                    search: 'Flexible'
+                }
+            };
+
+            const preset = presets[presetName];
+            if (!preset) return;
+
+            // Apply search query if specified
+            if (preset.search) {
+                const searchInput = document.getElementById('material-search');
+                searchInput.value = preset.search;
+            }
+
+            // Apply checkbox settings
+            if (preset.checkboxes) {
+                for (const [id, value] of Object.entries(preset.checkboxes)) {
+                    const checkbox = document.getElementById(id);
+                    if (checkbox) checkbox.checked = value;
+                }
+            }
+
+            // Apply slider settings
+            if (preset.sliders) {
+                for (const [id, value] of Object.entries(preset.sliders)) {
+                    const slider = document.getElementById(id);
+                    if (slider) {
+                        slider.value = value;
+                        // Also update corresponding input field
+                        const filterName = id.replace('filter-', '');
+                        const input = document.getElementById(`input-${filterName}`);
+                        if (input) input.value = value;
+                    }
+                }
+            }
+
+            // Re-render with new settings
             filterAndRender();
         }
 
