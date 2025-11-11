@@ -92,7 +92,34 @@
             <!-- Filters Column -->
             <aside class="w-full lg:w-1/3 xl:w-1/4">
                 <div class="sticky top-8 bg-gray-800 p-6 rounded-2xl shadow-lg">
-                    <h2 class="text-2xl font-semibold text-white mb-6 border-b border-gray-600 pb-3">Filters</h2>
+                    <div class="flex justify-between items-center mb-6 border-b border-gray-600 pb-3">
+                        <h2 class="text-2xl font-semibold text-white">Filters</h2>
+                        <button id="reset-filters-btn" onclick="resetAllFilters()" class="text-sm px-3 py-1 bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white rounded-lg transition-colors flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                            </svg>
+                            Reset
+                        </button>
+                    </div>
+
+                    <!-- Filter Presets -->
+                    <div class="space-y-3 mb-6 pb-6 border-b border-gray-600">
+                        <h3 class="text-lg font-medium text-gray-100">Quick Presets</h3>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="applyPreset('beginner')" class="text-xs px-3 py-2 bg-green-700 hover:bg-green-600 text-white rounded-lg transition-colors">
+                                🌱 Beginner
+                            </button>
+                            <button onclick="applyPreset('outdoor')" class="text-xs px-3 py-2 bg-yellow-700 hover:bg-yellow-600 text-white rounded-lg transition-colors">
+                                ☀️ Outdoor
+                            </button>
+                            <button onclick="applyPreset('engineering')" class="text-xs px-3 py-2 bg-blue-700 hover:bg-blue-600 text-white rounded-lg transition-colors">
+                                🔧 Engineering
+                            </button>
+                            <button onclick="applyPreset('flexible')" class="text-xs px-3 py-2 bg-pink-700 hover:bg-pink-600 text-white rounded-lg transition-colors">
+                                🔄 Flexible
+                            </button>
+                        </div>
+                    </div>
 
                     <!-- Boolean Checkboxes -->
                     <div id="filter-checkboxes" class="space-y-4 mb-6">
@@ -202,9 +229,22 @@
 
             <!-- Results Column -->
             <main class="w-full lg:w-2/3 xl:w-3/4">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-2xl font-semibold text-white">Recommended Materials</h2>
-                    <span id="results-count" class="text-lg text-gray-400 font-medium"></span>
+                <div class="mb-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-semibold text-white">Recommended Materials</h2>
+                        <span id="results-count" class="text-lg text-gray-400 font-medium"></span>
+                    </div>
+                    
+                    <!-- Search Bar -->
+                    <div class="relative mb-4">
+                        <input type="text" id="material-search" placeholder="Search materials by name or category..." 
+                               class="w-full bg-gray-800 border border-gray-700 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 pl-10 p-3">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
                 <div id="results-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                     <!-- Results will be injected here by JavaScript -->
@@ -907,8 +947,20 @@ ULTEM 9085,High-Temp,85,25.5,2150,3.6,165,2,10,true,true,false,true,false,5,fals
                 nozzleInfoEl.classList.add('hidden');
             }
 
+            // Get search query
+            const searchInput = document.getElementById('material-search');
+            const searchQuery = searchInput.value.toLowerCase().trim();
+
             // 2. Apply filters
             let filteredMaterials = allMaterials.filter(material => {
+                // Search filter (fuzzy match on material name and cluster)
+                if (searchQuery) {
+                    const materialName = material.Material.toLowerCase();
+                    const cluster = material.Cluster.toLowerCase();
+                    if (!materialName.includes(searchQuery) && !cluster.includes(searchQuery)) {
+                        return false;
+                    }
+                }
                 // Checkbox logic (all must match)
                 for (const key in currentFilters.checkboxes) {
                     if (material[key] !== currentFilters.checkboxes[key]) {
@@ -955,7 +1007,86 @@ ULTEM 9085,High-Temp,85,25.5,2150,3.6,165,2,10,true,true,false,true,false,5,fals
             const nozzleSelect = document.getElementById('nozzle-select');
             nozzleSelect.addEventListener('change', filterAndRender);
 
+            // Add event listener to search input
+            const searchInput = document.getElementById('material-search');
+            searchInput.addEventListener('input', filterAndRender);
+
             // Initial render with all materials
+            filterAndRender();
+        }
+
+        // --- FILTER UI FUNCTIONS ---
+
+        /**
+         * Reset all filters to default state
+         */
+        function resetAllFilters() {
+            // Uncheck all checkboxes
+            document.querySelectorAll('#filter-checkboxes input[type="checkbox"]').forEach(cb => {
+                cb.checked = false;
+            });
+
+            // Reset all sliders to default values
+            document.getElementById('filter-printability').value = 1;
+            document.getElementById('filter-strength').value = 0;
+            document.getElementById('filter-heat').value = 0;
+            document.getElementById('filter-cost').value = 10;
+
+            // Reset nozzle filter
+            document.getElementById('nozzle-select').value = 'all';
+
+            // Clear search
+            document.getElementById('material-search').value = '';
+
+            // Re-render
+            filterAndRender();
+        }
+
+        /**
+         * Apply preset filter configurations
+         */
+        function applyPreset(presetName) {
+            // First reset all filters
+            resetAllFilters();
+
+            const presets = {
+                'beginner': {
+                    checkboxes: { 'filter-enclosure': true, 'filter-fumes': true },
+                    sliders: { 'filter-printability': 7, 'filter-cost': 6 }
+                },
+                'outdoor': {
+                    checkboxes: { 'filter-uv': true },
+                    sliders: { 'filter-printability': 5 }
+                },
+                'engineering': {
+                    checkboxes: { 'filter-moisture': true },
+                    sliders: { 'filter-strength': 50, 'filter-heat': 80 }
+                },
+                'flexible': {
+                    sliders: { 'filter-strength': 0 }
+                }
+            };
+
+            const preset = presets[presetName];
+            if (!preset) return;
+
+            // Apply checkbox settings
+            if (preset.checkboxes) {
+                for (const [id, value] of Object.entries(preset.checkboxes)) {
+                    const checkbox = document.getElementById(id);
+                    if (checkbox) checkbox.checked = value;
+                }
+            }
+
+            // Apply slider settings
+            if (preset.sliders) {
+                for (const [id, value] of Object.entries(preset.sliders)) {
+                    const slider = document.getElementById(id);
+                    if (slider) slider.value = value;
+                }
+            }
+
+            // Re-render with new settings
             filterAndRender();
         }
 
