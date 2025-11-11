@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FDM Filament Finder</title>
+    <!-- 1. Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 2. Load Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* 3. Set base font and dark mode */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827;
+            /* bg-gray-900 */
+            color: #f3f4f6;
+            /* text-gray-100 */
+        }
+
+        /* Simple styling for range slider thumbs */
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #3b82f6;
+            /* bg-blue-500 */
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #3b82f6;
+            /* bg-blue-500 */
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <div class="container mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
+
+        <!-- Header -->
+        <header class="mb-8">
+            <h1 class="text-4xl font-bold text-white mb-2">FDM Filament Finder</h1>
+            <p class="text-lg text-gray-300">Select your desired properties to find the perfect material for your
+                project.</p>
+        </header>
+
+        <!-- Main Content: Filters + Results -->
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Filters Column -->
+            <aside class="w-full lg:w-1/3 xl:w-1/4">
+                <div class="sticky top-8 bg-gray-800 p-6 rounded-2xl shadow-lg">
+                    <h2 class="text-2xl font-semibold text-white mb-6 border-b border-gray-600 pb-3">Filters</h2>
+
+                    <!-- Boolean Checkboxes -->
+                    <div id="filter-checkboxes" class="space-y-4 mb-6">
+                        <h3 class="text-lg font-medium text-gray-100">Key Attributes</h3>
+                        <label class="flex items-center space-x-3 select-none cursor-pointer">
+                            <input type="checkbox" id="filter-uv" data-key="UV_Resistant" data-value="true"
+                                class="form-checkbox h-5 w-5 text-blue-500 rounded bg-gray-700 border-gray-600 focus:ring-blue-600">
+                            <span class="text-gray-200">UV Resistant</span>
+                        </label>
+                        <label class="flex items-center space-x-3 select-none cursor-pointer">
+                            <input type="checkbox" id="filter-moisture" data-key="Hygroscopic" data-value="false"
+                                class="form-checkbox h-5 w-5 text-blue-500 rounded bg-gray-700 border-gray-600 focus:ring-blue-600">
+                            <span class="text-gray-200">Low Moisture Sensitivity</span>
+                        </label>
+                        <label class="flex items-center space-x-3 select-none cursor-pointer">
+                            <input type="checkbox" id="filter-enclosure" data-key="Requires_Enclosure"
+                                data-value="false"
+                                class="form-checkbox h-5 w-5 text-blue-500 rounded bg-gray-700 border-gray-600 focus:ring-blue-600">
+                            <span class="text-gray-200">No Enclosure Required</span>
+                        </label>
+                        <label class="flex items-center space-x-3 select-none cursor-pointer">
+                            <input type="checkbox" id="filter-fumes" data-key="Releases_Fumes" data-value="false"
+                                class="form-checkbox h-5 w-5 text-blue-500 rounded bg-gray-700 border-gray-600 focus:ring-blue-600">
+                            <span class="text-gray-200">Low/No Fumes</span>
+                        </label>
+                        <label class="flex items-center space-x-3 select-none cursor-pointer">
+                            <input type="checkbox" id="filter-friction" data-key="Low_Friction" data-value="true"
+                                class="form-checkbox h-5 w-5 text-blue-500 rounded bg-gray-700 border-gray-600 focus:ring-blue-600">
+                            <span class="text-gray-200">Low Friction</span>
+                        </label>
+                        <label class="flex items-center space-x-3 select-none cursor-pointer">
+                            <input type="checkbox" id="filter-abrasive" data-key="Requires_Hardened_Nozzle"
+                                data-value="false"
+                                class="form-checkbox h-5 w-5 text-blue-500 rounded bg-gray-700 border-gray-600 focus:ring-blue-600">
+                            <span class="text-gray-200">Not Abrasive</span>
+                        </label>
+                    </div>
+
+                    <!-- Range Sliders -->
+                    <div id="filter-sliders" class="space-y-6">
+                        <h3 class="text-lg font-medium text-gray-100">Performance (Minimum)</h3>
+
+                        <div>
+                            <label for="filter-printability"
+                                class="flex justify-between text-sm font-medium text-gray-200 mb-1"
+                                title="How easy the material is to print. 10 = easiest (beginner-friendly), 1 = most difficult (requires expertise)">
+                                <span class="cursor-help">Printability ⓘ</span>
+                                <span id="val-printability" class="font-bold">1</span>
+                            </label>
+                            <input type="range" id="filter-printability" data-key="Printability_Score" min="1" max="10"
+                                value="1" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                                title="Filter for materials with this printability rating or higher">
+                        </div>
+
+                        <div>
+                            <label for="filter-strength"
+                                class="flex justify-between text-sm font-medium text-gray-200 mb-1"
+                                title="Tensile strength in the XY plane (along print layers). Higher values = stronger parts that resist breaking under tension">
+                                <span class="cursor-help">Strength (XY MPa) ⓘ</span>
+                                <span id="val-strength" class="font-bold">0</span>
+                            </label>
+                            <input type="range" id="filter-strength" data-key="Strength_XY_MPa" min="0" max="150"
+                                value="0" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                                title="Filter for materials with this strength or higher. Typical values: PLA ~65 MPa, PETG ~50 MPa, Nylon ~75 MPa">
+                        </div>
+
+                        <div>
+                            <label for="filter-heat"
+                                class="flex justify-between text-sm font-medium text-gray-200 mb-1"
+                                title="Heat Deflection Temperature - the temperature at which the material begins to deform under load. Higher values = better heat resistance">
+                                <span class="cursor-help">Heat Resistance (HDT °C) ⓘ</span>
+                                <span id="val-heat" class="font-bold">0</span>
+                            </label>
+                            <input type="range" id="filter-heat" data-key="Heat_Resistance_HDT_C" min="0" max="250"
+                                value="0" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                                title="Filter for materials that can withstand this temperature or higher. Examples: PLA ~56°C, PETG ~70°C, ABS ~87°C, PC ~113°C">
+                        </div>
+
+                        <div>
+                            <label for="filter-cost"
+                                class="flex justify-between text-sm font-medium text-gray-200 mb-1"
+                                title="Cost rating where 10 = least expensive, 1 = most expensive. This is a relative score, not actual price">
+                                <span class="cursor-help">Max Cost Score ⓘ</span>
+                                <span id="val-cost" class="font-bold">10</span>
+                            </label>
+                            <input type="range" id="filter-cost" data-key="Cost_Score" min="1" max="10" value="10"
+                                class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                                title="Filter for materials at or below this cost level. 10 = budget-friendly, 1 = premium materials">
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Results Column -->
+            <main class="w-full lg:w-2/3 xl:w-3/4">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-semibold text-white">Recommended Materials</h2>
+                    <span id="results-count" class="text-lg text-gray-400 font-medium"></span>
+                </div>
+                <div id="results-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <!-- Results will be injected here by JavaScript -->
+                </div>
+                <div id="no-results" class_A="hidden text-center text-gray-400 text-xl py-16">
+                    <p>No materials match your criteria.</p>
+                    <p class="text-base">Try adjusting your filters.</p>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA ---
+        // 4. Embed the CSV data directly into the JavaScript
+        // This avoids needing to host the file. For a real app, we'd fetch this.
+        const csvData = `Material,Cluster,Strength_XY_MPa,Strength_Z_MPa,Stiffness_Modulus_MPa,Toughness_Impact_kJ_m2,Heat_Resistance_HDT_C,Printability_Score,Cost_Score,UV_Resistant,Hygroscopic,Prone_to_Creep,Requires_Enclosure,Releases_Fumes,Chemical_Resistance_Score,Low_Friction,Annealable_for_HDT,Price_USD_per_kg,Density_g_cm3,Nozzle_Temp_C_Min,Nozzle_Temp_C_Max,Bed_Temp_C_Min,Bed_Temp_C_Max,Requires_Hardened_Nozzle,Strength_XY_MPa_Annealed,Strength_Z_MPa_Annealed,Heat_Resistance_HDT_Annealed_C
+PLA (Standard),Standard,65,29.3,2800,7,56,9,2,false,false,true,false,false,0,false,false,20,1.24,190,215,0,60,false,,,
+Tough PLA / PLA+,Engineering,65,29.3,2102,8.5,52,8,3,false,false,true,false,false,0,false,false,24,1.24,200,225,50,60,false,,,
+HTPLA (Annealable),Standard,60,27,2800,7,58,9,4,false,false,false,false,false,0,false,true,28,1.24,210,230,50,60,false,70,30,140
+ABS,Standard,45,20.3,1800,25,87,6,3,false,true,true,true,true,3,false,false,22,1.04,230,260,95,110,false,,,
+ASA,Engineering,43,19.4,1700,18,85,6,5,true,true,true,true,true,3,false,false,35,1.07,240,260,95,110,false,,,
+PETG (Standard),Standard,50,22.5,1900,8.1,70,8,4,false,true,true,false,false,4,false,false,23,1.27,230,250,70,85,false,,,
+PETG-CF (Carbon Fiber),Composite,80,24,6500,10,80,7,8,false,true,false,false,false,4,false,false,55,1.35,240,260,70,85,true,,,
+PC (Polycarbonate),Engineering,70,31.5,2300,30,113,3,7,true,true,false,true,true,5,false,false,45,1.20,270,300,105,115,false,,,
+PC-CF (Carbon Fiber),Composite,95,28.5,8000,13,125,4,9,true,true,false,true,true,5,false,false,65,1.23,280,310,105,115,true,,,
+Nylon PA6,Engineering,75,22.5,2500,35,90,4,6,false,true,false,true,true,5,true,false,50,1.14,250,270,90,110,false,,,
+Nylon PA12,Engineering,55,24.8,1700,40,95,5,7,false,true,false,true,true,5,true,false,60,1.01,250,270,90,110,false,,,
+Nylon PA-CF (Carbon Fiber),Composite,140,28,10000,15,160,5,9,false,true,false,true,true,5,true,false,80,1.15,260,290,90,110,true,,,
+TPU (Flexible),Flexible,38,17.1,300,60,60,4,6,false,true,false,false,false,3,false,false,40,1.21,215,230,30,50,false,,,
+PP (Polypropylene),Functional,35.1,18.7,660,49.1,64,1,5,false,false,false,true,false,3,true,false,40,0.90,230,250,85,105,false,,,
+PVA (Soluble Support),Functional,10,4.5,3860,2,60,2,9,false,true,true,false,false,0,false,false,90,1.23,190,210,45,60,false,,,
+PVB (IPA-Smoothable),Functional,45,13.5,2500,10,55,8,4,false,true,true,false,false,0,false,false,30,1.24,205,225,60,70,false,,,
+PLA - Wood-filled,Functional,26,11.7,2780,15.7,57,7,4,false,false,true,false,false,0,false,false,30,1.21,190,210,50,60,true,,,
+PLA - Metal-filled,Functional,34,15.3,2290,4,52,6,8,false,false,true,false,false,0,false,false,70,2.5,190,210,50,60,true,,,
+HIPS (Soluble Support),Functional,40,18,1900,10,80,6,3,false,true,false,true,true,1,false,false,25,1.07,220,240,95,110,false,,,
+PEEK,High-Temp,101,30.3,3720,27,216,1,10,true,true,false,true,false,5,true,false,700,1.32,380,410,120,140,false,,,
+PEKK,High-Temp,105,31.5,3205,9.5,247,1,10,true,true,false,true,false,5,true,false,650,1.28,370,400,120,140,false,,,
+ULTEM 1010,High-Temp,110,33,3300,3.6,215,1,10,true,true,false,true,false,5,false,false,500,1.27,360,390,120,140,false,,,
+ULTEM 9085,High-Temp,85,25.5,2150,3.6,165,2,10,true,true,false,true,false,5,false,false,450,1.27,350,380,120,140,false,,,
+`;
+
+        // --- GLOBAL STATE ---
+        let allMaterials = [];
+        const filters = {
+            checkboxes: [],
+            sliders: []
+        };
+
+        // --- DOM ELEMENTS ---
+        const resultsContainer = document.getElementById('results-container');
+        const noResultsEl = document.getElementById('no-results');
+        const resultsCountEl = document.getElementById('results-count');
+        const checkboxContainer = document.getElementById('filter-checkboxes');
+        const sliderContainer = document.getElementById('filter-sliders');
+
+        // --- UTILITY FUNCTIONS ---
+
+        /**
+         * Parses a raw CSV string into an array of objects.
+         * Automatically handles headers and coerces types (string, bool, number).
+         */
+        function parseCSV(data) {
+            const lines = data.trim().split('\n');
+            const headers = lines.shift().split(',').map(h => h.trim());
+
+            return lines.map(line => {
+                const values = line.split(',');
+                const obj = {};
+                headers.forEach((header, index) => {
+                    const val = values[index] ? values[index].trim() : '';
+                    obj[header] = coerceType(val);
+                });
+                return obj;
+            });
+        }
+
+        /**
+         * Coerces a string value to its likely type (boolean, number, or string).
+         */
+        function coerceType(val) {
+            if (val.toLowerCase() === 'true') return true;
+            if (val.toLowerCase() === 'false') return false;
+            const num = parseFloat(val);
+            if (!isNaN(num) && isFinite(val) && val.match(/^[\d.eE+-]+$/)) return num;
+            return val;
+        }
+
+        // --- RENDER FUNCTIONS ---
+
+        /**
+         * Renders an array of material objects into the results container.
+         */
+        function renderResults(materials) {
+            // Clear previous results
+            resultsContainer.innerHTML = '';
+
+            // Update count
+            resultsCountEl.textContent = `${materials.length} found`;
+
+            // Show/hide 'no results' message
+            if (materials.length === 0) {
+                noResultsEl.classList.remove('hidden');
+            } else {
+                noResultsEl.classList.add('hidden');
+            }
+
+            // Create and append a card for each material
+            materials.forEach(material => {
+                const card = document.createElement('div');
+                card.className = 'bg-gray-800 rounded-lg shadow-xl p-5 transform transition-all hover:scale-[1.02]';
+
+                // Determine cluster color
+                let clusterColor = 'bg-gray-600';
+                if (material.Cluster === 'Engineering') clusterColor = 'bg-blue-600';
+                if (material.Cluster === 'Standard') clusterColor = 'bg-green-600';
+                if (material.Cluster === 'Composite') clusterColor = 'bg-indigo-600';
+                if (material.Cluster === 'Functional') clusterColor = 'bg-yellow-600';
+                if (material.Cluster === 'High-Temp') clusterColor = 'bg-red-600';
+                if (material.Cluster === 'Flexible') clusterColor = 'bg-pink-600';
+
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="text-2xl font-bold text-white">${material.Material}</h3>
+                        <span class="text-xs font-semibold ${clusterColor} text-white px-2.5 py-1 rounded-full">${material.Cluster}</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-gray-300">
+                        <!-- Key Properties -->
+                        <div><strong>Printability:</strong> <span class="font-light">${material.Printability_Score}/10</span></div>
+                        <div><strong>Cost Score:</strong> <span class="font-light">${material.Cost_Score}/10</span></div>
+                        <div><strong>Strength (XY):</strong> <span class="font-light">${material.Strength_XY_MPa} MPa</span></div>
+                        <div><strong>Heat Resist (HDT):</strong> <span class="font-light">${material.Heat_Resistance_HDT_C} °C</span></div>
+                        <div><strong>Toughness:</strong> <span class="font-light">${material.Toughness_Impact_kJ_m2} kJ/m²</span></div>
+                        <div><strong>Stiffness:</strong> <span class="font-light">${material.Stiffness_Modulus_MPa} MPa</span></div>
+                    </div>
+                    
+                    <div class="border-t border-gray-700 mt-4 pt-3 text-xs text-gray-400 space-x-2">
+                        <!-- Badges for key boolean attributes -->
+                        ${material.UV_Resistant ? '<span class="inline-block bg-yellow-800 text-yellow-100 px-2 py-0.5 rounded">UV Resistant</span>' : ''}
+                        ${!material.Hygroscopic ? '<span class="inline-block bg-blue-800 text-blue-100 px-2 py-0.5 rounded">Low Moisture</span>' : ''}
+                        ${!material.Requires_Enclosure ? '<span class="inline-block bg-green-800 text-green-100 px-2 py-0.5 rounded">No Enclosure</span>' : ''}
+                        ${material.Requires_Hardened_Nozzle ? '<span class="inline-block bg-red-800 text-red-100 px-2 py-0.5 rounded">Abrasive</span>' : ''}
+                    </div>
+                `;
+                resultsContainer.appendChild(card);
+            });
+        }
+
+        // --- FILTERING LOGIC ---
+
+        /**
+         * Main function to filter materials based on current state and re-render.
+         */
+        function filterAndRender() {
+            // 1. Get current filter values
+            const currentFilters = {
+                checkboxes: {},
+                sliders: {}
+            };
+
+            document.querySelectorAll('#filter-checkboxes input[type="checkbox"]').forEach(cb => {
+                if (cb.checked) {
+                    currentFilters.checkboxes[cb.dataset.key] = coerceType(cb.dataset.value);
+                }
+            });
+
+            document.querySelectorAll('#filter-sliders input[type="range"]').forEach(slider => {
+                currentFilters.sliders[slider.dataset.key] = parseFloat(slider.value);
+
+                // Update slider value display
+                document.getElementById(`val-${slider.id.split('-')[1]}`).textContent = slider.value;
+            });
+
+            // 2. Apply filters
+            let filteredMaterials = allMaterials.filter(material => {
+                // Checkbox logic (all must match)
+                for (const key in currentFilters.checkboxes) {
+                    if (material[key] !== currentFilters.checkboxes[key]) {
+                        return false;
+                    }
+                }
+
+                // Slider logic (must be >= or <=)
+                // Note: Cost is inverted (lower score is better, so we filter for <=)
+                if (material.Printability_Score < currentFilters.sliders.Printability_Score) return false;
+                if (material.Strength_XY_MPa < currentFilters.sliders.Strength_XY_MPa) return false;
+                if (material.Heat_Resistance_HDT_C < currentFilters.sliders.Heat_Resistance_HDT_C) return false;
+                if (material.Cost_Score > currentFilters.sliders.Cost_Score) return false; // Cost is max, not min
+
+                return true;
+            });
+
+            // 3. Re-render the results
+            renderResults(filteredMaterials);
+        }
+
+        // --- INITIALIZATION ---
+
+        /**
+         * Runs when the page is loaded.
+         */
+        function initialize() {
+            // Parse the embedded CSV data
+            allMaterials = parseCSV(csvData);
+
+            // Sort by printability (descending) by default
+            allMaterials.sort((a, b) => b.Printability_Score - a.Printability_Score);
+
+            // Add event listeners to all filter inputs
+            const inputs = document.querySelectorAll('#filter-checkboxes input, #filter-sliders input');
+            inputs.forEach(input => {
+                input.addEventListener('input', filterAndRender);
+            });
+
+            // Initial render with all materials
+            filterAndRender();
+        }
+
+        // 5. Start the application
+        document.addEventListener('DOMContentLoaded', initialize);
+
+    </script>
+</body>
+
+</html>
