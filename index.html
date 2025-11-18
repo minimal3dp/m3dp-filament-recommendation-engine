@@ -341,7 +341,7 @@
                     <ul class="space-y-2 text-xs text-gray-400">
                         <li class="flex items-start">
                             <span class="mr-2 mt-0.5">📊</span>
-                            <span><strong>Material Database:</strong> 28 FDM materials with 26+ properties each</span>
+                            <span><strong>Material Database:</strong> 40 FDM materials with 26+ properties each</span>
                         </li>
                         <li class="flex items-start">
                             <span class="mr-2 mt-0.5">📄</span>
@@ -413,6 +413,28 @@
     </div>
 
     <script>
+        // Configure GA4 ID (overrideable before this script runs)
+        window.GA_MEASUREMENT_ID = window.GA_MEASUREMENT_ID || 'G-5NBZLK7ZND';
+        // --- ANALYTICS (GA4) ---
+        const GA_MEASUREMENT_ID = window.GA_MEASUREMENT_ID || '';
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = window.gtag || function(){ dataLayer.push(arguments); };
+
+        function loadGA() {
+            try {
+                if (!GA_MEASUREMENT_ID) { console.info('[GA4] Measurement ID not set. Set window.GA_MEASUREMENT_ID to enable analytics.'); return; }
+                if (document.getElementById('ga4-script')) return;
+                const s = document.createElement('script');
+                s.id = 'ga4-script';
+                s.async = true;
+                s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+                document.head.appendChild(s);
+                s.onload = () => {
+                    gtag('js', new Date());
+                    gtag('config', GA_MEASUREMENT_ID, { send_page_view: true });
+                };
+            } catch (e) { /* no-op */ }
+        }
         // --- DATA ---
         // 4. Embed the CSV data directly into the JavaScript
         // This avoids needing to host the file. For a real app, we'd fetch this.
@@ -565,6 +587,111 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
                 compatible: (material) => true
             }
         };
+
+        // --- AFFILIATE CONFIG & HELPERS ---
+        const affiliateConfig = {
+            enabled: true,
+            amazonTag: 'mwf064-20',
+            baseSearchUrl: 'https://www.amazon.com/s?k=',
+            ref: 'assoc_m3dp'
+        };
+
+        function makeAmazonSearchUrl(query) {
+            const q = encodeURIComponent(query);
+            const tag = affiliateConfig.amazonTag ? `&tag=${affiliateConfig.amazonTag}` : '';
+            const ref = affiliateConfig.ref ? `&ref=${affiliateConfig.ref}` : '';
+            return `${affiliateConfig.baseSearchUrl}${q}${tag}${ref}`;
+        }
+
+        function trackAffiliateClick(materialName, itemLabel) {
+            try {
+                if (window.gtag) {
+                    window.gtag('event', 'affiliate_click', {
+                        event_category: 'monetization',
+                        event_label: itemLabel,
+                        material: materialName,
+                        partner: 'amazon'
+                    });
+                }
+            } catch (_) { /* no-op */ }
+        }
+
+        function buildAffiliateSuggestions(material) {
+            const items = [];
+            // Always offer a direct filament search for this material
+            items.push({
+                label: `Buy ${material.Material} filament`,
+                query: `${material.Material} filament 1.75mm`
+            });
+
+            // Hygroscopic materials benefit from a filament dryer
+            if (material.Hygroscopic === true) {
+                items.push({ label: 'Filament dryer', query: 'filament dryer' });
+            }
+
+            // Abrasive materials benefit from hardened nozzles
+            if (material.Requires_Hardened_Nozzle === true) {
+                items.push({ label: 'Hardened steel nozzles (0.4mm)', query: 'hardened steel nozzle 0.4mm 1.75mm' });
+            }
+
+            // Fumes or enclosure-required → enclosure search
+            if (material.Requires_Enclosure === true || material.Releases_Fumes === true) {
+                items.push({ label: '3D printer enclosure', query: '3D printer enclosure' });
+            }
+
+            // Flexible materials (e.g., TPU) often benefit from direct drive
+            if (String(material.Cluster).toLowerCase().includes('flexible')) {
+                items.push({ label: 'Direct-drive extruder for TPU', query: 'direct drive extruder 3D printer TPU' });
+            }
+
+            // Keep UI compact: limit to 4 suggestions
+            return items.slice(0, 4);
+        }
+
+        function renderAffiliateSection(material) {
+            if (!affiliateConfig.enabled) return '';
+            const suggestions = buildAffiliateSuggestions(material);
+            if (!suggestions.length) return '';
+
+            const buttonsHtml = suggestions.map((s, idx) => {
+                const url = makeAmazonSearchUrl(s.query);
+                return `
+                    <a href="${url}" target="_blank" rel="nofollow sponsored noopener" onclick="trackAffiliateClick('${material.Material.replace(/'/g, "\'")}', '${s.label.replace(/'/g, "\'")}')"
+                       class="inline-flex items-center justify-center px-3 py-2 rounded-lg text-sm font-medium bg-gray-700 hover:bg-gray-600 text-gray-100 transition-colors">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                        ${s.label}
+                    </a>`;
+            }).join('');
+
+            return `
+                <div class="bg-gray-700 rounded-lg p-5">
+                    <h3 class="text-xl font-bold text-white mb-3 flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Recommended Gear (Affiliate)
+                    </h3>
+                    <p class="text-xs text-gray-400 mb-3">As an Amazon Associate, minimal3dp.com earns from qualifying purchases. These links help support this tool at no cost to you.</p>
+                    <div class="flex flex-wrap gap-2">
+                        ${buttonsHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        function trackCtaClick(target, materialName) {
+            try {
+                if (window.gtag) {
+                    window.gtag('event', 'cta_click', {
+                        event_category: 'engagement',
+                        event_label: target,
+                        material: materialName
+                    });
+                }
+            } catch (_) { /* no-op */ }
+        }
 
         // --- GLOBAL STATE ---
         let allMaterials = [];
@@ -891,6 +1018,9 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
                 </div>
             `;
 
+            // Affiliate Section (before export)
+            modalContent += renderAffiliateSection(material);
+
             // Export Print Profiles Section (if common settings available)
             if (additionalData.common && additionalData.common.nozzle_temperature) {
                 modalContent += `
@@ -936,6 +1066,32 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
                     </div>
                 `;
             }
+
+            // Modal footer CTAs (Support & Learn)
+            modalContent += `
+                <div class="bg-gray-700 rounded-lg p-5">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Support & Learn</h3>
+                            <p class="text-xs text-gray-400">Enjoying this tool? Support the project or watch helpful guides.</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <a href="https://ko-fi.com/minimal3dp?utm_source=app&utm_medium=modal&utm_campaign=filament_finder" target="_blank" rel="noopener noreferrer"
+                               onclick="trackCtaClick('kofi','${material.Material.replace(/'/g, "\\'")}')"
+                               class="inline-flex items-center justify-center px-3 py-2 rounded-lg text-sm font-medium bg-rose-700 hover:bg-rose-600 text-white transition-colors">
+                                <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h14a4 4 0 110 8h-2.1A5 5 0 0110 20H5a2 2 0 01-2-2V7zm10.5 4.5c0-1.38-1.12-2.5-2.5-2.5S8.5 10.12 8.5 11.5 9.62 14 11 14s2.5-1.12 2.5-2.5z"/></svg>
+                                Support on Ko‑fi
+                            </a>
+                            <a href="https://www.youtube.com/@minimal3dp?utm_source=app&utm_medium=modal&utm_campaign=filament_finder" target="_blank" rel="noopener noreferrer"
+                               onclick="trackCtaClick('youtube','${material.Material.replace(/'/g, "\\'")}')"
+                               class="inline-flex items-center justify-center px-3 py-2 rounded-lg text-sm font-medium bg-red-600 hover:bg-red-500 text-white transition-colors">
+                                <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2s-.2-1.6-.8-2.4c-.7-.8-1.5-.8-1.9-.9C17.6 2.5 12 2.5 12 2.5h0s-5.6 0-8.8.4c-.4 0-1.2.1-1.9.9-.6.8-.8 2.4-.8 2.4S0 8.1 0 10v1.9c0 1.9.2 3.8.2 3.8s.2 1.6.8 2.4c.7.8 1.6.8 2 1 1.5.1 6.8.4 9 .4 0 0 5.6 0 8.8-.4.4 0 1.2-.1 1.9-.9.6-.8.8-2.4.8-2.4s.2-1.9.2-3.8V10c0-1.9-.2-3.8-.2-3.8zM9.5 14.6V7.9l6.2 3.4-6.2 3.3z"/></svg>
+                                Watch on YouTube
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
 
             modalBody.innerHTML = modalContent;
             modal.classList.remove('hidden');
@@ -1398,6 +1554,8 @@ fill_density = 20%
 
         // 5. Start the application
         document.addEventListener('DOMContentLoaded', initialize);
+        // Defer GA load to idle time for performance
+        if (window.requestIdleCallback) { requestIdleCallback(loadGA); } else { setTimeout(loadGA, 0); }
 
     </script>
 </body>

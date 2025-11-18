@@ -164,6 +164,23 @@ The primary database currently used by the application. Contains:
 - **Vanilla JavaScript**: No framework dependencies, keeping it simple and fast
 - **CSV Data**: Embedded directly in the HTML for zero-dependency operation
 
+## Analytics (GA4)
+
+This tool uses Google Analytics 4 for basic, privacy-conscious usage metrics:
+
+- Configured ID: `G-5NBZLK7ZND`
+- Deferred load: GA4 loads after page idle to avoid blocking UI
+- Events tracked:
+  - `affiliate_click`: Amazon gear link clicks (material, label)
+  - `cta_click`: Ko‑fi and YouTube CTA clicks (material, target)
+- Where configured: see `index.html` — look for `window.GA_MEASUREMENT_ID`
+
+How to change or disable:
+
+- Change ID: Edit `index.html` and set `window.GA_MEASUREMENT_ID = 'YOUR_ID'`
+- Temporary override: Define `window.GA_MEASUREMENT_ID` via an inline script tag before the main script
+- Disable: Remove the GA loader block or set the ID to an empty string
+
 ## Browser Compatibility
 
 Works in all modern browsers:

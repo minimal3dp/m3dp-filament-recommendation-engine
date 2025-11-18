@@ -2,6 +2,8 @@
 
 This document tracks the development roadmap for the **FDM Filament Recommendation Engine**, progressing from the current v1.3.0 application toward a comprehensive expert-level recommendation system.
 
+**Brand Context:** This tool is part of the minimal3dp.com ecosystem (youtube.com/channel/UCM_8Mv-0S1LnnJpRJLjahaw, 5k+ subscribers). Development follows the "functional minimalism" philosophy: taking complex 3D printing topics and minimizing cognitive load through practical, utility-first tools. Target audience: "Ambitious Beginners" and "Intermediate Upgraders" ready to optimize their printing workflow.
+
 
 ## 📋 Table of Contents
 
@@ -98,12 +100,21 @@ This document tracks the development roadmap for the **FDM Filament Recommendati
     - [ ] Map extracted data to materialsDetailData enrichment or new CSV columns
     - [ ] Script approach: scripts/extract_tds.py following Python-first workflow pattern
 
-  - [ ] **Minimal3DP Brand Strategy Integration**
-    - [ ] Review MINIMAL3DP_APP_GUIDE.md and brand specification docs
-    - [ ] Consider tool suite positioning: main domain traffic, YouTube integration (5k+ subscribers)
-    - [ ] Amazon Associates monetization potential for filament/equipment recommendations
-    - [ ] Cross-link with Hugo main site where applicable
-    - [ ] Document brand voice and messaging conventions for future content updates
+  - [x] **Minimal3DP Brand Strategy Integration** *(Completed in v1.3)*
+    - [x] Reviewed MINIMAL3DP_APP_GUIDE.md and comprehensive brand specification
+    - [x] Documented in TODO: Tool suite positioning, YouTube integration strategy (5k+ subscribers)
+    - [x] Identified Amazon Associates monetization pattern (utility-based affiliate links, tag: mwf064-20)
+    - [x] Cross-linking strategy: Hugo shortcodes, ecosystem loop, video descriptions
+    - [x] Brand voice documented: "Detailed (And Boring)" thoroughness, "Ambitious Beginner" target audience
+    
+  - [ ] **Minimal3DP Ecosystem Integration (Next Steps)**
+    - [ ] Create companion YouTube video tutorial (material selection workflow, tool demo)
+    - [ ] Add tool link to minimal3dp channel description and pinned comments on relevant videos
+    - [ ] Integrate with Hugo main site at minimal3dp.com/tools/filament-recommendation-engine
+    - [ ] Add utility-based Amazon affiliate links for recommended filament spools per material
+    - [ ] Implement GA4 tracking for affiliate clicks, tool usage, material selections
+    - [ ] Create Discord channel for community support and feedback gathering
+    - [ ] Write blog post for minimal3dp.com/blog with embedded YouTube video using `{{< youtube >}}` shortcode
 
 ### 1.4 Improve Sorting & Display *(Planned for v1.4)*
 
@@ -206,9 +217,11 @@ This document tracks the development roadmap for the **FDM Filament Recommendati
 ### 2.2 Application Guardrails & Warnings
 
 - [ ] **Warning System Architecture**
-  - [ ] Create warning modal/toast component
+  - [ ] Create warning modal/toast component (follow m3dp "functional minimalism" design)
   - [ ] Define warning levels (Info, Caution, Critical)
-  - [ ] Track which warnings user has acknowledged
+  - [ ] Track which warnings user has acknowledged (localStorage)
+  - [ ] Style aligned with m3dp brand: Clear, direct, educational tone (not condescending)
+  - [ ] Include "Learn More" links to relevant minimal3dp.com blog posts or YouTube tutorials
   
 - [ ] **Anisotropy Warnings**
   - [ ] Trigger when: `Strength_XY_MPa > 100` or user filters for high strength
@@ -338,25 +351,55 @@ This document tracks the development roadmap for the **FDM Filament Recommendati
   - [ ] Implement versioning (track data updates over time)
   - [ ] Create admin interface for data updates
 
-### 3.3 Build & Deployment
+### 3.3 Build & Deployment (Aligned with m3dp Stack)
 
 - [ ] **Build Configuration**
   - [ ] Set up Vite, Webpack, or similar bundler
   - [ ] Configure TypeScript (if adopted)
   - [ ] Set up linting (ESLint) and formatting (Prettier)
   - [ ] Configure testing framework (Jest, Vitest, or Playwright)
+
+- [ ] **Deployment Strategy (m3dp Standard)**
+  - **PRIMARY OPTION: Hugo Integration at minimal3dp.com**
+    - [ ] Deploy as Hugo shortcode or static page at minimal3dp.com/tools/filament-recommendation-engine
+    - [ ] Embed tool using self-contained HTML/JS that can be dropped into Hugo page
+    - [ ] Benefits: Centralized SEO authority, all backlinks boost main domain, single brand identity
+    - [ ] Technology: Static HTML/JS with Tailwind CSS (aligns with current v1.x approach)
+  - **SECONDARY OPTION: Vercel Subdomain (if traffic justifies)**
+    - [ ] Deploy to filament.minimal3dp.com subdomain via Vercel (free tier)
+    - [ ] Connect GitHub repo for auto-deploy on push to main
+    - [ ] Configure custom domain with CNAME: cname.vercel-dns.com
+    - [ ] Auto HTTPS, Edge CDN, unlimited bandwidth (within fair use)
+    - [ ] Only use subdomain if tool becomes major standalone product (10k+ monthly users)
   
-- [ ] **Deployment Options**
-  - **Option A - GitHub Pages**: Free, simple, no backend
-    - [ ] Configure GitHub Actions for CI/CD
-    - [ ] Deploy static build on push to `main`
+- [ ] **Hugo Integration Workflow** *(Recommended)*
+  - [ ] Create Hugo page at content/tools/filament-recommendation-engine/_index.md
+  - [ ] Embed tool in shortcode: `{{< filament-tool >}}` or direct HTML inclusion
+  - [ ] Add to main site navigation menu (configured in hugo.toml)
+  - [ ] Cross-link from Klipper calibration pages and blog posts
+  - [ ] Include in "Tools" section of minimal3dp.com homepage
   
-  - **Option B - Vercel**: Optimized for frontend frameworks
-    - [ ] Connect GitHub repo
-    - [ ] Configure build settings
-    - [ ] Set up preview deployments for PRs
+- [ ] **SEO Optimization (m3dp Standards)**
+  - [ ] Optimize page title: "FDM Filament Material Selection Tool - minimal3dp | 40+ Materials"
+  - [ ] Meta description (150-160 chars): "Free tool to select optimal 3D printing filament. Compare 40+ materials by strength, heat resistance, printability, cost. PLA, PETG, ABS, Nylon, PEEK, and more."
+  - [ ] Add Schema.org structured data (WebApplication type)
+  - [ ] Create OG image (1200x630px): Tool name, key benefit ("40+ Materials"), branding
+  - [ ] Add FAQ section for rich snippets (5-10 common material selection questions)
+  - [ ] Submit sitemap to Google Search Console after deployment
   
-  - **Option C - Netlify**: Similar to Vercel, great DX
+- [ ] **Analytics & Tracking (m3dp Standards)**
+  - [ ] Implement Google Analytics 4 (GA4)
+    - Use Measurement ID from minimal3dp.com (if integrated) or create new property
+    - Track custom events: `material_selected`, `filter_applied`, `modal_opened`, `profile_exported`, `affiliate_click`
+  - [ ] Set up Google Search Console
+    - Add property, verify ownership, submit sitemap
+    - Monitor impressions, clicks, CTR, keyword rankings weekly
+  - [ ] Configure GA4 Goals
+    - Primary conversion: Tool usage (material selection completed)
+    - Secondary: Affiliate link clicks, profile exports, video plays (if embedded)
+  - [ ] Track performance metrics
+    - Page load time (goal: <2s), filter response time (goal: <100ms)
+    - Bounce rate (goal: <60%), session duration (goal: >2min)
     - [ ] Connect GitHub repo
     - [ ] Configure redirects and headers
     - [ ] Set up form handling (if needed for feedback)
@@ -500,33 +543,59 @@ This document tracks the development roadmap for the **FDM Filament Recommendati
 ### 5.2 Community Building
 
 - [ ] **Open Source**
-  - [ ] Choose license (MIT or GPL)
+  - [ ] Choose license (MIT recommended per m3dp brand standards)
   - [ ] Set up GitHub Issues and Discussions
   - [ ] Create contributing guidelines
   
 - [ ] **Community Channels**
-  - [ ] Discord or Slack community
-  - [ ] Reddit presence (/r/3Dprinting)
-  - [ ] YouTube channel (tutorials, material reviews)
+  - [x] **YouTube Channel Integration** *(Aligned with m3dp ecosystem)*
+    - Primary channel: youtube.com/channel/UCM_8Mv-0S1LnnJpRJLjahaw (5k+ subscribers)
+    - Create companion tutorial video for this tool (material selection guide)
+    - Cross-promote in video descriptions with direct tool link
+    - Use `{{< youtube "VIDEO_ID" >}}` shortcode for Hugo blog integration
+  - [ ] **Discord Community** *(Recommended by m3dp brand analysis)*
+    - Establish minimal3dp Discord server with channel for this tool
+    - Target "Ambitious Beginner" audience (per brand persona)
+    - Use as source for identifying high-friction user problems
+    - Integrate with Patreon for supporter perks (if applicable)
+  - [ ] **Reddit Presence**
+    - Share in r/3Dprinting, r/BambuLab, r/functionalprint
+    - Utility-based sharing (helpful, not spammy per brand voice)
   
 - [ ] **Outreach**
   - [ ] Partner with filament manufacturers for data
-  - [ ] Collaborate with 3D printing YouTubers and educators
+  - [ ] Collaborate with 3D printing YouTubers (including minimal3dp channel content)
   - [ ] Present at conferences (e.g., Maker Faire, TCT, RAPID)
 
-### 5.3 Monetization (Optional)
+### 5.3 Monetization (Aligned with m3dp Brand Strategy)
 
-- [ ] **Freemium Model**
-  - [ ] Free: Basic filtering and recommendations
-  - [ ] Pro: MCDM ranking, comparison mode, CAD integration, no ads
+- [ ] **Amazon Associates Integration** *(Primary Revenue Stream)*
+  - [ ] Implement utility-based affiliate links for materials
+    - Link to specific filament spools recommended per material (e.g., "eSUN PLA+", "Overture PETG")
+    - Use affiliate tag: `mwf064-20` (m3dp standard)
+    - **MANDATORY:** Include bolded disclosure: "** Links are Amazon Affiliate Links **"
+  - [ ] Create Hugo shortcode `{{< amazon-product "ASIN" >}}` for blog integration
+    - Auto-generates affiliate link with proper tracking
+    - Includes product card with rating, price, image
+    - Adds GA4 `affiliate_click` event tracking
+  - [ ] Add contextual product recommendations in modal
+    - After user selects material, show "Recommended Filaments" section
+    - Include 2-3 top-rated products per material from affiliate database
   
-- [ ] **Affiliate Revenue**
-  - [ ] Ethical affiliate links to filament suppliers
-  - [ ] Full transparency to users
+- [ ] **Direct Support (Ko-fi)** *(Secondary Channel)*
+  - [ ] Add Ko-fi link: ko-fi.com/minimal3dp
+  - [ ] Position as "tip jar" for one-time support
+  - [ ] Include in footer and header (subtle placement)
+  
+- [ ] **Recurring Support (Patreon - Future)**
+  - [ ] Consider Patreon integration for advanced features
+  - [ ] Potential tiers: "Supporter" ($2), "Pro Maker" ($5), "Ecosystem Developer" ($10)
+  - [ ] Perks: Early access, Discord role, private Q&A, behind-the-scenes
+  - [ ] Avoid paywalled content (keep open-source ethos)
   
 - [ ] **Sponsorships**
-  - [ ] Filament manufacturer sponsorships (clearly labeled)
-  - [ ] Patreon or GitHub Sponsors for sustainability
+  - [ ] Filament manufacturer partnerships (clearly labeled)
+  - [ ] Maintain editorial independence and transparency
 
 ### 5.4 Mobile App
 
@@ -560,19 +629,130 @@ This document tracks the development roadmap for the **FDM Filament Recommendati
 
 ---
 
-## 📊 Success Metrics
+## 📊 Success Metrics (m3dp-Aligned)
 
-- **User Adoption**: 1,000 monthly active users by Q2 2026
-- **Data Quality**: 100% of materials have complete TDS-verified data
-- **Community**: 50+ contributors to material database
-- **Expert System Accuracy**: 90%+ user satisfaction with recommendations (via surveys)
-- **Performance**: < 2 second load time, < 100ms filter response
+### Traffic & SEO Goals
+- **Month 1 Post-Launch:** 500-1,000 impressions in Google Search Console, indexed pages
+- **Month 3:** 5,000+ impressions, 250+ clicks, Page 2-3 ranking for "3d printing filament selector"
+- **Month 6:** 15,000+ impressions, 750+ clicks, Page 1 (top 10) for primary keywords
+- **Month 12:** 30,000+ impressions, 1,500+ clicks, Top 3 ranking for "filament comparison tool"
+
+### YouTube Integration Goals
+- **Launch:** Companion tutorial video published (10-15 min, "Detailed and Boring" style)
+- **Month 1:** 500+ YouTube referrals to tool, video embedded in minimal3dp.com blog post
+- **Month 3:** 2,000+ YouTube referrals, cross-promoted in related Klipper/OrcaSlicer videos
+- **Month 6:** 5,000+ YouTube referrals, tool linked in 10+ video descriptions
+
+### Revenue Goals (Amazon Associates)
+- **Month 1:** $10-20 (utility-based filament spool recommendations)
+- **Month 3:** $40-60 (affiliate links in material modals, blog post integration)
+- **Month 6:** $80-120 (optimized product recommendations, high-traffic keywords)
+- **Month 12:** $200-400 (scale with traffic, PA-API integration if needed)
+
+### Technical Performance
+- **Page Load:** < 2 seconds (Hugo static sites typically 90-100 PageSpeed score)
+- **Filter Response:** < 100ms
+- **Core Web Vitals:** All green (LCP < 2.5s, FID < 100ms, CLS < 0.1)
+
+### Community & Engagement
+- **Discord:** 50+ members in filament-tool channel by Month 6
+- **Data Quality:** 100% of 40 materials have verified properties
+- **Contributions:** 5+ GitHub issues/PRs from community feedback
+- **User Satisfaction:** 90%+ satisfaction (via embedded feedback widget or Discord surveys)
+
+---
+
+## 🎥 Content Creation Roadmap (m3dp Ecosystem Integration)
+
+### YouTube Content Strategy
+
+- [ ] **Primary Launch Video** (Priority: P0)
+  - **Title:** "Choosing the Right 3D Printing Filament Made Easy - Free Tool Walkthrough (2025)"
+  - **Duration:** 12-18 minutes (data shows long-form content drives highest watch time and revenue)
+  - **Structure:**
+    1. Problem: "Stop wasting money on wrong filament choices"
+    2. Solution: Demo of tool with real material selection scenarios
+    3. Process: Step-by-step walkthrough of filters, search, modal details, profile export
+  - **Key Points:**
+    - Show 40 materials database
+    - Demonstrate nozzle compatibility filter
+    - Export slicer profiles feature
+    - Compare PLA vs PETG vs ABS for functional parts
+  - **Links in Description:**
+    - Tool: minimal3dp.com/tools/filament-recommendation-engine
+    - Klipper Calibration: minimal3dp.com/klipper-calibration
+    - Utility-based Amazon affiliate links: "Filaments I use:" [eSUN PLA+, Overture PETG, etc.]
+    - **Mandatory disclosure:** "** Links are Amazon Affiliate Links **"
+  
+- [ ] **Follow-Up Content Series** (Target: 1 video per month)
+  - **Video 2:** "PLA vs PETG vs ABS: Which Filament Should You Use?" (comparison deep-dive)
+  - **Video 3:** "Engineering Filaments Explained: Nylon, PC, PEEK for Functional Parts"
+  - **Video 4:** "Flexible Filaments Guide: TPU 85A vs 95A Material Selection"
+  - **Video 5:** "Composite Filaments: Carbon Fiber PLA, PETG, Nylon Comparison"
+  
+- [ ] **Cross-Promotion in Existing Videos**
+  - Add YouTube cards to tool link at 30%, 60%, 90% timestamps in related videos
+  - Pin comment with tool link on: Klipper calibration videos, OrcaSlicer tutorials, material-specific content
+  - Update video descriptions with tool link in "🔧 FREE TOOLS" section
+
+### Blog Content Strategy (minimal3dp.com/blog)
+
+- [ ] **Primary Blog Post** (Launch Announcement)
+  - **Title:** "New Tool: FDM Filament Material Selection Engine - 40+ Materials Compared"
+  - **URL:** minimal3dp.com/blog/posts/filament-recommendation-engine-launch
+  - **Structure:**
+    - Intro: The problem (filament confusion, wasted money/time)
+    - Tool overview: 40 materials, 26 properties, filters, search, profiles
+    - Embed YouTube video: `{{< youtube "VIDEO_ID" >}}`
+    - Step-by-step usage guide (with screenshots)
+    - FAQs: "How do I choose between PLA and PETG?" etc.
+    - Amazon affiliate section: "Recommended Filament Spools" with `{{< amazon-product >}}` shortcodes
+  - **SEO Keywords:** "3d printing filament selector", "filament comparison tool", "best fdm filament", "pla vs petg comparison"
+  
+- [ ] **Supporting Blog Posts** (1 per month, align with videos)
+  - "The Complete Guide to 3D Printing Filament Materials"
+  - "Nylon Filaments for 3D Printing: PA6 vs PA12 vs PA11"
+  - "High-Temperature Filaments: When to Use PEEK, PEKK, ULTEM"
+  - "Filament Storage and Drying: Essential Guide for Hygroscopic Materials"
+
+### Medium Cross-Posting Strategy
+
+- [ ] **Cross-Post Blog Content to Medium** (48 hours after main site publish)
+  - Set canonical URL pointing to minimal3dp.com (avoid duplicate content penalty)
+  - Add intro: "Originally published at minimal3dp.com: [link]"
+  - Add footer CTA: Links to tool, YouTube channel, main site, Discord
+  - Tag with: "3D Printing", "Materials Science", "Addons", "Tools", "Manufacturing"
+  
+### Social Media Distribution
+
+- [ ] **Reddit Strategy**
+  - Share in r/3Dprinting, r/functionalprint, r/BambuLab with helpful, non-spammy posts
+  - Example: "I built a free tool to compare 40+ filament materials - Here's how it works [screenshots]"
+  - Engage with comments, provide technical support, gather feedback
+  
+- [ ] **Discord Integration**
+  - Create #filament-tool channel in minimal3dp Discord
+  - Announce launch with demo and Q&A session
+  - Use for user support, bug reports, feature requests
+  - Source for identifying high-friction problems for future content
+
+### Content Workflow (Per Release)
+
+1. **Week 1:** Plan video topic aligned with tool update or material focus
+2. **Week 2:** Film and edit video (12-18 min, "Detailed and Boring" style)
+3. **Week 3:** Write blog post with embedded video, screenshots, utility-based affiliate links
+4. **Week 4:** Publish video + blog post simultaneously
+   - Video description: Tool link, blog link, affiliate products, disclosure
+   - Blog post: Video embed, tool link, FAQs, Schema.org markup
+   - Pin YouTube comment with tool link
+   - Share on Reddit, Discord, Twitter
+5. **Week 5:** Cross-post to Medium (48 hours after main site for SEO)
 
 ---
 
 **Last Updated**: November 2025  
-**Version**: 1.0  
-**Maintainer**: M3DP Development Team
+**Version**: 1.3  
+**Maintainer**: M3DP Development Team (Mike Wilson)
 
 ---
 
