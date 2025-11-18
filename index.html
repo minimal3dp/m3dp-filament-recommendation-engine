@@ -996,6 +996,26 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
                 </div>
             `;
 
+            // Food Safety Warning/Info Box
+            if (material.Food_Safe === true) {
+                modalContent += `
+                    <div class="bg-yellow-900/80 border-l-4 border-yellow-400 rounded-lg p-5 mb-4">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-6 h-6 text-yellow-300 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z"/></svg>
+                            <span class="text-yellow-200 font-bold text-lg">Food Safety: Read Before Use</span>
+                        </div>
+                        <div class="text-yellow-100 text-sm mb-2">
+                            <strong>3D printed parts are rarely food safe out of the box.</strong> Even with food-safe filaments (like some PLA or PETG), bacteria can grow in layer lines, and brass nozzles may contain lead. For food contact, use a stainless steel nozzle, apply a food-safe epoxy coating, and clean thoroughly. Always check local regulations.
+                        </div>
+                        <div class="text-yellow-200 text-xs">
+                            <a href="https://help.prusa3d.com/article/food-safe-fdm-printing_112313" target="_blank" rel="noopener noreferrer" class="underline hover:text-yellow-300">Prusa: Food Safe FDM Printing</a> &bull;
+                            <a href="https://blog.prusa3d.com/how-to-make-food-grade-3d-printed-models_40666/" target="_blank" rel="noopener noreferrer" class="underline hover:text-yellow-300">How to Make Food Grade 3D Prints</a> &bull;
+                            <a href="https://ultimaker.com/learn/is-pla-food-safe-a-guide-to-food-safe-3d-printing-and-filaments/" target="_blank" rel="noopener noreferrer" class="underline hover:text-yellow-300">Ultimaker: Is PLA Food Safe?</a>
+                        </div>
+                    </div>
+                `;
+            }
+
             // Performance Scores
             modalContent += `
                 <div class="bg-gray-700 rounded-lg p-5">
