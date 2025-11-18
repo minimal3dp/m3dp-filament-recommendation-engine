@@ -38,6 +38,13 @@
         "kind": "build",
         "isDefault": false
       }
+    },
+    {
+      "label": "GitHub: Draft Release v1.4.0",
+      "type": "shell",
+      "command": "gh release create v1.4.0 --draft --title 'v1.4.0 — Annealing Features' -F VERSION_1.4_SUMMARY.md",
+      "problemMatcher": [],
+      "group": "none"
     }
   ]
 }
