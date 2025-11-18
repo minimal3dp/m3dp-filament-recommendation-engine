@@ -10,9 +10,7 @@ This application provides an intelligent, filterable database of FDM filament ma
 
 ## Features
 
-### Current Features (v1.3) 🆕
-
-### Current Features (v1.3) 🆕
+### Current Features (v1.4) 🆕
 
 - **Expanded Material Database** 🆕: 40 materials (up from 23), including:
   - PPSU, HIPS, PET, additional Nylon variants (PA6, PA12)
@@ -33,6 +31,14 @@ This application provides an intelligent, filterable database of FDM filament ma
   - **Simplify3D**: Export .fff XML profiles
   - Includes material-specific temperatures, speeds, retraction, and fan settings
   - Serves as a tested starting point for your prints
+
+- **Annealing Support** 🆕:
+  - **Show Annealed Properties Toggle**: Enable dual-mode to compare as-printed vs. annealed values
+  - **Dual Compare View**: Strength (XY) and HDT rows render both as‑printed and annealed values when enabled
+  - **Modal Annealing Guide**: Per‑material guide with suggested temperature, soak time, process steps, warnings, and references
+  - **Per‑Material Presets**: Manufacturer/family presets where available; smart fallbacks for PLA, PETG, Nylon, PC, PAEK
+  - **Header Hint Badge**: "Dual view: As‑Printed + Annealed" badge appears in Compare when dual mode is active
+  - **Preference Persistence**: Annealed toggle state is saved and restored automatically
 
 - **Interactive Material Details**: Click any material card to view comprehensive information
   - Detailed print settings (nozzle temp, bed temp, speeds, fan, retraction)
@@ -103,6 +109,9 @@ Each material includes **26 data points** covering mechanical properties, therma
      - **Strength** (0-150 MPa): Tensile strength in XY plane
      - **Heat Resistance** (0-250°C): Heat Deflection Temperature
      - **Max Cost Score** (1-10): Budget constraint (lower = more expensive)
+   - Optional: **Show Annealed Properties** (toggle in the header)
+     - When enabled, the Compare view shows both as‑printed and annealed rows for Strength (XY) and HDT
+     - Your preference is remembered between sessions
 
 3. **Review Results**
    - Recommended materials appear in real-time on the right
@@ -112,10 +121,12 @@ Each material includes **26 data points** covering mechanical properties, therma
      - Thermal characteristics
      - Quick-view badges for important attributes
    - Results are sorted by printability (easiest to print first)
+  - If annealed mode is on, a badge indicates dual view is active
 
 4. **Interpret the Data**
    - **Strength (XY)**: Tensile strength in the primary print direction
    - **Heat Resistance (HDT)**: Temperature at which the material begins to deform under load
+  - **Annealed Values**: Post‑processing properties after heat treatment (where available); expect dimensional change and potential warping
    - **Printability Score**: Subjective rating of printing difficulty (10 = easiest)
    - **Cost Score**: Relative cost (1 = most expensive, 10 = least expensive)
    - **Cluster Badges**: Color-coded material categories for quick identification
@@ -236,7 +247,7 @@ Built for the 3D printing community to make material selection more accessible a
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed version history and release notes.
 
-**Current Version**: 1.3.0  
-**Last Updated**: November 2025  
+**Current Version**: 1.4.0  
+**Last Updated**: November 17, 2025  
 **Branch**: main  
 **Author**: M3DP Development Team

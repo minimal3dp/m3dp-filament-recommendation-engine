@@ -116,36 +116,36 @@ This document tracks the development roadmap for the **FDM Filament Recommendati
     - [ ] Create Discord channel for community support and feedback gathering
     - [ ] Write blog post for minimal3dp.com/blog with embedded YouTube video using `{{< youtube >}}` shortcode
 
-### 1.4 Improve Sorting & Display *(Planned for v1.4)*
+### 1.4 Improve Sorting & Display *(In Progress / Partially Completed in v1.4)*
 
-  - [ ] Add dropdown menu above results: "Sort by..."
-  - [ ] Options:
+  - [x] Add dropdown menu above results: "Sort by..."
+  - [x] Options:
     - Printability (High to Low) - *default*
     - Strength (High to Low)
     - Heat Resistance (High to Low)
     - Cost (Low to High)
     - Material Name (A-Z)
-  - [ ] Persist sort preference in localStorage
+  - [x] Persist sort preference in localStorage
   
 - [ ] **View Toggles**
-  - [ ] Add compact/detailed card view toggle
-  - [ ] Add table view option (for comparing multiple materials side-by-side)
+  - [x] Add compact/detailed card view toggle
+  - [x] Add table view option (for comparing multiple materials side-by-side)
   
-  - [ ] Allow users to select 2-4 materials for direct comparison
-  - [ ] Display comparison in side-by-side or table format
-  - [ ] Highlight differences and trade-offs
+  - [x] Allow users to select 2-4 materials for direct comparison
+  - [x] Display comparison in side-by-side or table format
+  - [x] Highlight differences and trade-offs
 
-### 1.4 Handle Annealable Materials *(Moved to v1.4)*
+### 1.4 Handle Annealable Materials *(Partially Completed in v1.4)*
 
-  - [ ] Add filter checkbox: "Show Annealed Properties (where applicable)"
-  - [ ] When enabled, display annealed values for materials with `Annealable_for_HDT = true`
+  - [x] Add filter checkbox: "Show Annealed Properties (where applicable)"
+  - [x] When enabled, display annealed values for materials with `Annealable_for_HDT = true`
   
-- [ ] **Visual Indication**
-  - [ ] Add badge or icon to annealable materials
-  - [ ] Show both as-printed and annealed values in comparison view
+  - [ ] **Visual Indication**
+  - [x] Add badge or icon to annealable materials
+    - [x] Show both as-printed and annealed values in comparison view
   
-  - [ ] In material modal, add annealing instructions (time, temperature, process)
-  - [ ] Include warnings about dimensional changes and warping risks
+  - [x] In material modal, add annealing instructions (time, temperature, process)
+  - [x] Include warnings about dimensional changes and warping risks
 
 ### 1.5 Data Quality & Validation *(Moved to v1.4)*
 

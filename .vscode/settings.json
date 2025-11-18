@@ -1,0 +1,22 @@
+{
+  // Status bar button powered by the extension: fabiospampinato.vscode-statusbar-command
+  // Install it to see the button. These settings are inert without the extension.
+  "statusbarCommand.commands": [
+    {
+      "text": "$(cloud-upload) Vercel Preview",
+      "alignment": "right",
+      "priority": -1,
+      "tooltip": "Build + Deploy preview to Vercel",
+      "command": "workbench.action.tasks.runTask",
+      "arguments": "Vercel: Preview Build+Deploy"
+    },
+    {
+      "text": "$(cloud) Vercel Prod",
+      "alignment": "right",
+      "priority": -2,
+      "tooltip": "Deploy to Vercel production",
+      "command": "workbench.action.tasks.runTask",
+      "arguments": "Vercel: Deploy Production"
+    }
+  ]
+}
