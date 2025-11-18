@@ -172,6 +172,17 @@
                         <div id="nozzle-info" class="text-xs text-gray-400 mt-2 p-2 bg-gray-700 rounded hidden"></div>
                     </div>
 
+                    <!-- Display Options -->
+                    <div id="display-options" class="space-y-3 mb-6 pt-4 border-t border-gray-600">
+                        <h3 class="text-lg font-medium text-gray-100">Display Options</h3>
+                        <label class="flex items-center space-x-3 select-none cursor-pointer">
+                            <input type="checkbox" id="toggle-annealed"
+                                   class="form-checkbox h-5 w-5 text-blue-500 rounded bg-gray-700 border-gray-600 focus:ring-blue-600">
+                            <span class="text-gray-200">Show Annealed Properties (where available)</span>
+                        </label>
+                        <p class="text-xs text-gray-400">Uses annealed strength and HDT when available.</p>
+                    </div>
+
                     <!-- Range Sliders -->
                     <div id="filter-sliders" class="space-y-6">
                         <h3 class="text-lg font-medium text-gray-100">Performance (Minimum)</h3>
@@ -820,6 +831,19 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
         /**
          * Renders an array of material objects into the results container.
          */
+        // Helper: return annealed-aware values for select props
+        function getAnnealedAware(material, key) {
+            if (!window.__annealedMode) return material[key];
+            if (!material.Annealable_for_HDT) return material[key];
+            const map = {
+                'Strength_XY_MPa': 'Strength_XY_MPa_Annealed',
+                'Heat_Resistance_HDT_C': 'Heat_Resistance_HDT_Annealed_C'
+            };
+            const k = map[key];
+            if (k && material[k] !== undefined && material[k] !== null && material[k] !== '') return material[k];
+            return material[key];
+        }
+
         function renderResults(materials) {
             // Clear previous results
             resultsContainer.innerHTML = '';
@@ -854,11 +878,15 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
                 // Compare checkbox control (top-right)
                 const isChecked = selectedForCompare.includes(material.Material);
                 const compareToggleHtml = `
-                    <label class="absolute top-2 right-2 inline-flex items-center gap-1 text-[11px] text-gray-200 bg-gray-700/70 hover:bg-gray-700 px-2 pt-1 pb-3 rounded border border-gray-600 cursor-pointer select-none"
+                    <label class="absolute top-3 md:top-2 right-2 inline-flex items-center gap-0.5 sm:gap-1 text-[10px] sm:text-[11px] text-gray-200 bg-gray-700/70 hover:bg-gray-700 px-1.5 sm:px-2 pt-1 pb-3 rounded border border-gray-600 cursor-pointer select-none"
                            onclick="event.stopPropagation()">
                         <input type="checkbox" ${isChecked ? 'checked' : ''} class="accent-blue-500" data-compare="${material.Material.replace(/"/g, '&quot;')}">
                         <span>Compare</span>
                     </label>`;
+
+                // Precompute displayed values (annealed-aware)
+                const dispStrengthXY = getAnnealedAware(material, 'Strength_XY_MPa');
+                const dispHDT = getAnnealedAware(material, 'Heat_Resistance_HDT_C');
 
                 if (viewMode === 'compact') {
                     card.innerHTML = `
@@ -869,9 +897,10 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
                         </div>
                         <div class="flex flex-wrap gap-1 text-[11px] text-gray-200">
                             <span class="inline-flex items-center px-2 py-0.5 rounded bg-gray-700">P: ${material.Printability_Score}/10</span>
-                            <span class="inline-flex items-center px-2 py-0.5 rounded bg-gray-700">XY: ${material.Strength_XY_MPa} MPa</span>
-                            <span class="inline-flex items-center px-2 py-0.5 rounded bg-gray-700">HDT: ${material.Heat_Resistance_HDT_C}°C</span>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded bg-gray-700">XY: ${dispStrengthXY} MPa</span>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded bg-gray-700">HDT: ${dispHDT}°C</span>
                             <span class="inline-flex items-center px-2 py-0.5 rounded bg-gray-700">Cost: ${material.Cost_Score}/10</span>
+                            ${material.Annealable_for_HDT ? '<span class="inline-flex items-center px-2 py-0.5 rounded bg-amber-800 text-amber-100">Annealable</span>' : ''}
                         </div>
                     `;
                 } else {
@@ -886,18 +915,20 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
                             <!-- Key Properties -->
                             <div><strong>Printability:</strong> <span class="font-light">${material.Printability_Score}/10</span></div>
                             <div><strong>Cost Score:</strong> <span class="font-light">${material.Cost_Score}/10</span></div>
-                            <div><strong>Strength (XY):</strong> <span class="font-light">${material.Strength_XY_MPa} MPa</span></div>
-                            <div><strong>Heat Resist (HDT):</strong> <span class="font-light">${material.Heat_Resistance_HDT_C} °C</span></div>
+                            <div><strong>Strength (XY):</strong> <span class="font-light">${dispStrengthXY} MPa</span></div>
+                            <div><strong>Heat Resist (HDT):</strong> <span class="font-light">${dispHDT} °C</span></div>
                             <div><strong>Toughness:</strong> <span class="font-light">${material.Toughness_Impact_kJ_m2} kJ/m²</span></div>
                             <div><strong>Stiffness:</strong> <span class="font-light">${material.Stiffness_Modulus_MPa} MPa</span></div>
                         </div>
                         
-                        <div class="border-t border-gray-700 mt-4 pt-3 text-xs text-gray-400 space-x-2">
+                        <div class="border-t border-gray-700 mt-4 pt-3 text-xs text-gray-400 flex flex-wrap gap-2">
                             <!-- Badges for key boolean attributes -->
                             ${material.UV_Resistant ? '<span class="inline-block bg-yellow-800 text-yellow-100 px-2 py-0.5 rounded">UV Resistant</span>' : ''}
                             ${!material.Hygroscopic ? '<span class="inline-block bg-blue-800 text-blue-100 px-2 py-0.5 rounded">Low Moisture</span>' : ''}
                             ${!material.Requires_Enclosure ? '<span class="inline-block bg-green-800 text-green-100 px-2 py-0.5 rounded">No Enclosure</span>' : ''}
                             ${material.Requires_Hardened_Nozzle ? '<span class="inline-block bg-red-800 text-red-100 px-2 py-0.5 rounded">Abrasive</span>' : ''}
+                            ${material.Annealable_for_HDT ? '<span class="inline-block bg-amber-800 text-amber-100 px-2 py-0.5 rounded">Annealable</span>' : ''}
+                            ${window.__annealedMode && material.Annealable_for_HDT ? '<span class="inline-block bg-amber-700 text-white px-2 py-0.5 rounded">Annealed Mode</span>' : ''}
                         </div>
                         <button class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
                             View Details
@@ -1403,6 +1434,26 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
             const searchInput = document.getElementById('material-search');
             searchInput.addEventListener('input', filterAndRender);
 
+            // Annealed display toggle setup
+            const annealedToggle = document.getElementById('toggle-annealed');
+            try {
+                const savedAnnealed = localStorage.getItem('m3dp_annealedMode');
+                window.__annealedMode = savedAnnealed === 'true';
+            } catch (_) { window.__annealedMode = false; }
+            if (annealedToggle) {
+                annealedToggle.checked = !!window.__annealedMode;
+                annealedToggle.addEventListener('change', () => {
+                    window.__annealedMode = annealedToggle.checked;
+                    try { localStorage.setItem('m3dp_annealedMode', String(window.__annealedMode)); } catch (_) { /* no-op */ }
+                    filterAndRender();
+                    // If compare view is open, refresh it
+                    const compareView = document.getElementById('compare-view');
+                    if (compareView && !compareView.classList.contains('hidden')) {
+                        renderCompareTable();
+                    }
+                });
+            }
+
             // View mode setup
             try {
                 const savedView = localStorage.getItem('m3dp_viewMode');
@@ -1472,6 +1523,13 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
             if (view) view.classList.add('hidden');
         }
 
+        function getCompareValue(m, key) {
+            if (!window.__annealedMode || !m?.Annealable_for_HDT) return m[key];
+            if (key === 'Strength_XY_MPa') return (m.Strength_XY_MPa_Annealed ?? m[key]);
+            if (key === 'Heat_Resistance_HDT_C') return (m.Heat_Resistance_HDT_Annealed_C ?? m[key]);
+            return m[key];
+        }
+
         function renderCompareTable() {
             const body = document.getElementById('compare-table-body');
             if (!body) return;
@@ -1480,8 +1538,8 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
                 { key: 'Material', label: 'Material' },
                 { key: 'Cluster', label: 'Cluster' },
                 { key: 'Printability_Score', label: 'Printability (0-10)', higherBetter: true },
-                { key: 'Strength_XY_MPa', label: 'Strength XY (MPa)', higherBetter: true },
-                { key: 'Heat_Resistance_HDT_C', label: 'HDT (°C)', higherBetter: true },
+                { key: 'Strength_XY_MPa', label: (window.__annealedMode ? 'Strength XY (MPa) [Annealed]' : 'Strength XY (MPa)'), higherBetter: true },
+                { key: 'Heat_Resistance_HDT_C', label: (window.__annealedMode ? 'HDT (°C) [Annealed]' : 'HDT (°C)'), higherBetter: true },
                 { key: 'Cost_Score', label: 'Cost Score (1-10)', higherBetter: false },
                 { key: 'UV_Resistant', label: 'UV Resistant' },
                 { key: 'Hygroscopic', label: 'Hygroscopic' },
@@ -1493,7 +1551,7 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
             let html = '';
             columns.forEach(col => {
                 // collect values
-                const vals = selected.map(m => m[col.key]);
+                const vals = selected.map(m => getCompareValue(m, col.key));
                 let minIdx = -1, maxIdx = -1;
                 if (typeof vals[0] === 'number') {
                     let min = Infinity, max = -Infinity;
@@ -1506,10 +1564,13 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
                         let content = '';
                         if (!m) { content = ''; }
                         else if (typeof m[col.key] === 'boolean') { content = m[col.key] ? 'Yes' : 'No'; }
-                        else { content = (m[col.key] !== undefined && m[col.key] !== null) ? m[col.key] : ''; }
+                        else {
+                            const v = getCompareValue(m, col.key);
+                            content = (v !== undefined && v !== null) ? v : '';
+                        }
                         // highlight best values where applicable
                         let cls = 'px-4 py-2';
-                        if (typeof m?.[col.key] === 'number') {
+                        if (typeof getCompareValue(m, col.key) === 'number') {
                             if (col.higherBetter === true && i === maxIdx) cls += ' bg-green-900/40';
                             if (col.higherBetter === false && i === minIdx) cls += ' bg-green-900/40';
                         }
