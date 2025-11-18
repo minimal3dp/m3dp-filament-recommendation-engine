@@ -119,7 +119,7 @@ This document tracks the development roadmap for the **FDM Filament Recommendati
 ### 1.4 Improve Sorting & Display *(In Progress / Partially Completed in v1.4)*
 
   - [x] Add dropdown menu above results: "Sort by..."
-  - [ ] Options:
+  - [x] Options:
     - Printability (High to Low) - *default*
     - Strength (High to Low)
     - Heat Resistance (High to Low)
@@ -140,12 +140,12 @@ This document tracks the development roadmap for the **FDM Filament Recommendati
   - [x] Add filter checkbox: "Show Annealed Properties (where applicable)"
   - [x] When enabled, display annealed values for materials with `Annealable_for_HDT = true`
   
-- [ ] **Visual Indication**
+  - [ ] **Visual Indication**
   - [x] Add badge or icon to annealable materials
-  - [ ] Show both as-printed and annealed values in comparison view
+    - [x] Show both as-printed and annealed values in comparison view
   
-  - [ ] In material modal, add annealing instructions (time, temperature, process)
-  - [ ] Include warnings about dimensional changes and warping risks
+  - [x] In material modal, add annealing instructions (time, temperature, process)
+  - [x] Include warnings about dimensional changes and warping risks
 
 ### 1.5 Data Quality & Validation *(Moved to v1.4)*
 
