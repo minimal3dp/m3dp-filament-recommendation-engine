@@ -2,6 +2,8 @@
 
 A web-based tool to help users select the best Fused Deposition Modeling (FDM) 3D printing filament for their specific project needs.
 
+> For AI coding agents: see `.github/copilot-instructions.md` for repo-specific guidance, architecture notes, and workflow conventions.
+
 ## Overview
 
 This application provides an intelligent, filterable database of FDM filament materials, allowing users to quickly identify the optimal material based on their requirements. Users can filter by mechanical properties, environmental resistance, printability, cost, and more.
@@ -122,9 +124,11 @@ m3dp-filament-recommendation-engine/
 │   │   ├── material_db.csv    # Primary material database (embedded in index.html)
 │   │   └── materials.json     # Detailed properties (future integration)
 │   ├── processed/             # Processed/enriched data files
-│   └── sources/               # Original TDS and reference documents
+│   └── (sources planned)      # See tds/ for current TDS workflow
 └── research/                  # Research documents and references
 ```
+
+Note: The `data/sources` directory shown above is planned; see `tds/README.md` for the current TDS extraction workflow and conventions.
 
 ## Data Sources
 
@@ -207,7 +211,7 @@ Built for the 3D printing community to make material selection more accessible a
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed version history and release notes.
 
-**Current Version**: 1.1.0  
-**Last Updated**: November 10, 2025  
-**Branch**: version1.1  
+**Current Version**: 1.3.0  
+**Last Updated**: November 2025  
+**Branch**: main  
 **Author**: M3DP Development Team

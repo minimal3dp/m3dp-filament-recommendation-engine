@@ -550,3 +550,17 @@ This document tracks the development roadmap for the **FDM Filament Recommendati
 **Last Updated**: November 2025  
 **Version**: 1.0  
 **Maintainer**: M3DP Development Team
+
+---
+
+## 🧪 Quick QA: Inconsistencies & Small Fixes
+
+- `index.html` minor typo: `id="no-results"` div uses `class_A` instead of `class` — prevents the hidden state toggle from working.
+- Version strings inconsistent:
+  - Header badge shows `v1.3.0`.
+  - Footer shows `Version 1.1.0`.
+  - `README.md` lists Current Version `1.1.0` and branch `version1.1`.
+  - `CHANGELOG.md` documents `1.2.0` and `Unreleased` items. Pick a source of truth and align all.
+- Repo branch naming vs docs: Docs reference `version1.1` while the default/current branch is `main`. Update docs to reflect `main` unless release branches are in use.
+- `README.md` project structure references `data/sources/` (PDF/markdown) and scripts paths not yet present; clarify as future/planned and point to `tds/README.md`.
+- Footer links to local `README.md`/`CHANGELOG.md` are fine for local use; if deploying to a static host, consider absolute GitHub URLs.
