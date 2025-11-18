@@ -655,9 +655,14 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
 
             const buttonsHtml = suggestions.map((s, idx) => {
                 const url = makeAmazonSearchUrl(s.query);
+                // Make the first suggestion (Buy filament) a bold blue button, others as subtle gray
+                const isBuy = idx === 0;
+                const btnClass = isBuy
+                    ? 'inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white shadow-md transition-colors border border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2'
+                    : 'inline-flex items-center justify-center px-3 py-2 rounded-lg text-sm font-medium bg-gray-700 hover:bg-gray-600 text-gray-100 transition-colors';
                 return `
-                    <a href="${url}" target="_blank" rel="nofollow sponsored noopener" onclick="trackAffiliateClick('${material.Material.replace(/'/g, "\'")}', '${s.label.replace(/'/g, "\'")}')"
-                       class="inline-flex items-center justify-center px-3 py-2 rounded-lg text-sm font-medium bg-gray-700 hover:bg-gray-600 text-gray-100 transition-colors">
+                    <a href="${url}" target="_blank" rel="nofollow sponsored noopener" onclick="trackAffiliateClick('${material.Material.replace(/'/g, "\\'")}', '${s.label.replace(/'/g, "\\'")}')"
+                       class="${btnClass}">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
                         </svg>
