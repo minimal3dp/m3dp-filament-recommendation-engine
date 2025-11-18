@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Unreleased]
+## [1.3.0] - 2025-11-17
 
 ### Added
 
@@ -20,6 +20,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - **Export Button Layout**: Updated from 3-column grid to responsive 4-column layout (2 columns on mobile, 4 on desktop)
 - **Purple Color Scheme**: OrcaSlicer button uses purple (`bg-purple-600`) for brand distinction
+
+---
+
+## [1.4.0] - 2025-11-17
+
+### Added
+
+#### Annealing Features
+- **Show Annealed Properties Toggle**: User‑controlled dual mode for annealing analysis
+- **Dual Compare View**: Strength (XY) and HDT rows show both as‑printed and annealed values when enabled
+- **Annealing Guide in Modal**: Per‑material section with suggested temperature, soak time, step‑by‑step process, and safety warnings
+- **References & Presets**: Material‑specific presets where available with linked references; smart family heuristics as fallback
+- **Header Hint Badge**: "Dual view: As‑Printed + Annealed" indicator in Compare when dual mode is active
+- **Preference Persistence**: Annealed toggle saved to localStorage and restored automatically
+
+### Changed
+- **Compare Table Logic**: Row rendering refactored to support dual rows with correct min/max highlighting per row
+- **Material Modal**: Enhanced with the new Annealing Guide section when applicable
+- **Documentation**: Updated README and TODO to reflect annealing features and usage
 
 ---
 
@@ -312,6 +331,6 @@ See [TODO.md](TODO.md) for the complete roadmap.
 
 ---
 
-**Current Version**: 1.1.0  
-**Last Updated**: November 10, 2025  
-**Branch**: version1.1
+**Current Version**: 1.4.0  
+**Last Updated**: November 17, 2025  
+**Branch**: main

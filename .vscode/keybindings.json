@@ -1,0 +1,8 @@
+[
+  {
+    "key": "cmd+alt+v",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Vercel: Preview Build+Deploy",
+    "when": "editorTextFocus || !editorIsOpen"
+  }
+]

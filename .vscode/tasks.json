@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json.schemastore.org/tasks.json",
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Vercel: Preview Build",
+      "type": "shell",
+      "command": "vercel build",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Vercel: Deploy Preview (prebuilt)",
+      "type": "shell",
+      "command": "vercel deploy --prebuilt",
+      "problemMatcher": [],
+      "dependsOn": ["Vercel: Preview Build"],
+      "group": "none"
+    },
+    {
+      "label": "Vercel: Deploy Production",
+      "type": "shell",
+      "command": "vercel --prod",
+      "problemMatcher": [],
+      "group": "none"
+    },
+    {
+      "label": "Vercel: Preview Build+Deploy",
+      "dependsOn": [
+        "Vercel: Preview Build",
+        "Vercel: Deploy Preview (prebuilt)"
+      ],
+      "dependsOrder": "sequence",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    }
+  ]
+}

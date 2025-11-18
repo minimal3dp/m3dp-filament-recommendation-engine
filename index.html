@@ -80,7 +80,7 @@
         <header class="mb-8">
             <div class="flex items-center justify-between mb-2">
                 <h1 class="text-4xl font-bold text-white">FDM Filament Finder</h1>
-                <span class="text-sm font-medium text-gray-400 bg-gray-800 px-3 py-1 rounded-full">v1.3.0</span>
+                <span class="text-sm font-medium text-gray-400 bg-gray-800 px-3 py-1 rounded-full">v1.4.0</span>
             </div>
             <p class="text-lg text-gray-300">Select your desired properties to find the perfect material for your
                 project.</p>
@@ -321,7 +321,10 @@
                 <!-- Compare View Table -->
                 <div id="compare-view" class="hidden mt-6 bg-gray-800 border border-gray-700 rounded-xl overflow-hidden">
                     <div class="flex items-center justify-between px-4 py-3 border-b border-gray-700">
-                        <h3 class="text-lg font-semibold text-white">Comparison</h3>
+                        <h3 class="text-lg font-semibold text-white flex items-center">
+                            Comparison
+                            <span id="compare-mode-hint" class="ml-2 text-[11px] px-2 py-0.5 rounded-full border hidden bg-amber-900/40 text-amber-200 border-amber-700">Dual view: As‑Printed + Annealed</span>
+                        </h3>
                         <button id="close-compare-btn" class="px-3 py-1.5 text-sm rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-100 border border-gray-600">Close</button>
                     </div>
                     <div id="compare-table-wrapper" class="overflow-x-auto">
@@ -428,7 +431,7 @@
                 <p class="mb-2">
                     <strong class="text-gray-400">FDM Filament Recommendation Engine</strong>
                     <span class="mx-2">•</span>
-                    Version 1.3.0
+                    Version 1.4.0
                     <span class="mx-2">•</span>
                     November 2025
                 </p>
@@ -617,6 +620,20 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
                 "fatigue": {"cycles_to_failure_at_50pct_UTS": 2000000, "fatigue_strength_MPa": 50, "notes": "Exceptional creep resistance, biocompatible, aerospace-grade"},
                 "properties": {"tensile_strength_MPa": 101.0, "tensile_modulus_MPa": 3720.0, "elongation_at_break_pct": 27.0, "HDT_C": 216.5, "Tg_C": 143.0}
             }
+        };
+
+        // Optional per-material annealing presets (time/temp/notes + references)
+        const annealingPresets = {
+            "HTPLA (Annealable)": {
+                temp: "100°C",
+                time: "30–60 min",
+                notes: "Bake on a flat surface or bury in sand/salt for support. Expect measurable shrink—print test coupons to calibrate.",
+                references: [
+                    { label: "MatterHackers: Heat Treating Tough PLA 3D Printed Parts", url: "https://www.matterhackers.com/articles/how-to-anneal-tough-pla-and-htpla?srsltid=AfmBOory6F28xl93QBKbpweBxuNkw16QrWAR9ad49o6fpF3NniwceDjW" },
+                    { label: "CNC Kitchen: Annealing PLA Strength Test", url: "https://www.cnckitchen.com/blog/better-performing-3d-prints-with-annealing-but-part-1-pla" }
+                ]
+            }
+            // Add more exact-name presets as TDS-backed data becomes available
         };
 
         // Nozzle compatibility data
@@ -1106,14 +1123,18 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
             // Annealing Guide (if annealable or has annealed fields)
             const isAnnealable = !!material.Annealable_for_HDT || (material.Strength_XY_MPa_Annealed || material.Heat_Resistance_HDT_Annealed_C);
             if (isAnnealable) {
+                // Prefer explicit preset when available; else infer by material family
+                const preset = annealingPresets[material.Material];
                 const nameLower = String(material.Material || '').toLowerCase();
-                let guide = { temp: '70–110°C', time: '30–120 min', notes: 'Start low; verify with test coupons' };
-                if (nameLower.includes('pla')) guide = { temp: '80–110°C', time: '30–60 min', notes: 'HTPLA prefers ~100°C; standard PLA ~80–90°C' };
-                else if (nameLower.includes('petg') || nameLower.includes('pet ')) guide = { temp: '70–80°C', time: '45–90 min', notes: 'Avoid overheating to prevent sagging' };
-                else if (nameLower.includes('nylon') || nameLower.includes(' pa6') || nameLower.includes(' pa12') || nameLower.includes(' pa11')) guide = { temp: '70–90°C', time: '2–6 hours', notes: 'Dry thoroughly; slow cool to limit warp' };
-                else if (nameLower.includes('pc')) guide = { temp: '110–130°C', time: '60–120 min', notes: 'Use enclosure/oven with tight control' };
-                else if (nameLower.includes('peek')) guide = { temp: '200–230°C', time: '60–120 min', notes: 'Requires high-temp oven; specialist materials' };
-                else if (nameLower.includes('pekk')) guide = { temp: '220–255°C', time: '60–120 min', notes: 'Requires high-temp oven; specialist materials' };
+                let guide = preset ? { temp: preset.temp, time: preset.time, notes: preset.notes } : { temp: '70–110°C', time: '30–120 min', notes: 'Start low; verify with test coupons' };
+                if (!preset) {
+                    if (nameLower.includes('pla')) guide = { temp: '80–110°C', time: '30–60 min', notes: 'HTPLA prefers ~100°C; standard PLA ~80–90°C' };
+                    else if (nameLower.includes('petg') || nameLower.includes('pet ')) guide = { temp: '70–80°C', time: '45–90 min', notes: 'Avoid overheating to prevent sagging' };
+                    else if (nameLower.includes('nylon') || nameLower.includes(' pa6') || nameLower.includes(' pa12') || nameLower.includes(' pa11')) guide = { temp: '70–90°C', time: '2–6 hours', notes: 'Dry thoroughly; slow cool to limit warp' };
+                    else if (nameLower.includes('pc')) guide = { temp: '110–130°C', time: '60–120 min', notes: 'Use enclosure/oven with tight control' };
+                    else if (nameLower.includes('peek')) guide = { temp: '200–230°C', time: '60–120 min', notes: 'Requires high-temp oven; specialist materials' };
+                    else if (nameLower.includes('pekk')) guide = { temp: '220–255°C', time: '60–120 min', notes: 'Requires high-temp oven; specialist materials' };
+                }
 
                 modalContent += `
                     <div class="bg-gray-700 rounded-lg p-5">
@@ -1148,11 +1169,14 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
                         </div>
                         <div class="mt-3 text-xs text-gray-400">
                             <span class="block mb-1 font-semibold text-gray-300">References</span>
-                            <a class="underline hover:text-blue-300" target="_blank" rel="noopener noreferrer" href="https://www.matterhackers.com/articles/how-to-anneal-tough-pla-and-htpla?srsltid=AfmBOoocLN5tqiAjHr6lZxnOqTqxKAd9nOuOtSNHUcz4oZjPOucYegMG">MatterHackers: Heat Treating 3D Printed Parts</a>
-                            <span class="mx-2">•</span>
-                            <a class="underline hover:text-blue-300" target="_blank" rel="noopener noreferrer" href="https://www.cnckitchen.com/blog/better-performing-3d-prints-with-annealing-but-part-1-pla">CNC Kitchen: Annealing PLA Strength Test</a>
-                            <span class="mx-2">•</span>
-                            <a class="underline hover:text-blue-300" target="_blank" rel="noopener noreferrer" href="https://blog.prusa3d.com/how-to-improve-your-3d-prints-with-annealing_31088/">Prusa Blog: Heat-Treating (Annealing) 3D Prints</a>
+                            ${(() => {
+                                const refs = (annealingPresets[material.Material]?.references) || [
+                                    { label: 'MatterHackers: Heat Treating 3D Printed Parts', url: 'https://www.matterhackers.com/articles/how-to-anneal-tough-pla-and-htpla?srsltid=AfmBOoocLN5tqiAjHr6lZxnOqTqxKAd9nOuOtSNHUcz4oZjPOucYegMG' },
+                                    { label: 'CNC Kitchen: Annealing PLA Strength Test', url: 'https://www.cnckitchen.com/blog/better-performing-3d-prints-with-annealing-but-part-1-pla' },
+                                    { label: 'Prusa Blog: Heat-Treating (Annealing) 3D Prints', url: 'https://blog.prusa3d.com/how-to-improve-your-3d-prints-with-annealing_31088/' }
+                                ];
+                                return refs.map((r, idx) => `${idx>0 ? '<span class=\"mx-2\">•</span>' : ''}<a class=\"underline hover:text-blue-300\" target=\"_blank\" rel=\"noopener noreferrer\" href=\"${r.url}\">${r.label}</a>`).join('');
+                            })()}
                         </div>
                     </div>
                 `;
@@ -1589,6 +1613,17 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
             const body = document.getElementById('compare-table-body');
             if (!body) return;
             const selected = allMaterials.filter(m => selectedForCompare.includes(m.Material)).slice(0, 4);
+            // Update header hint badge visibility
+            const hintEl = document.getElementById('compare-mode-hint');
+            const dualModeFlag = !!window.__annealedMode;
+            if (hintEl) {
+                if (dualModeFlag) {
+                    hintEl.textContent = 'Dual view: As‑Printed + Annealed';
+                    hintEl.classList.remove('hidden');
+                } else {
+                    hintEl.classList.add('hidden');
+                }
+            }
 
             // Helper to build a numeric row with highlight for min/max
             function buildNumericRow(label, values, higherBetter = true, suffix = '') {
@@ -1631,20 +1666,27 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
             // Printability
             html += buildNumericRow('Printability (0-10)', selected.map(m => m?.Printability_Score), true);
 
-            // Strength XY: As-Printed
-            html += buildNumericRow('Strength XY (MPa) — As‑Printed', selected.map(m => m?.Strength_XY_MPa), true, '');
-            // Strength XY: Annealed (if any data)
-            const hasAnnealedStrength = selected.some(m => m && m.Annealable_for_HDT && (m.Strength_XY_MPa_Annealed ?? '') !== '');
-            if (hasAnnealedStrength) {
-                html += buildNumericRow('Strength XY (MPa) — Annealed', selected.map(m => (m?.Annealable_for_HDT ? (m.Strength_XY_MPa_Annealed || null) : null)), true, '');
-            }
+            const dualMode = !!window.__annealedMode;
+            if (dualMode) {
+                // Strength XY: As-Printed
+                html += buildNumericRow('Strength XY (MPa) — As‑Printed', selected.map(m => m?.Strength_XY_MPa), true, '');
+                // Strength XY: Annealed (if any data)
+                const hasAnnealedStrength = selected.some(m => m && m.Annealable_for_HDT && (m.Strength_XY_MPa_Annealed ?? '') !== '');
+                if (hasAnnealedStrength) {
+                    html += buildNumericRow('Strength XY (MPa) — Annealed', selected.map(m => (m?.Annealable_for_HDT ? (m.Strength_XY_MPa_Annealed || null) : null)), true, '');
+                }
 
-            // HDT: As-Printed
-            html += buildNumericRow('HDT (°C) — As‑Printed', selected.map(m => m?.Heat_Resistance_HDT_C), true, '');
-            // HDT: Annealed (if any data)
-            const hasAnnealedHDT = selected.some(m => m && m.Annealable_for_HDT && (m.Heat_Resistance_HDT_Annealed_C ?? '') !== '');
-            if (hasAnnealedHDT) {
-                html += buildNumericRow('HDT (°C) — Annealed', selected.map(m => (m?.Annealable_for_HDT ? (m.Heat_Resistance_HDT_Annealed_C || null) : null)), true, '');
+                // HDT: As-Printed
+                html += buildNumericRow('HDT (°C) — As‑Printed', selected.map(m => m?.Heat_Resistance_HDT_C), true, '');
+                // HDT: Annealed (if any data)
+                const hasAnnealedHDT = selected.some(m => m && m.Annealable_for_HDT && (m.Heat_Resistance_HDT_Annealed_C ?? '') !== '');
+                if (hasAnnealedHDT) {
+                    html += buildNumericRow('HDT (°C) — Annealed', selected.map(m => (m?.Annealable_for_HDT ? (m.Heat_Resistance_HDT_Annealed_C || null) : null)), true, '');
+                }
+            } else {
+                // Single-row view when toggle is off (as-printed values only)
+                html += buildNumericRow('Strength XY (MPa)', selected.map(m => m?.Strength_XY_MPa), true, '');
+                html += buildNumericRow('HDT (°C)', selected.map(m => m?.Heat_Resistance_HDT_C), true, '');
             }
 
             // Cost Score
