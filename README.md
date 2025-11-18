@@ -168,6 +168,14 @@ The primary database currently used by the application. Contains:
 - Fatigue and long-term performance data
 - Material-specific warnings and best practices
 
+### Industry References
+- **Polymaker Wiki**: [Printing Tips by Material Type](https://wiki.polymaker.com/printing-tips/by-material-type) — Material-specific printing guidelines and post-processing tips
+- **Polymaker Filament Guide**: [Interactive Material Guide](https://us.polymaker.com/pages/filament-guide) — Comprehensive material characteristics and recommendations
+- **Polymaker Material App**: [Material Selection Tool](https://app.polymaker.com/) — Interactive material comparison and selection
+- **MatterHackers**: Technical guides for annealing and heat treatment
+- **CNC Kitchen**: Scientific testing and analysis of material properties
+- **Prusa Knowledge Base**: Print profiles and troubleshooting guides
+
 ## Technology Stack
 
 - **HTML5**: Semantic structure
