@@ -10,15 +10,23 @@ This application provides an intelligent, filterable database of FDM filament ma
 
 ## Features
 
-### Current Features (v1.2) 🆕
+### Current Features (v1.3) 🆕
 
-- **Enhanced Engineering Data** 🆕: Advanced material properties for professional applications
+### Current Features (v1.3) 🆕
+
+- **Expanded Material Database** 🆕: 40 materials (up from 23), including:
+  - PPSU, HIPS, PET, additional Nylon variants (PA6, PA12)
+  - PC-ABS Blend, TPU hardness variants (85A, 95A)
+  - PLA specialty variants (Silk, Glow-in-the-dark)
+  - Additional fiber-reinforced composites (PETG-CF, Nylon-GF)
+
+- **Enhanced Engineering Data**: Advanced material properties for professional applications
   - **Thermal Properties**: Thermal expansion coefficients, thermal conductivity, specific heat capacity
-  - **Long-term Performance**: Creep resistance ratings and fatigue life data
-  - **Cycles to Failure**: Comprehensive fatigue strength data for functional parts
+  - **Creep Resistance**: Long-term performance under sustained load
+  - **Fatigue Data**: Cycle-to-failure and fatigue strength measurements
   - **Material Behavior Notes**: Expert guidance on real-world performance
 
-- **Print Profile Export** 🆕: One-click slicer profile generation
+- **Print Profile Export** 🆕: Download slicer-ready profiles (Cura, PrusaSlicer, OrcaSlicer, Simplify3D)
   - **Cura**: Export optimized .ini profiles
   - **PrusaSlicer**: Export .ini profiles with PrusaSlicer-specific settings
   - **OrcaSlicer**: Export native JSON profiles (v1.9.0+)
@@ -63,13 +71,13 @@ This application provides an intelligent, filterable database of FDM filament ma
 
 ### Material Database
 
-The application includes **28 materials** spanning the most common FDM filaments:
+The engine includes comprehensive data for 40 materials:
 
-- **Standard Materials**: PLA, HTPLA, ABS
-- **Engineering Materials**: PETG, ASA, Polycarbonate, Nylon (PA6/PA12), Tough PLA
+- **Standard Materials**: PLA (Standard, Silk, Glow), HTPLA, ABS, HIPS, PET, PVA (Soluble)
+- **Engineering Materials**: PETG (Standard, Carbon Fiber), ASA, Polycarbonate, PC-ABS Blend, Nylon (PA6, PA12, variants), Tough PLA
 - **Composite Materials**: Carbon Fiber variants (PLA-CF, PETG-CF, Nylon-CF), Glass Fiber Nylon
-- **Functional Materials**: TPU (Flexible), Polypropylene, PVA (Soluble), Wood-filled, Metal-filled, Silk, Glow-in-the-dark
-- **High-Performance Materials**: PEEK, PEKK, ULTEM 9085, PPSU
+- **Functional Materials**: TPU (95A, 85A Flexible), Polypropylene, Wood-filled, Metal-filled
+- **High-Performance Materials**: PEEK, PEKK, ULTEM 9085 (PEI), PPSU
 
 Each material includes **26 data points** covering mechanical properties, thermal characteristics, printability, cost, and special attributes.
 

@@ -29,6 +29,13 @@ This document tracks the development roadmap for the **FDM Filament Recommendati
   - [x] Bed temperature and surface recommendations
   - [x] Print speed suggestions (perimeter, infill, first layer)
   - [x] Cooling fan recommendations
+
+- [x] **Expanded Material Database** *(Completed in v1.3)*
+  - [x] Integrated data/alternate_data/material_db.csv (40 materials vs original 23)
+  - [x] Created scripts/merge_materials.py for systematic dataset comparison
+  - [x] Merged datasets: 17 new materials, 6 updates, 40 total
+  - [x] New additions: PPSU, HIPS, Nylon PA6/PA12 variants, PC-ABS Blend, PET, PETG-CF, PLA specialty variants (Silk, Glow), TPU hardness variants (85A, 95A), fiber composites
+  - [x] Updated materialsDetailData for Nylon (PA6), Nylon (PA12) to match CSV naming
   
 - [x] **Advanced Engineering Data Section** *(Partially completed in v1.1)*
   - [x] Complete mechanical properties table
@@ -82,7 +89,23 @@ This document tracks the development roadmap for the **FDM Filament Recommendati
     - [x] "Flexible Parts" (TPU variants)
     - [ ] "Food Safe" (PETG, PLA with warnings) *(Deferred - requires food safety data)*
 
-### 1.3 Improve Sorting & Display *(Moved to v1.4)*
+### 1.3 TDS (Technical Data Sheet) Integration *(Future)*
+
+  - [ ] **Extract Material Properties from TDS PDFs** (130+ files in tds/ folder)
+    - [ ] Review tds/README.md workflow guidance
+    - [ ] Consider automated extraction (PyPDF2/pdfplumber) vs manual curation
+    - [ ] Target properties: nozzle/bed temps, print speeds, retraction, material certifications, detailed mechanical/thermal data
+    - [ ] Map extracted data to materialsDetailData enrichment or new CSV columns
+    - [ ] Script approach: scripts/extract_tds.py following Python-first workflow pattern
+
+  - [ ] **Minimal3DP Brand Strategy Integration**
+    - [ ] Review MINIMAL3DP_APP_GUIDE.md and brand specification docs
+    - [ ] Consider tool suite positioning: main domain traffic, YouTube integration (5k+ subscribers)
+    - [ ] Amazon Associates monetization potential for filament/equipment recommendations
+    - [ ] Cross-link with Hugo main site where applicable
+    - [ ] Document brand voice and messaging conventions for future content updates
+
+### 1.4 Improve Sorting & Display *(Planned for v1.4)*
 
   - [ ] Add dropdown menu above results: "Sort by..."
   - [ ] Options:
