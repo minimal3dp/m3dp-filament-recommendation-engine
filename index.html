@@ -256,11 +256,27 @@
             <!-- Results Column -->
             <main class="w-full lg:w-2/3 xl:w-3/4">
                 <div class="mb-4">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-2xl font-semibold text-white">Recommended Materials</h2>
-                        <span id="results-count" class="text-lg text-gray-400 font-medium"></span>
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-2">
+                        <div class="flex items-center gap-4">
+                            <h2 class="text-2xl font-semibold text-white">Recommended Materials</h2>
+                            <span id="results-count" class="text-lg text-gray-400 font-medium"></span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label for="sort-select" class="text-sm text-gray-300 font-medium mr-2">Sort by:</label>
+                            <select id="sort-select" class="bg-gray-800 border border-gray-700 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
+                                <option value="printability">Printability (High → Low)</option>
+                                <option value="strength">Strength (High → Low)</option>
+                                <option value="heat">Heat Resistance (High → Low)</option>
+                                <option value="cost">Cost (Low → High)</option>
+                                <option value="name">Material Name (A → Z)</option>
+                            </select>
+                            <!-- View Mode Toggle -->
+                            <div class="hidden md:flex items-center gap-1 ml-2" aria-label="View mode">
+                                <button id="view-detailed-btn" class="px-3 py-1.5 text-xs rounded-l-lg bg-blue-600 text-white border border-blue-500 hover:bg-blue-500 transition-colors">Detailed</button>
+                                <button id="view-compact-btn" class="px-3 py-1.5 text-xs rounded-r-lg bg-gray-700 text-gray-100 border border-gray-600 hover:bg-gray-600 transition-colors">Compact</button>
+                            </div>
+                        </div>
                     </div>
-                    
                     <!-- Search Bar -->
                     <div class="relative mb-4">
                         <input type="text" id="material-search" placeholder="Search materials by name or category..." 
@@ -278,6 +294,39 @@
                 <div id="no-results" class="hidden text-center text-gray-400 text-xl py-16">
                     <p>No materials match your criteria.</p>
                     <p class="text-base">Try adjusting your filters.</p>
+                </div>
+
+                <!-- Compare Bar (appears when 2-4 materials selected) -->
+                <div id="compare-bar" class="hidden mt-6 p-3 bg-gray-800 border border-gray-700 rounded-lg flex items-center justify-between">
+                    <div class="text-sm text-gray-200">
+                        <span id="compare-count" class="font-semibold">0</span> selected for comparison (max 4)
+                    </div>
+                    <div class="flex gap-2">
+                        <button id="compare-btn" class="px-3 py-1.5 text-sm rounded-lg bg-blue-600 hover:bg-blue-500 text-white border border-blue-500">Compare</button>
+                        <button id="clear-compare-btn" class="px-3 py-1.5 text-sm rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-100 border border-gray-600">Clear</button>
+                    </div>
+                </div>
+
+                <!-- Compare View Table -->
+                <div id="compare-view" class="hidden mt-6 bg-gray-800 border border-gray-700 rounded-xl overflow-hidden">
+                    <div class="flex items-center justify-between px-4 py-3 border-b border-gray-700">
+                        <h3 class="text-lg font-semibold text-white">Comparison</h3>
+                        <button id="close-compare-btn" class="px-3 py-1.5 text-sm rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-100 border border-gray-600">Close</button>
+                    </div>
+                    <div id="compare-table-wrapper" class="overflow-x-auto">
+                        <table class="min-w-full text-sm text-left text-gray-300">
+                            <thead class="bg-gray-900 text-gray-200">
+                                <tr>
+                                    <th class="px-4 py-2">Property</th>
+                                    <th class="px-4 py-2">Material 1</th>
+                                    <th class="px-4 py-2">Material 2</th>
+                                    <th class="px-4 py-2">Material 3</th>
+                                    <th class="px-4 py-2">Material 4</th>
+                                </tr>
+                            </thead>
+                            <tbody id="compare-table-body"></tbody>
+                        </table>
+                    </div>
                 </div>
             </main>
         </div>
@@ -700,6 +749,8 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
 
         // --- GLOBAL STATE ---
         let allMaterials = [];
+        let viewMode = 'detailed'; // 'detailed' | 'compact'
+        let selectedForCompare = []; // array of material names
         const filters = {
             checkboxes: [],
             sliders: []
@@ -746,6 +797,26 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
 
         // --- RENDER FUNCTIONS ---
 
+        function setViewMode(mode) {
+            viewMode = mode === 'compact' ? 'compact' : 'detailed';
+            try { localStorage.setItem('m3dp_viewMode', viewMode); } catch (_) { /* no-op */ }
+            updateViewToggleUI();
+            filterAndRender();
+        }
+
+        function updateViewToggleUI() {
+            const btnDetailed = document.getElementById('view-detailed-btn');
+            const btnCompact = document.getElementById('view-compact-btn');
+            if (!btnDetailed || !btnCompact) return;
+            if (viewMode === 'detailed') {
+                btnDetailed.className = 'px-3 py-1.5 text-xs rounded-l-lg bg-blue-600 text-white border border-blue-500 hover:bg-blue-500 transition-colors';
+                btnCompact.className = 'px-3 py-1.5 text-xs rounded-r-lg bg-gray-700 text-gray-100 border border-gray-600 hover:bg-gray-600 transition-colors';
+            } else {
+                btnDetailed.className = 'px-3 py-1.5 text-xs rounded-l-lg bg-gray-700 text-gray-100 border border-gray-600 hover:bg-gray-600 transition-colors';
+                btnCompact.className = 'px-3 py-1.5 text-xs rounded-r-lg bg-blue-600 text-white border border-blue-500 hover:bg-blue-500 transition-colors';
+            }
+        }
+
         /**
          * Renders an array of material objects into the results container.
          */
@@ -766,7 +837,10 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
             // Create and append a card for each material
             materials.forEach(material => {
                 const card = document.createElement('div');
-                card.className = 'bg-gray-800 rounded-lg shadow-xl p-5 transform transition-all hover:scale-[1.02]';
+                const baseClass = viewMode === 'compact'
+                    ? 'relative bg-gray-800 rounded-lg shadow p-4 transform transition-all hover:scale-[1.01]'
+                    : 'relative bg-gray-800 rounded-lg shadow-xl p-5 transform transition-all hover:scale-[1.02]';
+                card.className = baseClass;
 
                 // Determine cluster color
                 let clusterColor = 'bg-gray-600';
@@ -777,38 +851,73 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
                 if (material.Cluster === 'High-Temp') clusterColor = 'bg-red-600';
                 if (material.Cluster === 'Flexible') clusterColor = 'bg-pink-600';
 
+                // Compare checkbox control (top-right)
+                const isChecked = selectedForCompare.includes(material.Material);
+                const compareToggleHtml = `
+                    <label class="absolute top-2 right-2 inline-flex items-center gap-1 text-[11px] text-gray-200 bg-gray-700/70 hover:bg-gray-700 px-2 pt-1 pb-3 rounded border border-gray-600 cursor-pointer select-none"
+                           onclick="event.stopPropagation()">
+                        <input type="checkbox" ${isChecked ? 'checked' : ''} class="accent-blue-500" data-compare="${material.Material.replace(/"/g, '&quot;')}">
+                        <span>Compare</span>
+                    </label>`;
 
-                card.innerHTML = `
-                    <div class="flex justify-between items-start mb-3">
-                        <h3 class="text-2xl font-bold text-white">${material.Material}</h3>
-                        <span class="text-xs font-semibold ${clusterColor} text-white px-2.5 py-1 rounded-full">${material.Cluster}</span>
-                    </div>
-                    
-                    <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-gray-300">
-                        <!-- Key Properties -->
-                        <div><strong>Printability:</strong> <span class="font-light">${material.Printability_Score}/10</span></div>
-                        <div><strong>Cost Score:</strong> <span class="font-light">${material.Cost_Score}/10</span></div>
-                        <div><strong>Strength (XY):</strong> <span class="font-light">${material.Strength_XY_MPa} MPa</span></div>
-                        <div><strong>Heat Resist (HDT):</strong> <span class="font-light">${material.Heat_Resistance_HDT_C} °C</span></div>
-                        <div><strong>Toughness:</strong> <span class="font-light">${material.Toughness_Impact_kJ_m2} kJ/m²</span></div>
-                        <div><strong>Stiffness:</strong> <span class="font-light">${material.Stiffness_Modulus_MPa} MPa</span></div>
-                    </div>
-                    
-                    <div class="border-t border-gray-700 mt-4 pt-3 text-xs text-gray-400 space-x-2">
-                        <!-- Badges for key boolean attributes -->
-                        ${material.UV_Resistant ? '<span class="inline-block bg-yellow-800 text-yellow-100 px-2 py-0.5 rounded">UV Resistant</span>' : ''}
-                        ${!material.Hygroscopic ? '<span class="inline-block bg-blue-800 text-blue-100 px-2 py-0.5 rounded">Low Moisture</span>' : ''}
-                        ${!material.Requires_Enclosure ? '<span class="inline-block bg-green-800 text-green-100 px-2 py-0.5 rounded">No Enclosure</span>' : ''}
-                        ${material.Requires_Hardened_Nozzle ? '<span class="inline-block bg-red-800 text-red-100 px-2 py-0.5 rounded">Abrasive</span>' : ''}
-                    </div>
-                    <button class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-                        View Details
-                    </button>
-                `;
+                if (viewMode === 'compact') {
+                    card.innerHTML = `
+                        ${compareToggleHtml}
+                        <div class="flex justify-between items-start mb-2 pt-8">
+                            <h3 class="text-lg font-semibold text-white">${material.Material}</h3>
+                            <span class="text-[10px] leading-tight font-semibold ${clusterColor} text-white px-2 py-0.5 rounded-full">${material.Cluster}</span>
+                        </div>
+                        <div class="flex flex-wrap gap-1 text-[11px] text-gray-200">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded bg-gray-700">P: ${material.Printability_Score}/10</span>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded bg-gray-700">XY: ${material.Strength_XY_MPa} MPa</span>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded bg-gray-700">HDT: ${material.Heat_Resistance_HDT_C}°C</span>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded bg-gray-700">Cost: ${material.Cost_Score}/10</span>
+                        </div>
+                    `;
+                } else {
+                    card.innerHTML = `
+                        ${compareToggleHtml}
+                        <div class="flex justify-between items-start mb-3 pt-8">
+                            <h3 class="text-2xl font-bold text-white">${material.Material}</h3>
+                            <span class="text-xs leading-tight font-semibold ${clusterColor} text-white px-2.5 py-1 rounded-full">${material.Cluster}</span>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-gray-300">
+                            <!-- Key Properties -->
+                            <div><strong>Printability:</strong> <span class="font-light">${material.Printability_Score}/10</span></div>
+                            <div><strong>Cost Score:</strong> <span class="font-light">${material.Cost_Score}/10</span></div>
+                            <div><strong>Strength (XY):</strong> <span class="font-light">${material.Strength_XY_MPa} MPa</span></div>
+                            <div><strong>Heat Resist (HDT):</strong> <span class="font-light">${material.Heat_Resistance_HDT_C} °C</span></div>
+                            <div><strong>Toughness:</strong> <span class="font-light">${material.Toughness_Impact_kJ_m2} kJ/m²</span></div>
+                            <div><strong>Stiffness:</strong> <span class="font-light">${material.Stiffness_Modulus_MPa} MPa</span></div>
+                        </div>
+                        
+                        <div class="border-t border-gray-700 mt-4 pt-3 text-xs text-gray-400 space-x-2">
+                            <!-- Badges for key boolean attributes -->
+                            ${material.UV_Resistant ? '<span class="inline-block bg-yellow-800 text-yellow-100 px-2 py-0.5 rounded">UV Resistant</span>' : ''}
+                            ${!material.Hygroscopic ? '<span class="inline-block bg-blue-800 text-blue-100 px-2 py-0.5 rounded">Low Moisture</span>' : ''}
+                            ${!material.Requires_Enclosure ? '<span class="inline-block bg-green-800 text-green-100 px-2 py-0.5 rounded">No Enclosure</span>' : ''}
+                            ${material.Requires_Hardened_Nozzle ? '<span class="inline-block bg-red-800 text-red-100 px-2 py-0.5 rounded">Abrasive</span>' : ''}
+                        </div>
+                        <button class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                            View Details
+                        </button>
+                    `;
+                }
                 
                 // Add click handler for the card
                 card.style.cursor = 'pointer';
                 card.addEventListener('click', () => openMaterialModal(material));
+
+                // Wire up compare checkbox inside the card
+                const compareInput = card.querySelector('input[type="checkbox"][data-compare]');
+                if (compareInput) {
+                    compareInput.addEventListener('change', (e) => {
+                        e.stopPropagation();
+                        const name = compareInput.getAttribute('data-compare');
+                        toggleCompareSelection(name, e.target.checked);
+                    });
+                }
                 
                 resultsContainer.appendChild(card);
             });
@@ -1213,7 +1322,25 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
                 return true;
             });
 
-            // 3. Re-render the results
+            // 3. Sort filtered materials based on dropdown
+            const sortSelect = document.getElementById('sort-select');
+            const sortValue = sortSelect ? sortSelect.value : 'printability';
+            filteredMaterials.sort((a, b) => {
+                switch (sortValue) {
+                    case 'printability':
+                        return b.Printability_Score - a.Printability_Score;
+                    case 'strength':
+                        return b.Strength_XY_MPa - a.Strength_XY_MPa;
+                    case 'heat':
+                        return b.Heat_Resistance_HDT_C - a.Heat_Resistance_HDT_C;
+                    case 'cost':
+                        return a.Cost_Score - b.Cost_Score;
+                    case 'name':
+                        return String(a.Material).localeCompare(String(b.Material));
+                    default:
+                        return 0;
+                }
+            });
             renderResults(filteredMaterials);
         }
 
@@ -1226,8 +1353,21 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
             // Parse the embedded CSV data
             allMaterials = parseCSV(csvData);
 
-            // Sort by printability (descending) by default
+            // Sort by printability (descending) by default (for initial render)
             allMaterials.sort((a, b) => b.Printability_Score - a.Printability_Score);
+            // Add event listener to sort dropdown + persist preference
+            const sortSelect = document.getElementById('sort-select');
+            if (sortSelect) {
+                const allowedSorts = ['printability','strength','heat','cost','name'];
+                const savedSort = localStorage.getItem('m3dp_sortPreference');
+                if (savedSort && allowedSorts.includes(savedSort)) {
+                    sortSelect.value = savedSort;
+                }
+                sortSelect.addEventListener('change', () => {
+                    try { localStorage.setItem('m3dp_sortPreference', sortSelect.value); } catch (_) { /* no-op */ }
+                    filterAndRender();
+                });
+            }
 
             // Add event listeners to all filter inputs
             const inputs = document.querySelectorAll('#filter-checkboxes input, #filter-sliders input[type="range"]');
@@ -1263,8 +1403,122 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
             const searchInput = document.getElementById('material-search');
             searchInput.addEventListener('input', filterAndRender);
 
+            // View mode setup
+            try {
+                const savedView = localStorage.getItem('m3dp_viewMode');
+                if (savedView === 'compact' || savedView === 'detailed') viewMode = savedView;
+            } catch (_) { /* no-op */ }
+            updateViewToggleUI();
+            const viewDetailedBtn = document.getElementById('view-detailed-btn');
+            const viewCompactBtn = document.getElementById('view-compact-btn');
+            if (viewDetailedBtn) viewDetailedBtn.addEventListener('click', () => setViewMode('detailed'));
+            if (viewCompactBtn) viewCompactBtn.addEventListener('click', () => setViewMode('compact'));
+
             // Initial render with all materials
             filterAndRender();
+
+            // Compare bar actions
+            const compareBtn = document.getElementById('compare-btn');
+            const clearCompareBtn = document.getElementById('clear-compare-btn');
+            const closeCompareBtn = document.getElementById('close-compare-btn');
+            if (compareBtn) compareBtn.addEventListener('click', openCompareView);
+            if (clearCompareBtn) clearCompareBtn.addEventListener('click', () => { selectedForCompare = []; updateCompareBar(); filterAndRender(); });
+            if (closeCompareBtn) closeCompareBtn.addEventListener('click', closeCompareView);
+        }
+
+        // --- COMPARE FUNCTIONS ---
+        function toggleCompareSelection(materialName, checked) {
+            const idx = selectedForCompare.indexOf(materialName);
+            if (checked) {
+                if (idx === -1) {
+                    if (selectedForCompare.length >= 4) {
+                        // revert selection and inform user
+                        updateCompareBar();
+                        alert('You can compare up to 4 materials.');
+                        return;
+                    }
+                    selectedForCompare.push(materialName);
+                }
+            } else {
+                if (idx !== -1) selectedForCompare.splice(idx, 1);
+            }
+            updateCompareBar();
+        }
+
+        function updateCompareBar() {
+            const bar = document.getElementById('compare-bar');
+            const countEl = document.getElementById('compare-count');
+            if (!bar || !countEl) return;
+            countEl.textContent = String(selectedForCompare.length);
+            if (selectedForCompare.length >= 1) {
+                bar.classList.remove('hidden');
+            } else {
+                bar.classList.add('hidden');
+                closeCompareView();
+            }
+        }
+
+        function openCompareView() {
+            if (selectedForCompare.length < 2) { alert('Select at least 2 materials to compare.'); return; }
+            renderCompareTable();
+            const view = document.getElementById('compare-view');
+            if (view) view.classList.remove('hidden');
+            // optional: scroll into view
+            try { view.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (_) { /* no-op */ }
+        }
+
+        function closeCompareView() {
+            const view = document.getElementById('compare-view');
+            if (view) view.classList.add('hidden');
+        }
+
+        function renderCompareTable() {
+            const body = document.getElementById('compare-table-body');
+            if (!body) return;
+            const selected = allMaterials.filter(m => selectedForCompare.includes(m.Material)).slice(0, 4);
+            const columns = [
+                { key: 'Material', label: 'Material' },
+                { key: 'Cluster', label: 'Cluster' },
+                { key: 'Printability_Score', label: 'Printability (0-10)', higherBetter: true },
+                { key: 'Strength_XY_MPa', label: 'Strength XY (MPa)', higherBetter: true },
+                { key: 'Heat_Resistance_HDT_C', label: 'HDT (°C)', higherBetter: true },
+                { key: 'Cost_Score', label: 'Cost Score (1-10)', higherBetter: false },
+                { key: 'UV_Resistant', label: 'UV Resistant' },
+                { key: 'Hygroscopic', label: 'Hygroscopic' },
+                { key: 'Requires_Enclosure', label: 'Requires Enclosure' },
+                { key: 'Requires_Hardened_Nozzle', label: 'Abrasive (Hardened Nozzle)' }
+            ];
+
+            // Build rows
+            let html = '';
+            columns.forEach(col => {
+                // collect values
+                const vals = selected.map(m => m[col.key]);
+                let minIdx = -1, maxIdx = -1;
+                if (typeof vals[0] === 'number') {
+                    let min = Infinity, max = -Infinity;
+                    vals.forEach((v, i) => { if (v < min) { min = v; minIdx = i; } if (v > max) { max = v; maxIdx = i; } });
+                }
+                html += `<tr class="border-t border-gray-700">
+                    <td class="px-4 py-2 text-gray-200 font-medium">${col.label}</td>
+                    ${[0,1,2,3].map(i => {
+                        const m = selected[i];
+                        let content = '';
+                        if (!m) { content = ''; }
+                        else if (typeof m[col.key] === 'boolean') { content = m[col.key] ? 'Yes' : 'No'; }
+                        else { content = (m[col.key] !== undefined && m[col.key] !== null) ? m[col.key] : ''; }
+                        // highlight best values where applicable
+                        let cls = 'px-4 py-2';
+                        if (typeof m?.[col.key] === 'number') {
+                            if (col.higherBetter === true && i === maxIdx) cls += ' bg-green-900/40';
+                            if (col.higherBetter === false && i === minIdx) cls += ' bg-green-900/40';
+                        }
+                        return `<td class="${cls}">${content}</td>`;
+                    }).join('')}
+                </tr>`;
+            });
+
+            body.innerHTML = html;
         }
 
         // --- FILTER UI FUNCTIONS ---
