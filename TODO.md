@@ -147,7 +147,7 @@ This document tracks the development roadmap for the **FDM Filament Recommendati
   - [x] In material modal, add annealing instructions (time, temperature, process)
   - [x] Include warnings about dimensional changes and warping risks
 
-### 1.5 Data Quality & Validation *(Moved to v1.4)*
+### 1.5 Data Quality & Validation *(Future Enhancement)*
 
   - [ ] Create script to validate CSV data integrity
   - [ ] Check for missing values, outliers, and inconsistencies
@@ -165,6 +165,46 @@ This document tracks the development roadmap for the **FDM Filament Recommendati
   - [ ] Add outdoor weathering data
   - [ ] Add biodegradability information
   - [ ] Add post-processing compatibility (sanding, painting, acetone smoothing)
+
+### 1.6 External Reference Data Integration *(Recommended for v1.5 - Nov 2025)*
+
+Based on analysis of industry-standard filament guides (Simplify3D, MatterHackers, Bambu Lab, Prusa), the following enhancements are recommended to improve data accuracy and coverage:
+
+- [ ] **Validate Mechanical Properties Against Simplify3D Materials Table**
+  - [ ] Cross-reference Ultimate Strength (MPa) values for 13 common materials
+  - [ ] Validate Maximum Service Temperature data
+  - [ ] Add missing Coefficient of Thermal Expansion values
+  - [ ] Source: https://www.simplify3d.com/resources/materials-guide/properties-table/
+  
+- [ ] **Expand Print Settings from MatterHackers Guide**
+  - [ ] Add missing materials: ASA (250±10°C / 90±10°C), Polycarbonate (290±20°C / 130±15°C)
+  - [ ] Expand materialsDetailData with MatterHackers-validated temp ranges
+  - [ ] Add flexible filament profiles (TPU/TPE: 220-250°C nozzle, 30-50°C bed)
+  - [ ] Validate bed adhesion recommendations (Blue Tape, PEI, Kapton, Hairspray, Garolite)
+  - [ ] Source: https://www.matterhackers.com/3d-printer-filament-compare
+  
+- [ ] **Add Annealing Data from Multiple Sources**
+  - [ ] Validate existing annealing presets (PLA, PETG, Nylon, PC, HTPLA) against MatterHackers
+  - [ ] Expand annealingPresets with manufacturer-specific guidance
+  - [ ] Add post-annealing dimensional change warnings
+  - [ ] Note: MatterHackers mentions Tough PLA heat tolerance increases to 60°C post-treatment
+  
+- [ ] **Add Footer References Section**
+  - [ ] Link to Simplify3D Materials Table (excellent structured data, comparison tool)
+  - [ ] Link to MatterHackers Filament Guide (comprehensive, beginner-friendly)
+  - [ ] Already included: Polymaker Wiki, CNC Kitchen, Prusa Guide, MatterHackers
+  - [ ] Consider Bambu Lab PDF download link for offline reference
+  
+- [ ] **Extract Structured Data from Bambu Lab PDF** *(Future - Requires PDF Access)*
+  - [ ] Download Bambu Lab Filament Guide PDF (https://cdn1.bambulab.com/filament/filament-guide/250123/filament-guide-en.pdf)
+  - [ ] Extract comparison table data (4-material side-by-side format)
+  - [ ] Validate against existing material_db.csv
+  - [ ] Add any Bambu-specific profiles or recommendations
+  
+- [ ] **Manual Review: Learn by Layers Filament Database PDF** *(Future)*
+  - [ ] Download PDF: https://www.learnbylayers.com/wp-content/uploads/2018/06/ThreeDotZero-Filament-Comparison-LBL.pdf
+  - [ ] Extract comparative material data (if accessible)
+  - [ ] Older source (2018), validate data against current standards
 
 ---
 
