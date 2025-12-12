@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.5.0] - 2025-12-12
+
+### Added
+
+#### Bed Surface Recommendations (Option 2: Expanded Modal Data)
+- **Complete Bed Adhesion Data**: Added `bed_surface` field to all 29 materials in materialsDetailData
+- **MatterHackers-Sourced**: Authoritative recommendations from industry-standard filament guide
+- **Modal Integration**: Displays in Print Settings section of material modal
+- **100% Material Coverage**:
+  - Standard: PLA variants, PETG, HTPLA
+  - Engineering: ABS, ASA, PC, Nylon PA6/PA12, composites
+  - High-Performance: PEEK, PEKK, PPSU, ULTEM 9085
+  - Flexible: TPU 85A, TPU 95A
+  - Specialty: PVA, HIPS, PP, PVB, wood/metal-fill
+- **Surface Types**: Blue Painters Tape, PEI Sheet, Textured PEI, Kapton Tape, LayerLock Garolite, High-Temp PEI, Glass with adhesives
+- **Utility Scripts**: Python data generation and validation tools created
+
+### Changed
+- **Modal Print Settings**: Enhanced to display recommended bed surfaces
+- **Material Entries**: Added PP (Polypropylene) and PVB (IPA-Smoothable) with bed surface data
+- **Deployment**: Updated footer with Railway.app hosting link
+
+### Fixed
+- **Data Completeness**: Addressed missing bed surface data from TODO Section 1.6
+
+---
+
 ## [1.3.0] - 2025-11-17
 
 ### Added

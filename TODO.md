@@ -166,9 +166,17 @@ This document tracks the development roadmap for the **FDM Filament Recommendati
   - [ ] Add biodegradability information
   - [ ] Add post-processing compatibility (sanding, painting, acetone smoothing)
 
-### 1.6 External Reference Data Integration *(Recommended for v1.5 - Nov 2025)*
+### 1.6 External Reference Data Integration *(Completed in v1.5)*
 
 Based on analysis of industry-standard filament guides (Simplify3D, MatterHackers, Bambu Lab, Prusa), the following enhancements are recommended to improve data accuracy and coverage:
+
+- [x] **Validate Bed Adhesion Recommendations** *(Completed Dec 2025)*
+  - [x] Sourced from MatterHackers Filament Guide (authoritative data)
+  - [x] Added bed_surface field to all 29 materials in materialsDetailData
+  - [x] Coverage: 100% of materials (PLA, PETG, ABS, Nylon, TPU, high-temp, composites, specialty)
+  - [x] Integrated into modal Print Settings section
+  - [x] Data includes: Blue Tape, PEI, Kapton, Garolite, high-temp PEI options
+  - [x] Utility scripts created for data validation and coverage reporting
 
 - [ ] **Validate Mechanical Properties Against Simplify3D Materials Table**
   - [ ] Cross-reference Ultimate Strength (MPa) values for 13 common materials
@@ -189,11 +197,12 @@ Based on analysis of industry-standard filament guides (Simplify3D, MatterHacker
   - [ ] Add post-annealing dimensional change warnings
   - [ ] Note: MatterHackers mentions Tough PLA heat tolerance increases to 60°C post-treatment
   
-- [ ] **Add Footer References Section**
+- [ ] **Add Footer References Section** *(Next Priority)*
   - [ ] Link to Simplify3D Materials Table (excellent structured data, comparison tool)
   - [ ] Link to MatterHackers Filament Guide (comprehensive, beginner-friendly)
   - [ ] Already included: Polymaker Wiki, CNC Kitchen, Prusa Guide, MatterHackers
   - [ ] Consider Bambu Lab PDF download link for offline reference
+  - [ ] Add helpful 3D printing resource links
   
 - [ ] **Extract Structured Data from Bambu Lab PDF** *(Future - Requires PDF Access)*
   - [ ] Download Bambu Lab Filament Guide PDF (https://cdn1.bambulab.com/filament/filament-guide/250123/filament-guide-en.pdf)
