@@ -331,12 +331,12 @@ searchFields.some(field => fuzzyMatch(field, query))
 
 ---
 
-## Code Example: Extending Search
+### Code Example: Extending Search
 
 ### Add Property Search
 ```javascript
 // In performSearch() function, extend searchFields:
-const results = materials.filter(material => {
+const results = allMaterials.filter(material => {
     const searchFields = [
         material.Material,
         material.Cluster || '',

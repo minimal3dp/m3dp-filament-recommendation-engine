@@ -1508,7 +1508,7 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
             }
 
             // Filter materials based on search query
-            const results = materials.filter(material => {
+            const results = allMaterials.filter(material => {
                 const searchFields = [
                     material.Material,
                     material.Cluster || '',
@@ -1564,7 +1564,7 @@ ULTEM 9085 (PEI),High-Performance,76.2,34.29,2465,10,160,1,10,true,true,false,tr
          */
         function selectSearchResult(materialName) {
             closeSearchModal();
-            const material = materials.find(m => m.Material === materialName);
+            const material = allMaterials.find(m => m.Material === materialName);
             if (material) {
                 openMaterialModal(material);
             }
