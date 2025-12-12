@@ -1,0 +1,27 @@
+# GitHub Code Owners
+
+# These owners will be automatically requested for review when someone opens a pull request.
+# https://help.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners
+
+# Default: All files
+* @minimal3dp/maintainers
+
+# HTML Application
+index.html @minimal3dp/maintainers
+
+# Documentation
+README.md @minimal3dp/maintainers
+CHANGELOG.md @minimal3dp/maintainers
+CONTRIBUTING.md @minimal3dp/maintainers
+ARCHITECTURE.md @minimal3dp/maintainers
+TODO.md @minimal3dp/maintainers
+VERSION.md @minimal3dp/maintainers
+
+# Data
+data/ @minimal3dp/maintainers
+scripts/ @minimal3dp/maintainers
+
+# Configuration
+.github/ @minimal3dp/maintainers
+.editorconfig @minimal3dp/maintainers
+pyproject.toml @minimal3dp/maintainers

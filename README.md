@@ -10,9 +10,21 @@ This application provides an intelligent, filterable database of FDM filament ma
 
 ## Features
 
-### Current Features (v1.4) 🆕
+### Current Features (v1.6.0) 🆕
 
-- **Expanded Material Database** 🆕: 40 materials (up from 23), including:
+- **Global Cmd+K Search** 🆕: Quick keyboard-driven search modal
+  - Press `Cmd+K` (Mac) or `Ctrl+K` (Windows/Linux)
+  - Search materials by name, cluster, or type in real-time
+  - Keyboard navigation (↑↓ to navigate, Enter to select, Escape to close)
+  - Seamlessly integrates with material detail modal
+  
+- **Bed Surface Recommendations** (v1.5.0): Recommended adhesion surfaces for each material
+  - Display in Print Settings section
+  - MatterHackers-sourced authoritative data
+  - 100% coverage (29 materials)
+  - Surface types: Blue Tape, PEI, Kapton, Garolite, high-temp options
+
+- **Expanded Material Database**: 40+ materials (up from 23), including:
   - PPSU, HIPS, PET, additional Nylon variants (PA6, PA12)
   - PC-ABS Blend, TPU hardness variants (85A, 95A)
   - PLA specialty variants (Silk, Glow-in-the-dark)
