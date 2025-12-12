@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.6.0] - 2025-12-12
+
+### Added
+
+#### Global Cmd+K Search Modal
+- **Keyboard Shortcut**: Cmd+K (Mac) / Ctrl+K (Windows/Linux) opens fast search modal
+- **Real-Time Filtering**: Search materials by name, cluster, and type as you type
+- **Intelligent Navigation**:
+  - Arrow Up/Down: Navigate search results
+  - Enter: Select and open material details
+  - Escape: Close search modal
+- **Visual Design**: Consistent with app aesthetic (dark theme, backdrop blur)
+- **Mobile Responsive**: Works on all screen sizes
+- **Performance**: Limited to 10 results, maintains smooth 60fps
+- **Integration**: Seamlessly opens material modal from search result
+- **Accessibility**: Full keyboard support, no mouse required
+
+### Changed
+- **User Experience**: Added quick-access search alongside existing filters
+- **Keyboard Shortcuts**: Enhanced keyboard-first interaction model
+- **Documentation**: Added SEARCH_FEATURE.md with comprehensive feature documentation
+
+### Documentation
+- **SEARCH_FEATURE.md**: Complete guide with implementation details, usage examples, extensibility notes
+- **TODO.md**: Added Section 1.7 documenting search feature completion and future enhancements
+
+---
+
 ## [1.5.0] - 2025-12-12
 
 ### Added

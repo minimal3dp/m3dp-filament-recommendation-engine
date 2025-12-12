@@ -215,6 +215,26 @@ Based on analysis of industry-standard filament guides (Simplify3D, MatterHacker
   - [ ] Extract comparative material data (if accessible)
   - [ ] Older source (2018), validate data against current standards
 
+### 1.7 Global Search Feature *(Completed in v1.6)*
+
+- [x] **Cmd+K Search Modal** *(Completed Dec 12, 2025)*
+  - [x] Implement Cmd+K (Mac) / Ctrl+K (Windows/Linux) global keyboard shortcut
+  - [x] Real-time search filtering across material names, clusters, and types
+  - [x] Keyboard navigation (Up/Down arrows, Enter to select, Escape to close)
+  - [x] Search modal with backdrop blur effect, consistent with existing UI
+  - [x] Integrated with material detail modal (opens from search result)
+  - [x] Help footer with keyboard shortcut hints
+  - [x] Mobile-responsive design
+  - [x] Documentation in SEARCH_FEATURE.md
+
+- [ ] **Extend Search Functionality** *(Future Enhancement)*
+  - [ ] Search across material properties (Strength, HDT, Cost Score)
+  - [ ] Implement fuzzy matching for typo tolerance
+  - [ ] Add search result ranking/scoring
+  - [ ] Search history and recent searches
+  - [ ] Search suggestions based on common queries
+  - [ ] Performance optimization (debouncing if dataset grows)
+
 ---
 
 ## Phase 2: Expert System Logic
