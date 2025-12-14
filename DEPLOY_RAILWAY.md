@@ -23,7 +23,7 @@ Before deploying, ensure the following:
 - [ ] **GitHub Account**: Logged in and repository is accessible
 - [ ] **Railway.app Account**: Created and verified (sign up at https://railway.app)
 - [ ] **Git Repository**: All changes committed to `main` branch
-- [ ] **App Version**: Update version if needed (currently v1.5.0)
+- [ ] **App Version**: Update version if needed (currently v1.6.0)
 - [ ] **Environment**: No uncommitted changes (`git status` shows clean)
 - [ ] **Testing**: Verified app loads correctly locally (`index.html` in browser)
 
@@ -74,10 +74,10 @@ git diff --stat
 Railway will auto-detect this is a static site. Configure as follows:
 
 #### Build Configuration
-- **Framework Detection**: Railway will detect it as a **Static Site**
-- **Build Command**: Leave empty (not needed for static sites)
-- **Start Command**: Leave empty (Railway serves static files)
-- **Install Command**: Leave empty
+- **Framework Detection**: Railway will detect it as a **Python** service (via `pyproject.toml` or `main.py`).
+- **Build Command**: Railway's Nixpacks will automatically install dependencies from `pyproject.toml`.
+- **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+- **Watch Paths**: `/templates/**` (optional, for faster reloads if enabled)
 
 #### Environment Variables
 For this static site, no environment variables are required. However, you can add:
@@ -200,10 +200,10 @@ If you don't need a custom domain, Railway provides:
 #### Monitor Railway Metrics
 1. In Railway dashboard, click **"Monitoring"** tab
 2. Check:
-   - **CPU Usage**: Should be minimal for static site
-   - **Memory**: Should remain constant
-   - **Request Count**: Monitor for traffic patterns
-   - **Latency**: Should be <100ms
+   - **CPU Usage**: Should remain low, but higher than static site.
+   - **Memory**: Python overhead (~50-100MB).
+   - **Request Count**: Monitor for traffic patterns.
+   - **Latency**: Should be <100ms.
 
 ---
 
@@ -219,17 +219,17 @@ If you don't need a custom domain, Railway provides:
    - Look for error messages
 2. Common causes:
    - Invalid `railway.json` (delete if present)
-   - Missing files (ensure `index.html` exists in root)
-   - Path issues (verify file references are correct)
+   - Missing `pyproject.toml` or `main.py`
+   - Application crash on startup (check logs for Python errors)
 
 **Fix**:
 ```bash
-# Ensure index.html is in repository root
-ls -la index.html
+# Ensure main.py and pyproject.toml are in repository root
+ls -la main.py pyproject.toml
 
 # Commit any missing files
-git add index.html
-git commit -m "Ensure index.html in repo root"
+git add main.py templates/
+git commit -m "Ensure app files in repo root"
 git push origin main
 ```
 
@@ -439,7 +439,7 @@ If you encounter issues:
 
 ---
 
-**Last Updated**: December 12, 2025  
-**Version**: 1.5.0  
+**Last Updated**: December 14, 2025  
+**Version**: 1.6.0  
 **Platform**: Railway.app  
 **Status**: Production Ready ✅
